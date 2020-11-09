@@ -15,10 +15,10 @@ public class DateTimeService {
     }
 
     public String getGreeting(String name) {
-        return String.format("%s%s!", getGreeting(), name == null ? "" : ", " + name);
+        return String.format("%s%s!", defineGreeting(), name == null ? "" : ", " + name);
     }
 
-    private String getGreeting() {
+    private String defineGreeting() {
         LocalTime time = LocalTime.now();
 
         final LocalTime midnight = LocalTime.of(0, 0);
