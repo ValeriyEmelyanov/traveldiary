@@ -1,21 +1,33 @@
 package com.example.traveldiary.controllers;
 
+import com.example.traveldiary.services.DateTimeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @RestController
 public class PlayController {
+    private DateTimeService dateTimeService;
+
+    @Autowired
+    public void setDateTimeService(DateTimeService dateTimeService) {
+        this.dateTimeService = dateTimeService;
+    }
 
     @GetMapping("/now")
     public ResponseEntity<String> printDateTime() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return new ResponseEntity<>(
-                String.format("Now is %s", formatter.format(LocalDateTime.now())),
+                dateTimeService.getNow(),
+                HttpStatus.OK);
+    }
+
+    @GetMapping({"/greeting", "/greeting/{name}"})
+    public ResponseEntity<String> printGreeting(@PathVariable(required = false) String name) {
+        return new ResponseEntity<>(
+                dateTimeService.getGreeting(name),
                 HttpStatus.OK);
     }
 
