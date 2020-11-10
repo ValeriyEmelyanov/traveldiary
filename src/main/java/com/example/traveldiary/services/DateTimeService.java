@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 
 @Service
 public class DateTimeService {
+    private static final LocalTime SIX_PM = LocalTime.of(18, 0);
 
     public String getNow() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -21,14 +22,11 @@ public class DateTimeService {
     private String defineGreeting() {
         LocalTime time = LocalTime.now();
 
-        final LocalTime midnight = LocalTime.of(0, 0);
-        final LocalTime noon = LocalTime.of(12, 0);
-        if (time.isAfter(midnight) && time.isBefore(noon)) {
+        if (time.isAfter(LocalTime.MIDNIGHT) && time.isBefore(LocalTime.NOON)) {
             return "Good morning";
         }
 
-        LocalTime sixPm = LocalTime.of(18, 0);
-        if (time.equals(noon) || (time.isAfter(noon) && time.isBefore(sixPm))) {
+        if (time.equals(LocalTime.NOON) || (time.isAfter(LocalTime.NOON) && time.isBefore(SIX_PM))) {
             return "Good afternoon";
         }
 
