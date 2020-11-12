@@ -1,6 +1,6 @@
-package com.example.traveldiary.controllers;
+package com.example.traveldiary.controller;
 
-import com.example.traveldiary.services.DateTimeService;
+import com.example.traveldiary.service.DateTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

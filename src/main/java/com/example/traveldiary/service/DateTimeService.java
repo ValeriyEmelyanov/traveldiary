@@ -1,4 +1,4 @@
-package com.example.traveldiary.services;
+package com.example.traveldiary.service;
 
 import org.springframework.stereotype.Service;
 
