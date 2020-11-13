@@ -11,6 +11,13 @@ public class ExpenseType extends AbstractEntity {
     @Column(name = "name")
     private String name;
 
+    public ExpenseType() {
+    }
+
+    public ExpenseType(Long id) {
+        super(id);
+    }
+
     public String getName() {
         return name;
     }

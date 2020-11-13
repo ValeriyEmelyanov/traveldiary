@@ -4,8 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "expense_record")
 public class ExpenseRecord extends AbstractEntity {
 
     @ManyToOne
@@ -26,7 +28,14 @@ public class ExpenseRecord extends AbstractEntity {
     private Integer planSum;
 
     @Column(name = "fact_sum")
-    private Integer factPlan;
+    private Integer factSum;
+
+    public ExpenseRecord() {
+    }
+
+    public ExpenseRecord(Long id) {
+        super(id);
+    }
 
     public Travel getTravel() {
         return travel;
@@ -68,11 +77,11 @@ public class ExpenseRecord extends AbstractEntity {
         this.planSum = planSum;
     }
 
-    public Integer getFactPlan() {
-        return factPlan;
+    public Integer getFactSum() {
+        return factSum;
     }
 
-    public void setFactPlan(Integer factPlan) {
-        this.factPlan = factPlan;
+    public void setFactSum(Integer factPlan) {
+        this.factSum = factPlan;
     }
 }

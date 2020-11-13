@@ -1,79 +1,37 @@
-package com.example.traveldiary.model;
+package com.example.traveldiary.dto;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import com.example.traveldiary.model.Rating;
+import com.example.traveldiary.model.Travel;
+
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity
-@Table(name = "travel")
-public class Travel extends AbstractEntity {
-
-    public enum Status {
-        PLAN("Plan"), DONE("Done"), CANCELED("Canceled");
-
-        private final String name;
-
-        Status(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-    }
-
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private Status status;
-
-    @Column(name = "title")
+public class TravelDto {
+    private Long id;
+    private Travel.Status status;
     private String title;
-
-    @Column(name = "start_date")
     private LocalDate startDate;
-
-    @Column(name = "end_date")
     private LocalDate endDate;
-
-    @Column(name = "description")
     private String description;
-
-    @Column(name = "plan_total_sum")
     private Integer PlanTotalSum;
-
-    @Column(name = "fact_total_sum")
     private Integer FactTotalSum;
-
-    @Column(name = "rating")
-    @Enumerated
     private Rating rating;
-
-    @Column(name = "is_favorite")
     private Boolean isFavorite;
+    private List<ExpenseRecordDto> expenses;
 
-    @OneToMany(mappedBy = "travel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<ExpenseRecord> expenses;
-
-    public Travel() {
+    public Long getId() {
+        return id;
     }
 
-    public Travel(Long id) {
-        super(id);
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Status getStatus() {
+    public Travel.Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(Travel.Status status) {
         this.status = status;
     }
 
@@ -89,8 +47,8 @@ public class Travel extends AbstractEntity {
         return startDate;
     }
 
-    public void setStartDate(LocalDate date) {
-        this.startDate = date;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
     public LocalDate getEndDate() {
@@ -141,11 +99,11 @@ public class Travel extends AbstractEntity {
         isFavorite = favorite;
     }
 
-    public List<ExpenseRecord> getExpenses() {
+    public List<ExpenseRecordDto> getExpenses() {
         return expenses;
     }
 
-    public void setExpenses(List<ExpenseRecord> expenses) {
+    public void setExpenses(List<ExpenseRecordDto> expenses) {
         this.expenses = expenses;
     }
 }

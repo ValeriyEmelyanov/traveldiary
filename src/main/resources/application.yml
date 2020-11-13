@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    initialization-mode: always
+    platform: postgresql
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/travel
+    username: postgres
+    password: postgres
+
