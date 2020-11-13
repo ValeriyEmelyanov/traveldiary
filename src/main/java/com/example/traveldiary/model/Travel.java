@@ -37,8 +37,11 @@ public class Travel extends AbstractEntity {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "travel_date")
-    private LocalDate date;
+    @Column(name = "start_date")
+    private LocalDate startDate;
+
+    @Column(name = "end_date")
+    private LocalDate endDate;
 
     @Column(name = "description")
     private String description;
@@ -53,11 +56,11 @@ public class Travel extends AbstractEntity {
     private List<ExpenseRecord> expenses;
 
     @Column(name = "rating")
-    @Enumerated(EnumType.STRING)
+    @Enumerated
     private Rating rating;
 
-    @Column(name = "favorite")
-    private Boolean favorite;
+    @Column(name = "is_favorite")
+    private Boolean isFavorite;
 
     public Status getStatus() {
         return status;
@@ -75,12 +78,20 @@ public class Travel extends AbstractEntity {
         this.title = title;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setStartDate(LocalDate date) {
+        this.startDate = date;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public String getDescription() {
@@ -124,10 +135,10 @@ public class Travel extends AbstractEntity {
     }
 
     public Boolean getFavorite() {
-        return favorite;
+        return isFavorite;
     }
 
     public void setFavorite(Boolean favorite) {
-        this.favorite = favorite;
+        isFavorite = favorite;
     }
 }
