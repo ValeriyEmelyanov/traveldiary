@@ -8,4 +8,7 @@ In progress ...
 * Java 11
 * SpringBoot
 * REST API
+* Spring Data JPA
+* PostgreSQL 12
+* Flyway
 * Maven

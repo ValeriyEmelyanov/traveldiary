@@ -6,6 +6,7 @@ import com.example.traveldiary.model.ExpenseRecord;
 import com.example.traveldiary.model.ExpenseType;
 import com.example.traveldiary.model.Travel;
 import com.example.traveldiary.repository.TravelRepository;
+import com.example.traveldiary.service.ExpenseTypeService;
 import com.example.traveldiary.service.TravelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.List;
 @Service
 public class TravelServiceImpl implements TravelService {
     private TravelRepository travelRepository;
+    private ExpenseTypeService expenseTypeService;
 
     @Autowired
     public void setTravelRepository(TravelRepository travelRepository) {
@@ -55,7 +57,9 @@ public class TravelServiceImpl implements TravelService {
                     ExpenseRecord record = new ExpenseRecord();
                     record.setId(recordDto.getId());
                     record.setRecNo(recordDto.getRecNo());
-                    record.setExpenseType(new ExpenseType(recordDto.getExpenseTypeId()));
+                    //TOTO: проверить будет ли так работать.
+                    //record.setExpenseType(new ExpenseType(recordDto.getExpenseTypeId()));
+                    record.setExpenseType(expenseTypeService.getById(recordDto.getExpenseTypeId()));
                     record.setComment(recordDto.getComment());
                     record.setPlanSum(recordDto.getPlanSum());
                     record.setFactSum(recordDto.getFactPlan());
