@@ -3,7 +3,6 @@ package com.example.traveldiary.service.impl;
 import com.example.traveldiary.dto.ExpenseRecordDto;
 import com.example.traveldiary.dto.TravelDto;
 import com.example.traveldiary.model.ExpenseRecord;
-import com.example.traveldiary.model.ExpenseType;
 import com.example.traveldiary.model.Travel;
 import com.example.traveldiary.repository.TravelRepository;
 import com.example.traveldiary.service.ExpenseTypeService;
@@ -22,6 +21,11 @@ public class TravelServiceImpl implements TravelService {
     @Autowired
     public void setTravelRepository(TravelRepository travelRepository) {
         this.travelRepository = travelRepository;
+    }
+
+    @Autowired
+    public void setExpenseTypeService(ExpenseTypeService expenseTypeService) {
+        this.expenseTypeService = expenseTypeService;
     }
 
     @Override
@@ -57,12 +61,10 @@ public class TravelServiceImpl implements TravelService {
                     ExpenseRecord record = new ExpenseRecord();
                     record.setId(recordDto.getId());
                     record.setRecNo(recordDto.getRecNo());
-                    //TOTO: проверить будет ли так работать.
-                    //record.setExpenseType(new ExpenseType(recordDto.getExpenseTypeId()));
                     record.setExpenseType(expenseTypeService.getById(recordDto.getExpenseTypeId()));
                     record.setComment(recordDto.getComment());
                     record.setPlanSum(recordDto.getPlanSum());
-                    record.setFactSum(recordDto.getFactPlan());
+                    record.setFactSum(recordDto.getFactSum());
                     record.setTravel(travel);
                     expenses.add(record);
                 }

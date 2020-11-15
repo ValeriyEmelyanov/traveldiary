@@ -13,10 +13,10 @@ public class TravelDto {
     private LocalDate startDate;
     private LocalDate endDate;
     private String description;
-    private Integer PlanTotalSum;
-    private Integer FactTotalSum;
+    private Integer planTotalSum;
+    private Integer factTotalSum;
     private Rating rating;
-    private Boolean isFavorite;
+    private Boolean favorite;
     private List<ExpenseRecordDto> expenses;
 
     public Long getId() {
@@ -68,19 +68,19 @@ public class TravelDto {
     }
 
     public Integer getPlanTotalSum() {
-        return PlanTotalSum;
+        return planTotalSum;
     }
 
     public void setPlanTotalSum(Integer planTotalSum) {
-        PlanTotalSum = planTotalSum;
+        this.planTotalSum = planTotalSum;
     }
 
     public Integer getFactTotalSum() {
-        return FactTotalSum;
+        return factTotalSum;
     }
 
     public void setFactTotalSum(Integer factTotalSum) {
-        FactTotalSum = factTotalSum;
+        this.factTotalSum = factTotalSum;
     }
 
     public Rating getRating() {
@@ -92,11 +92,11 @@ public class TravelDto {
     }
 
     public Boolean getFavorite() {
-        return isFavorite;
+        return favorite;
     }
 
     public void setFavorite(Boolean favorite) {
-        isFavorite = favorite;
+        this.favorite = favorite;
     }
 
     public List<ExpenseRecordDto> getExpenses() {

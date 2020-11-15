@@ -1,5 +1,7 @@
 package com.example.traveldiary.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -12,6 +14,7 @@ public class ExpenseRecord extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "travel_id")
+    @JsonIgnore
     private Travel travel;
 
     @Column(name = "rec_no")

@@ -3,7 +3,6 @@ package com.example.traveldiary.service.impl;
 import com.example.traveldiary.service.DateTimeService;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;

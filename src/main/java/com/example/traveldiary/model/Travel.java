@@ -47,17 +47,17 @@ public class Travel extends AbstractEntity {
     private String description;
 
     @Column(name = "plan_total_sum")
-    private Integer PlanTotalSum;
+    private Integer planTotalSum;
 
     @Column(name = "fact_total_sum")
-    private Integer FactTotalSum;
+    private Integer factTotalSum;
 
     @Column(name = "rating")
     @Enumerated
     private Rating rating;
 
-    @Column(name = "is_favorite")
-    private Boolean isFavorite;
+    @Column(name = "favorite")
+    private Boolean favorite;
 
     @OneToMany(mappedBy = "travel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ExpenseRecord> expenses;
@@ -110,19 +110,19 @@ public class Travel extends AbstractEntity {
     }
 
     public Integer getPlanTotalSum() {
-        return PlanTotalSum;
+        return planTotalSum;
     }
 
     public void setPlanTotalSum(Integer planTotalSum) {
-        PlanTotalSum = planTotalSum;
+        this.planTotalSum = planTotalSum;
     }
 
     public Integer getFactTotalSum() {
-        return FactTotalSum;
+        return factTotalSum;
     }
 
     public void setFactTotalSum(Integer factTotalSum) {
-        FactTotalSum = factTotalSum;
+        this.factTotalSum = factTotalSum;
     }
 
     public Rating getRating() {
@@ -134,11 +134,11 @@ public class Travel extends AbstractEntity {
     }
 
     public Boolean getFavorite() {
-        return isFavorite;
+        return favorite;
     }
 
     public void setFavorite(Boolean favorite) {
-        isFavorite = favorite;
+        this.favorite = favorite;
     }
 
     public List<ExpenseRecord> getExpenses() {

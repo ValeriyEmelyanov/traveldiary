@@ -2,12 +2,11 @@ package com.example.traveldiary.dto;
 
 public class ExpenseRecordDto {
     private Long id;
-//    private Long travelId;
     private Integer recNo;
     private Long expenseTypeId;
     private String comment;
     private Integer planSum;
-    private Integer factPlan;
+    private Integer factSum;
 
     public Long getId() {
         return id;
@@ -16,14 +15,6 @@ public class ExpenseRecordDto {
     public void setId(Long id) {
         this.id = id;
     }
-
-//    public Long getTravelId() {
-//        return travelId;
-//    }
-//
-//    public void setTravelId(Long travelId) {
-//        this.travelId = travelId;
-//    }
 
     public Integer getRecNo() {
         return recNo;
@@ -57,11 +48,11 @@ public class ExpenseRecordDto {
         this.planSum = planSum;
     }
 
-    public Integer getFactPlan() {
-        return factPlan;
+    public Integer getFactSum() {
+        return factSum;
     }
 
-    public void setFactPlan(Integer factPlan) {
-        this.factPlan = factPlan;
+    public void setFactSum(Integer factSum) {
+        this.factSum = factSum;
     }
 }

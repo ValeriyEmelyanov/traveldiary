@@ -1,0 +1,298 @@
+{
+	"info": {
+		"_postman_id": "d57fc47b-7316-4a84-b849-f0d111b1674b",
+		"name": "traveldiary",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "play/now",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/play/now",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"play",
+						"now"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "expensetype/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/expensetype/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"expensetype",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "expensetype/create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Meals\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/expensetype/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"expensetype",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "expensetype/list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/expensetype/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"expensetype",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "expensetype/update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"2\",\r\n    \"name\": \"Food Plus\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/expensetype/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"expensetype",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "expensetype/delete/2",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/expensetype/delete/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"expensetype",
+						"delete",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "travel/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/travel/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"travel",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "travel/create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": \"PLAN\",\r\n    \"title\": \"Anapa\",\r\n    \"startDate\": \"2020-12-01\",\r\n    \"endDate\":  \"2020-12-02\",\r\n    \"description\": \"One day. Have a looke at the autumn sea\",\r\n    \"planTotalSum\": \"4500\",\r\n    \"factTotalSum\": \"0\",\r\n    \"rating\": \"0\",\r\n    \"favorite\": \"false\",\r\n    \"expenses\": [\r\n        {\r\n            \"recNo\": \"1\",\r\n            \"expenseTypeId\": \"1\",\r\n            \"comment\": \"petrol, by my car\",\r\n            \"planSum\": \"2000\",\r\n            \"factSum\": \"0\"\r\n        },\r\n        {\r\n        \"recNo\": \"2\",\r\n        \"expenseTypeId\": \"2\",\r\n        \"comment\": \"hotel 'Black sea'\",\r\n        \"planSum\": \"1000\",\r\n        \"factSum\": \"0\"\r\n    },\r\n    {\r\n        \"recNo\": \"3\",\r\n        \"expenseTypeId\": \"3\",\r\n        \"comment\": \"cafe\",\r\n        \"planSum\": \"1500\",\r\n        \"factSum\": \"0\"\r\n    }]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/travel/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"travel",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "travel/list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/travel/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"travel",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "travel/update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 4,\r\n    \"status\": \"DONE\",\r\n    \"title\": \"Anapa\",\r\n    \"startDate\": \"2020-12-01\",\r\n    \"endDate\": \"2020-12-02\",\r\n    \"description\": \"One day. Have a looke at the autimn sea\",\r\n    \"planTotalSum\": \"4500\",\r\n    \"factTotalSum\": \"4200\",\r\n    \"rating\": \"NONE\",\r\n    \"favorite\": \"false\",\r\n    \"expenses\": [\r\n        {\r\n            \"id\": \"5\",\r\n            \"recNo\": \"1\",\r\n            \"expenseTypeId\": \"1\",\r\n            \"comment\": \"petrol, by my car\",\r\n            \"planSum\": \"2000\",\r\n            \"factSum\": \"1900\"\r\n        },\r\n        {\r\n            \"id\": \"6\",\r\n            \"recNo\": \"2\",\r\n            \"expenseTypeId\": \"2\",\r\n            \"comment\": \"hotel 'Black sea'\",\r\n            \"planSum\": \"1000\",\r\n            \"factSum\": \"1000\"\r\n        },\r\n        {\r\n            \"id\": \"7\",\r\n            \"recNo\": \"3\",\r\n            \"expenseTypeId\": \"3\",\r\n            \"comment\": \"cafe\",\r\n            \"planSum\": \"1500\",\r\n            \"factSum\": \"1400\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/travel/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"travel",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "travel/delete/7",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/travel/delete/7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"travel",
+						"delete",
+						"7"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
