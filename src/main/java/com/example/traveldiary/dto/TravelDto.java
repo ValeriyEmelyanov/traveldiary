@@ -1,14 +1,14 @@
 package com.example.traveldiary.dto;
 
 import com.example.traveldiary.model.Rating;
-import com.example.traveldiary.model.Travel;
+import com.example.traveldiary.model.TravelStatus;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public class TravelDto {
     private Long id;
-    private Travel.Status status;
+    private TravelStatus status;
     private String title;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -27,11 +27,11 @@ public class TravelDto {
         this.id = id;
     }
 
-    public Travel.Status getStatus() {
+    public TravelStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Travel.Status status) {
+    public void setStatus(TravelStatus status) {
         this.status = status;
     }
 

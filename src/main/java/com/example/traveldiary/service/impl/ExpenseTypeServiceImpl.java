@@ -11,10 +11,10 @@ import java.util.List;
 
 @Service
 public class ExpenseTypeServiceImpl implements ExpenseTypeService {
-    private ExpenseTypeRepository expenseTypeRepository;
+    private final ExpenseTypeRepository expenseTypeRepository;
 
     @Autowired
-    public void setExpenseTypeRepository(ExpenseTypeRepository expenseTypeRepository) {
+    public ExpenseTypeServiceImpl(ExpenseTypeRepository expenseTypeRepository) {
         this.expenseTypeRepository = expenseTypeRepository;
     }
 
@@ -26,6 +26,11 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
     @Override
     public ExpenseType getById(Long id) {
         return expenseTypeRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public boolean notExists(Long id) {
+        return getById(id) == null;
     }
 
     @Override

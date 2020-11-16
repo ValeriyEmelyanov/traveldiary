@@ -6,7 +6,6 @@ import com.example.traveldiary.service.ExpenseTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,16 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/v1/expensetype")
 public class ExpenseTypeController {
-    private ExpenseTypeService expenseTypeService;
+    private final ExpenseTypeService expenseTypeService;
 
     @Autowired
-    public void setExpenseTypeService(ExpenseTypeService expenseTypeService) {
+    public ExpenseTypeController(ExpenseTypeService expenseTypeService) {
         this.expenseTypeService = expenseTypeService;
     }
 
@@ -63,8 +63,7 @@ public class ExpenseTypeController {
             return ResponseEntity.badRequest().build();
         }
 
-        ExpenseType expenseType = expenseTypeService.getById(expenseTypeDto.getId());
-        if (expenseType == null) {
+        if (expenseTypeService.notExists(expenseTypeDto.getId())) {
             return ResponseEntity.notFound().build();
         }
 
@@ -79,8 +78,7 @@ public class ExpenseTypeController {
             return ResponseEntity.badRequest().build();
         }
 
-        ExpenseType expenseType = expenseTypeService.getById(id);
-        if (expenseType == null) {
+        if (expenseTypeService.notExists(id)) {
             return ResponseEntity.notFound().build();
         }
 

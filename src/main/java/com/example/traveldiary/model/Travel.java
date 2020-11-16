@@ -15,24 +15,9 @@ import java.util.List;
 @Table(name = "travel")
 public class Travel extends AbstractEntity {
 
-    public enum Status {
-        PLAN("Plan"), DONE("Done"), CANCELED("Canceled");
-
-        private final String name;
-
-        Status(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-    }
-
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private TravelStatus status;
 
     @Column(name = "title")
     private String title;
@@ -69,11 +54,11 @@ public class Travel extends AbstractEntity {
         super(id);
     }
 
-    public Status getStatus() {
+    public TravelStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(TravelStatus status) {
         this.status = status;
     }
 

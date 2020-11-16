@@ -15,16 +15,12 @@ import java.util.List;
 
 @Service
 public class TravelServiceImpl implements TravelService {
-    private TravelRepository travelRepository;
-    private ExpenseTypeService expenseTypeService;
+    private final TravelRepository travelRepository;
+    private final ExpenseTypeService expenseTypeService;
 
     @Autowired
-    public void setTravelRepository(TravelRepository travelRepository) {
+    public TravelServiceImpl(TravelRepository travelRepository, ExpenseTypeService expenseTypeService) {
         this.travelRepository = travelRepository;
-    }
-
-    @Autowired
-    public void setExpenseTypeService(ExpenseTypeService expenseTypeService) {
         this.expenseTypeService = expenseTypeService;
     }
 
@@ -36,6 +32,11 @@ public class TravelServiceImpl implements TravelService {
     @Override
     public Travel getById(Long id) {
         return travelRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public boolean notExists(Long id) {
+        return getById(id) == null;
     }
 
     @Override
