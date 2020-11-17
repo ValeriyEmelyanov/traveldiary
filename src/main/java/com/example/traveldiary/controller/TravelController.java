@@ -6,7 +6,6 @@ import com.example.traveldiary.service.TravelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,16 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Repository
+@RestController
 @RequestMapping("/api/v1/travel")
 public class TravelController {
-    private TravelService travelService;
+    private final TravelService travelService;
 
     @Autowired
-    public void setTravelService(TravelService travelService) {
+    public TravelController(TravelService travelService) {
         this.travelService = travelService;
     }
 
@@ -42,6 +42,7 @@ public class TravelController {
         if (travel == null) {
             return ResponseEntity.notFound().build();
         }
+
         return ResponseEntity.ok(travel);
     }
 
@@ -59,11 +60,10 @@ public class TravelController {
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody TravelDto travelDto) {
         if (travelDto == null || travelDto.getId() == null) {
-            ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().build();
         }
 
-        Travel travel = travelService.getById(travelDto.getId());
-        if (travel == null) {
+        if (travelService.notExists(travelDto.getId())) {
             return ResponseEntity.notFound().build();
         }
 
@@ -78,8 +78,7 @@ public class TravelController {
             return ResponseEntity.badRequest().build();
         }
 
-        Travel travel = travelService.getById(id);
-        if (travel == null) {
+        if (travelService.notExists(id)) {
             return ResponseEntity.notFound().build();
         }
 

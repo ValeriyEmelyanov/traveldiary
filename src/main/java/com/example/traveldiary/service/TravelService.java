@@ -10,6 +10,8 @@ public interface TravelService {
 
     Travel getById(Long id);
 
+    boolean notExists(Long id);
+
     void save(TravelDto travelDto);
 
     void delete(Long id);
