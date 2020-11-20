@@ -6,6 +6,7 @@ import com.example.traveldiary.service.TravelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,11 +29,13 @@ public class TravelController {
     }
 
     @GetMapping("/list")
+    @PreAuthorize("hasAuthority('travel:read')")
     public ResponseEntity<List<Travel>> getList() {
         return ResponseEntity.ok(travelService.getList());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('travel:read')")
     public ResponseEntity<Travel> getById(@PathVariable Long id) {
         if (id == null) {
             return ResponseEntity.badRequest().build();
@@ -47,6 +50,7 @@ public class TravelController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('travel:write')")
     public ResponseEntity<String> create(@RequestBody TravelDto travelDto) {
         if (travelDto == null) {
             return ResponseEntity.badRequest().build();
@@ -58,6 +62,7 @@ public class TravelController {
     }
 
     @PutMapping("/update")
+    @PreAuthorize("hasAuthority('travel:write')")
     public ResponseEntity<String> update(@RequestBody TravelDto travelDto) {
         if (travelDto == null || travelDto.getId() == null) {
             return ResponseEntity.badRequest().build();
@@ -73,6 +78,7 @@ public class TravelController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('travel:write')")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         if (id == null) {
             return ResponseEntity.badRequest().build();
