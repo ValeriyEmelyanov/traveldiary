@@ -10,9 +10,7 @@ public interface TravelService {
 
     Travel getById(Long id);
 
-    boolean notExists(Long id);
+    void save(TravelDto travelDto, String username, boolean isUpdate);
 
-    void save(TravelDto travelDto);
-
-    void delete(Long id);
+    void delete(Long id, String username);
 }
