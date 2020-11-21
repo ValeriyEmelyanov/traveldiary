@@ -1,6 +1,10 @@
 package com.example.traveldiary.service.impl;
 
+import com.example.traveldiary.dto.PasswordDto;
 import com.example.traveldiary.dto.UserDto;
+import com.example.traveldiary.exception.BadPasswordException;
+import com.example.traveldiary.exception.BadRequestException;
+import com.example.traveldiary.exception.UnexpectedException;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.repository.UserRepositiry;
 import com.example.traveldiary.service.UserService;
@@ -57,6 +61,24 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(userDto.getEnabled());
         user.setRoles(userDto.getRoles());
 
+        userRepositiry.save(user);
+    }
+
+    @Override
+    public void changePassword(String username, PasswordDto passwordDto) {
+        if (passwordDto == null || passwordDto.getPassword() == null) {
+            throw new BadRequestException();
+        }
+        if (!passwordDto.getPassword().equals(passwordDto.getMatchingpassword())) {
+            throw new BadPasswordException("Password not matching");
+        }
+
+        User user = getByUsername(username);
+        if (user == null) {
+            throw new UnexpectedException();
+        }
+
+        user.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
         userRepositiry.save(user);
     }
 

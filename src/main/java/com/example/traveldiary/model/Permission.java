@@ -3,6 +3,7 @@ package com.example.traveldiary.model;
 public enum Permission {
     USER_READ("user:read"),
     USER_WRITE("user:write"),
+    USER_PASSWORD("user:password"),
     EXPENSE_TYPE_READ("expense_type:read"),
     EXPENSE_TYPE_WRITE("expense_type:write"),
     TRAVEL_READ("travel:read"),

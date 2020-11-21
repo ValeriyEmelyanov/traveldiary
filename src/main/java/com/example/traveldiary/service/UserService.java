@@ -1,6 +1,7 @@
 package com.example.traveldiary.service;
 
 
+import com.example.traveldiary.dto.PasswordDto;
 import com.example.traveldiary.dto.UserDto;
 import com.example.traveldiary.model.User;
 
@@ -16,6 +17,8 @@ public interface UserService {
     User getByUsername(String username);
 
     void save(UserDto user);
+
+    void changePassword(String username, PasswordDto passwordDto);
 
     void delete(Long id);
 }
