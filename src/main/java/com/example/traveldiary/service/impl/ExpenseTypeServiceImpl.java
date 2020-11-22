@@ -1,6 +1,8 @@
 package com.example.traveldiary.service.impl;
 
 import com.example.traveldiary.dto.ExpenseTypeDto;
+import com.example.traveldiary.exception.BadRequestException;
+import com.example.traveldiary.exception.NotFoundException;
 import com.example.traveldiary.model.ExpenseType;
 import com.example.traveldiary.repository.ExpenseTypeRepository;
 import com.example.traveldiary.service.ExpenseTypeService;
@@ -25,18 +27,33 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 
     @Override
     public ExpenseType getById(Long id) {
-        return expenseTypeRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public boolean notExists(Long id) {
-        return getById(id) == null;
+        if (id == null) {
+            throw new BadRequestException();
+        }
+        return expenseTypeRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     @Override
     public void save(ExpenseTypeDto expenseTypeDto) {
-        ExpenseType expenseType = new ExpenseType();
-        expenseType.setId(expenseTypeDto.getId());
+        save(expenseTypeDto, false);
+    }
+
+    @Override
+    public void update(ExpenseTypeDto expenseTypeDto) {
+        save(expenseTypeDto, true);
+    }
+
+    private void save(ExpenseTypeDto expenseTypeDto, boolean isUpdate) {
+        if (expenseTypeDto == null) {
+            throw new BadRequestException();
+        }
+
+        ExpenseType expenseType;
+        if (isUpdate) {
+            expenseType = getById(expenseTypeDto.getId());
+        } else {
+            expenseType = new ExpenseType();
+        }
         expenseType.setName(expenseTypeDto.getName());
 
         expenseTypeRepository.save(expenseType);
@@ -44,6 +61,12 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 
     @Override
     public void delete(Long id) {
+        if (id == null) {
+            throw new BadRequestException();
+        }
+
+        getById(id);
+
         expenseTypeRepository.deleteById(id);
     }
 }

@@ -40,43 +40,21 @@ public class UserController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('user:read')")
     public ResponseEntity<User> getById(@PathVariable Long id) {
-        if (id == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
         User user = userService.getById(id);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-
         return ResponseEntity.ok(user);
     }
 
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<String> create(@RequestBody UserDto userDto) {
-        if (userDto == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
         userService.save(userDto);
-
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/update")
     @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<String> update(@RequestBody UserDto userDto) {
-        if (userDto == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        if (userService.notExists(userDto.getId())) {
-            return ResponseEntity.notFound().build();
-        }
-
-        userService.save(userDto);
-
+        userService.update(userDto);
         return ResponseEntity.ok().build();
     }
 
@@ -90,16 +68,7 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<String> delete(@PathVariable Long id) {
-        if (id == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        if (userService.notExists(id)) {
-            return ResponseEntity.notFound().build();
-        }
-
         userService.delete(id);
-
         return ResponseEntity.ok().build();
     }
 }

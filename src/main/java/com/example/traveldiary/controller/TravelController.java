@@ -45,14 +45,14 @@ public class TravelController {
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('travel:write')")
     public ResponseEntity<String> create(@RequestBody TravelDto travelDto, Principal principal) {
-        travelService.save(travelDto, principal.getName(), false);
+        travelService.save(travelDto, principal.getName());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/update")
     @PreAuthorize("hasAuthority('travel:write')")
     public ResponseEntity<String> update(@RequestBody TravelDto travelDto, Principal principal) {
-        travelService.save(travelDto, principal.getName(), true);
+        travelService.update(travelDto, principal.getName());
         return ResponseEntity.ok().build();
     }
 

@@ -1,5 +1,6 @@
 package com.example.traveldiary.security;
 
+import com.example.traveldiary.exception.NotFoundException;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.getByUsername(username);
-        if (user == null) {
+        User user = null;
+        try {
+            user = userService.getByUsername(username);
+        } catch (NotFoundException e) {
             throw new UsernameNotFoundException(String.format("User '%s' doesn't exist", username));
         }
         return UserDetailsImpl.fromUser(user);

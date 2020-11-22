@@ -12,11 +12,11 @@ public interface UserService {
 
     User getById(Long id);
 
-    boolean notExists(Long id);
-
     User getByUsername(String username);
 
-    void save(UserDto user);
+    void save(UserDto userDto);
+
+    void update(UserDto userDto);
 
     void changePassword(String username, PasswordDto passwordDto);
 

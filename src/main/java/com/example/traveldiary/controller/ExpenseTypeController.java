@@ -37,59 +37,28 @@ public class ExpenseTypeController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('expense_type:read')")
     public ResponseEntity<ExpenseType> getById(@PathVariable Long id) {
-        if (id == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
         ExpenseType expenseType = expenseTypeService.getById(id);
-        if (expenseType == null) {
-            return ResponseEntity.notFound().build();
-        }
-
         return ResponseEntity.ok(expenseType);
     }
 
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('expense_type:write')")
     public ResponseEntity<String> create(@RequestBody ExpenseTypeDto expenseTypeDto) {
-        if (expenseTypeDto == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
         expenseTypeService.save(expenseTypeDto);
-
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/update")
     @PreAuthorize("hasAuthority('expense_type:write')")
     public ResponseEntity<String> update(@RequestBody ExpenseTypeDto expenseTypeDto) {
-        if (expenseTypeDto == null || expenseTypeDto.getId() == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        if (expenseTypeService.notExists(expenseTypeDto.getId())) {
-            return ResponseEntity.notFound().build();
-        }
-
-        expenseTypeService.save(expenseTypeDto);
-
+        expenseTypeService.update(expenseTypeDto);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('expense_type:write')")
     public ResponseEntity<String> delete(@PathVariable Long id) {
-        if (id == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        if (expenseTypeService.notExists(id)) {
-            return ResponseEntity.notFound().build();
-        }
-
         expenseTypeService.delete(id);
-
         return ResponseEntity.ok().build();
     }
 }

@@ -4,7 +4,7 @@ import com.example.traveldiary.dto.PasswordDto;
 import com.example.traveldiary.dto.UserDto;
 import com.example.traveldiary.exception.BadPasswordException;
 import com.example.traveldiary.exception.BadRequestException;
-import com.example.traveldiary.exception.UnexpectedException;
+import com.example.traveldiary.exception.NotFoundException;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.repository.UserRepositiry;
 import com.example.traveldiary.service.UserService;
@@ -33,26 +33,39 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getById(Long id) {
-        return userRepositiry.findById(id).orElse(null);
-    }
-
-    @Override
-    public boolean notExists(Long id) {
-        return getById(id) == null;
+        if (id == null) {
+            throw new BadRequestException();
+        }
+        return userRepositiry.findById(id).orElseThrow(NotFoundException::new);
     }
 
     @Override
     public User getByUsername(String username) {
-        return userRepositiry.findByUsername(username).orElse(null);
+        if (username == null) {
+            throw new BadRequestException();
+        }
+        return userRepositiry.findByUsername(username).orElseThrow(NotFoundException::new);
     }
 
     @Override
     public void save(UserDto userDto) {
-        User user = null;
-        if (userDto.getId() != null) {
-            user = getById(userDto.getId());
+        save(userDto, false);
+    }
+
+    @Override
+    public void update(UserDto userDto) {
+        save(userDto, true);
+    }
+
+    private void save(UserDto userDto, boolean isUpdate) {
+        if (userDto == null) {
+            throw new BadRequestException();
         }
-        if (user == null) {
+
+        User user = null;
+        if (isUpdate) {
+            user = getById(userDto.getId());
+        } else {
             user = new User();
             user.setCreated(LocalDateTime.now());
         }
@@ -74,16 +87,14 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = getByUsername(username);
-        if (user == null) {
-            throw new UnexpectedException();
-        }
-
         user.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
+
         userRepositiry.save(user);
     }
 
     @Override
     public void delete(Long id) {
+        getById(id);
         userRepositiry.deleteById(id);
     }
 }
