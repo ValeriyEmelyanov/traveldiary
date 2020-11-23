@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
 
         User user = getByUsername(username);
         if (passwordDto.getOldPassword() == null
-                || !user.getPassword().equals(passwordEncoder.encode(passwordDto.getOldPassword()))) {
+                || !passwordEncoder.matches(passwordDto.getOldPassword(), user.getPassword())) {
             throw new ForbiddenException();
         }
 

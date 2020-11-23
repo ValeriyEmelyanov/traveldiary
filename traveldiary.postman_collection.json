@@ -95,7 +95,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"other 4\"\r\n}"
+					"raw": "{\r\n    \"name\": \"other 5\"\r\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080/api/v1/expensetype/create",
@@ -154,11 +154,26 @@
 		{
 			"name": "expensetype/update",
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "super",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "super",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": \"2\",\r\n    \"name\": \"Food Plus\"\r\n}",
+					"raw": "{\r\n    \"id\": \"21\",\r\n    \"name\": \"updated2\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -203,7 +218,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/expensetype/delete/9",
+					"raw": "http://localhost:8080/api/v1/expensetype/delete/11",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -214,7 +229,7 @@
 						"v1",
 						"expensetype",
 						"delete",
-						"9"
+						"11"
 					]
 				}
 			},
@@ -223,6 +238,21 @@
 		{
 			"name": "travel/1",
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "super",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "super",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -314,6 +344,21 @@
 		{
 			"name": "travel/update",
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [
 					{
@@ -324,7 +369,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": 4,\r\n    \"status\": \"DONE\",\r\n    \"title\": \"Anapa\",\r\n    \"startDate\": \"2020-12-01\",\r\n    \"endDate\": \"2020-12-02\",\r\n    \"description\": \"One day. Have a looke at the autimn sea\",\r\n    \"planTotalSum\": \"4500\",\r\n    \"factTotalSum\": \"4200\",\r\n    \"rating\": \"NONE\",\r\n    \"favorite\": \"false\",\r\n    \"expenses\": [\r\n        {\r\n            \"id\": \"5\",\r\n            \"recNo\": \"1\",\r\n            \"expenseTypeId\": \"1\",\r\n            \"comment\": \"petrol, by my car\",\r\n            \"planSum\": \"2000\",\r\n            \"factSum\": \"1900\"\r\n        },\r\n        {\r\n            \"id\": \"6\",\r\n            \"recNo\": \"2\",\r\n            \"expenseTypeId\": \"2\",\r\n            \"comment\": \"hotel 'Black sea'\",\r\n            \"planSum\": \"1000\",\r\n            \"factSum\": \"1000\"\r\n        },\r\n        {\r\n            \"id\": \"7\",\r\n            \"recNo\": \"3\",\r\n            \"expenseTypeId\": \"3\",\r\n            \"comment\": \"cafe\",\r\n            \"planSum\": \"1500\",\r\n            \"factSum\": \"1400\"\r\n        }\r\n    ]\r\n}",
+					"raw": "{\r\n    \"id\": 10,\r\n    \"status\": \"DONE\",\r\n    \"title\": \"Anapa\",\r\n    \"startDate\": \"2021-01-01\",\r\n    \"endDate\": \"2021-01-02\",\r\n    \"description\": \"New year!!! One day. Have a looke at the autimn sea\",\r\n    \"planTotalSum\": \"4500\",\r\n    \"factTotalSum\": \"4200\",\r\n    \"rating\": \"NONE\",\r\n    \"favorite\": \"false\",\r\n    \"expenses\": [\r\n        {\r\n            \"id\": \"5\",\r\n            \"recNo\": \"1\",\r\n            \"expenseTypeId\": \"1\",\r\n            \"comment\": \"petrol, by my car\",\r\n            \"planSum\": \"2000\",\r\n            \"factSum\": \"1900\"\r\n        },\r\n        {\r\n            \"id\": \"6\",\r\n            \"recNo\": \"2\",\r\n            \"expenseTypeId\": \"2\",\r\n            \"comment\": \"hotel 'Black sea'\",\r\n            \"planSum\": \"1000\",\r\n            \"factSum\": \"1000\"\r\n        },\r\n        {\r\n            \"id\": \"7\",\r\n            \"recNo\": \"3\",\r\n            \"expenseTypeId\": \"3\",\r\n            \"comment\": \"cafe\",\r\n            \"planSum\": \"1500\",\r\n            \"factSum\": \"1400\"\r\n        }\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -475,7 +520,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/user/delete/4",
+					"raw": "http://localhost:8080/api/v1/user/delete/7",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -486,7 +531,7 @@
 						"v1",
 						"user",
 						"delete",
-						"4"
+						"7"
 					]
 				}
 			},
@@ -514,7 +559,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"password\": \"user2\",\r\n    \"matchingpassword\": \"user2\"\r\n}",
+					"raw": "{\r\n    \"oldPassword\": \"user2\",\r\n    \"password\": \"user\",\r\n    \"matchingPassword\": \"user\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -533,6 +578,89 @@
 						"v1",
 						"user",
 						"password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user/update",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 7,\r\n    \"username\": \"user3a\",\r\n    \"password\": \"user3a\",\r\n    \"enabled\": true,\r\n    \"roles\": [\r\n        \"USER\"\r\n    ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/user/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user/8",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/user/8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"8"
 					]
 				}
 			},
