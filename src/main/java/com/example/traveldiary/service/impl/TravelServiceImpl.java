@@ -2,11 +2,16 @@ package com.example.traveldiary.service.impl;
 
 import com.example.traveldiary.dto.ExpenseRecordDto;
 import com.example.traveldiary.dto.TravelDto;
+import com.example.traveldiary.exception.BadRequestException;
+import com.example.traveldiary.exception.ForbiddenException;
+import com.example.traveldiary.exception.NotFoundException;
 import com.example.traveldiary.model.ExpenseRecord;
 import com.example.traveldiary.model.Travel;
+import com.example.traveldiary.model.User;
 import com.example.traveldiary.repository.TravelRepository;
 import com.example.traveldiary.service.ExpenseTypeService;
 import com.example.traveldiary.service.TravelService;
+import com.example.traveldiary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +22,13 @@ import java.util.List;
 public class TravelServiceImpl implements TravelService {
     private final TravelRepository travelRepository;
     private final ExpenseTypeService expenseTypeService;
+    private final UserService userService;
 
     @Autowired
-    public TravelServiceImpl(TravelRepository travelRepository, ExpenseTypeService expenseTypeService) {
+    public TravelServiceImpl(TravelRepository travelRepository, ExpenseTypeService expenseTypeService, UserService userService) {
         this.travelRepository = travelRepository;
         this.expenseTypeService = expenseTypeService;
+        this.userService = userService;
     }
 
     @Override
@@ -31,18 +38,39 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public Travel getById(Long id) {
-        return travelRepository.findById(id).orElse(null);
+        if (id == null) {
+            throw new BadRequestException();
+        }
+        return travelRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     @Override
-    public boolean notExists(Long id) {
-        return getById(id) == null;
+    public void save(TravelDto travelDto, String username) {
+        save(travelDto, username, false);
     }
 
     @Override
-    public void save(TravelDto travelDto) {
-        Travel travel = new Travel();
-        travel.setId(travelDto.getId());
+    public void update(TravelDto travelDto, String username) {
+        save(travelDto, username, true);
+    }
+
+    private void save(TravelDto travelDto, String username, boolean isUpdate) {
+        if (travelDto == null) {
+            throw new BadRequestException();
+        }
+
+        User user = userService.getByUsername(username);
+
+        Travel travel = null;
+        if (isUpdate) {
+            travel = getById(travelDto.getId());
+            if (!user.equals(travel.getUser())) {
+                throw new ForbiddenException();
+            }
+        } else {
+            travel = new Travel();
+            travel.setUser(user);
+        }
         travel.setStatus(travelDto.getStatus());
         travel.setTitle(travelDto.getTitle());
         travel.setStartDate(travelDto.getStartDate());
@@ -69,7 +97,12 @@ public class TravelServiceImpl implements TravelService {
                     record.setTravel(travel);
                     expenses.add(record);
                 }
-                travel.setExpenses(expenses);
+                if (isUpdate) {
+                    travel.getExpenses().clear();
+                    travel.getExpenses().addAll(expenses);
+                } else {
+                    travel.setExpenses(expenses);
+                }
             }
         }
 
@@ -77,7 +110,13 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long id, String username) {
+        Travel travel = getById(id);
+        User user = userService.getByUsername(username);
+        if (!user.equals(travel.getUser())) {
+            throw new ForbiddenException();
+        }
+
         travelRepository.deleteById(id);
     }
 }

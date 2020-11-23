@@ -10,9 +10,9 @@ public interface ExpenseTypeService {
 
     ExpenseType getById(Long id);
 
-    boolean notExists(Long id);
-
     void save(ExpenseTypeDto expenseTypeDto);
+
+    void update(ExpenseTypeDto expenseTypeDto);
 
     void delete(Long id);
 }
