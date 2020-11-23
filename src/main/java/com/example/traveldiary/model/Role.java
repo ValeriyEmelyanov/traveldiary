@@ -9,18 +9,18 @@ public enum Role {
     ADMIN(Set.of(
             Permission.USER_READ,
             Permission.USER_WRITE,
-            Permission.USER_PASSWORD
+            Permission.USER_PROFILE
     )),
     SENIOR(Set.of(
             Permission.EXPENSE_TYPE_READ,
             Permission.EXPENSE_TYPE_WRITE,
-            Permission.USER_PASSWORD
+            Permission.USER_PROFILE
     )),
     USER(Set.of(
             Permission.EXPENSE_TYPE_READ,
             Permission.TRAVEL_READ,
             Permission.TRAVEL_WRITE,
-            Permission.USER_PASSWORD
+            Permission.USER_PROFILE
     ));
 
     private final Set<Permission> permissions;

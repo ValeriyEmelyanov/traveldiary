@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/play/**").anonymous()
+                .antMatchers("/api/v1/play/**").anonymous()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();

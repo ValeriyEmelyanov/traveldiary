@@ -59,7 +59,7 @@ public class UserController {
     }
 
     @PatchMapping("/password")
-    @PreAuthorize("hasAuthority('user:password')")
+    @PreAuthorize("hasAuthority('user:profile')")
     public ResponseEntity<String> shangePassword(@RequestBody PasswordDto passwordDto, Principal principal) {
         userService.changePassword(principal.getName(), passwordDto);
         return ResponseEntity.ok().build();

@@ -4,6 +4,7 @@ import com.example.traveldiary.dto.PasswordDto;
 import com.example.traveldiary.dto.UserDto;
 import com.example.traveldiary.exception.BadPasswordException;
 import com.example.traveldiary.exception.BadRequestException;
+import com.example.traveldiary.exception.ForbiddenException;
 import com.example.traveldiary.exception.NotFoundException;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.repository.UserRepositiry;
@@ -82,11 +83,16 @@ public class UserServiceImpl implements UserService {
         if (passwordDto == null || passwordDto.getPassword() == null) {
             throw new BadRequestException();
         }
-        if (!passwordDto.getPassword().equals(passwordDto.getMatchingpassword())) {
+        if (!passwordDto.getPassword().equals(passwordDto.getMatchingPassword())) {
             throw new BadPasswordException("Password not matching");
         }
 
         User user = getByUsername(username);
+        if (passwordDto.getOldPassword() == null
+                || !user.getPassword().equals(passwordEncoder.encode(passwordDto.getOldPassword()))) {
+            throw new ForbiddenException();
+        }
+
         user.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
 
         userRepositiry.save(user);

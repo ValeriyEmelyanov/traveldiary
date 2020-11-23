@@ -1,8 +1,17 @@
 package com.example.traveldiary.dto;
 
 public class PasswordDto {
+    private String oldPassword;
     private String password;
-    private String matchingpassword;
+    private String matchingPassword;
+
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+    }
 
     public String getPassword() {
         return password;
@@ -12,12 +21,12 @@ public class PasswordDto {
         this.password = password;
     }
 
-    public String getMatchingpassword() {
-        return matchingpassword;
+    public String getMatchingPassword() {
+        return matchingPassword;
     }
 
-    public void setMatchingpassword(String matchingpassword) {
-        this.matchingpassword = matchingpassword;
+    public void setMatchingPassword(String matchingPassword) {
+        this.matchingPassword = matchingPassword;
     }
 
 }
