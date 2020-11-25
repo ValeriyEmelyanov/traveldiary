@@ -12,7 +12,7 @@ public interface ExpenseTypeService {
 
     void save(ExpenseTypeDto expenseTypeDto);
 
-    void update(ExpenseTypeDto expenseTypeDto);
+    void update(Long id, ExpenseTypeDto expenseTypeDto);
 
     void delete(Long id);
 }

@@ -20,7 +20,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/travel")
+@RequestMapping("/api/v1/travels")
 public class TravelController {
     private final TravelService travelService;
 
@@ -29,7 +29,7 @@ public class TravelController {
         this.travelService = travelService;
     }
 
-    @GetMapping("/list")
+    @GetMapping
     @PreAuthorize("hasAuthority('travel:read')")
     public ResponseEntity<List<Travel>> getList() {
         return ResponseEntity.ok(travelService.getList());
@@ -42,21 +42,23 @@ public class TravelController {
         return ResponseEntity.ok(travel);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     @PreAuthorize("hasAuthority('travel:write')")
     public ResponseEntity<String> create(@RequestBody TravelDto travelDto, Principal principal) {
         travelService.save(travelDto, principal.getName());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("/update")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('travel:write')")
-    public ResponseEntity<String> update(@RequestBody TravelDto travelDto, Principal principal) {
-        travelService.update(travelDto, principal.getName());
+    public ResponseEntity<String> update(@PathVariable Long id,
+                                         @RequestBody TravelDto travelDto,
+                                         Principal principal) {
+        travelService.update(id, travelDto, principal.getName());
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('travel:write')")
     public ResponseEntity<String> delete(@PathVariable Long id, Principal principal) {
         travelService.delete(id, principal.getName());

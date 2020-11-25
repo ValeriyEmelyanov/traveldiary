@@ -12,7 +12,7 @@ public interface TravelService {
 
     void save(TravelDto travelDto, String username);
 
-    void update(TravelDto travelDto, String username);
+    void update(Long id, TravelDto travelDto, String username);
 
     void delete(Long id, String username);
 }

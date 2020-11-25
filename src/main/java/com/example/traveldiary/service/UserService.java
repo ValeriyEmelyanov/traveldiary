@@ -16,7 +16,7 @@ public interface UserService {
 
     void save(UserDto userDto);
 
-    void update(UserDto userDto);
+    void update(Long id, UserDto userDto);
 
     void changePassword(String username, PasswordDto passwordDto);
 

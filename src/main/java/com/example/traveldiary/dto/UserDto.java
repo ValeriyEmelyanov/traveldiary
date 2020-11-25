@@ -5,19 +5,10 @@ import com.example.traveldiary.model.Role;
 import java.util.Set;
 
 public class UserDto {
-    private Long id;
     private String username;
     private String password;
     private Boolean enabled;
     private Set<Role> roles;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/expensetype")
+@RequestMapping("/api/v1/expensetypes")
 public class ExpenseTypeController {
     private final ExpenseTypeService expenseTypeService;
 
@@ -28,7 +28,7 @@ public class ExpenseTypeController {
         this.expenseTypeService = expenseTypeService;
     }
 
-    @GetMapping("/list")
+    @GetMapping
     @PreAuthorize("hasAuthority('expense_type:read')")
     public ResponseEntity<List<ExpenseType>> getList() {
         return ResponseEntity.ok(expenseTypeService.getList());
@@ -41,21 +41,22 @@ public class ExpenseTypeController {
         return ResponseEntity.ok(expenseType);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     @PreAuthorize("hasAuthority('expense_type:write')")
     public ResponseEntity<String> create(@RequestBody ExpenseTypeDto expenseTypeDto) {
         expenseTypeService.save(expenseTypeDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("/update")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('expense_type:write')")
-    public ResponseEntity<String> update(@RequestBody ExpenseTypeDto expenseTypeDto) {
-        expenseTypeService.update(expenseTypeDto);
+    public ResponseEntity<String> update(@PathVariable Long id,
+                                         @RequestBody ExpenseTypeDto expenseTypeDto) {
+        expenseTypeService.update(id, expenseTypeDto);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('expense_type:write')")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         expenseTypeService.delete(id);

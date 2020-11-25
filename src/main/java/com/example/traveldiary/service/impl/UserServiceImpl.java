@@ -50,22 +50,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(UserDto userDto) {
-        save(userDto, false);
+        save(null, userDto, false);
     }
 
     @Override
-    public void update(UserDto userDto) {
-        save(userDto, true);
+    public void update(Long id, UserDto userDto) {
+        if (id == null) {
+            throw new BadRequestException();
+        }
+        save(id, userDto, true);
     }
 
-    private void save(UserDto userDto, boolean isUpdate) {
+    private void save(Long id, UserDto userDto, boolean isUpdate) {
         if (userDto == null) {
             throw new BadRequestException();
         }
 
         User user = null;
         if (isUpdate) {
-            user = getById(userDto.getId());
+            user = getById(id);
         } else {
             user = new User();
             user.setCreated(LocalDateTime.now());

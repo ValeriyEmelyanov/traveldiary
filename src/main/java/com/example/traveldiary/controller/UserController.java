@@ -22,7 +22,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 public class UserController {
     private final UserService userService;
 
@@ -31,7 +31,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/list")
+    @GetMapping
     @PreAuthorize("hasAuthority('user:read')")
     public ResponseEntity<List<User>> getList() {
         return ResponseEntity.ok(userService.getList());
@@ -44,17 +44,18 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<String> create(@RequestBody UserDto userDto) {
         userService.save(userDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("/update")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('user:write')")
-    public ResponseEntity<String> update(@RequestBody UserDto userDto) {
-        userService.update(userDto);
+    public ResponseEntity<String> update(@PathVariable Long id,
+                                         @RequestBody UserDto userDto) {
+        userService.update(id, userDto);
         return ResponseEntity.ok().build();
     }
 
@@ -65,7 +66,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         userService.delete(id);

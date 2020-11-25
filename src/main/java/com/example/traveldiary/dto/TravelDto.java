@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class TravelDto {
-    private Long id;
     private TravelStatus status;
     private String title;
     private LocalDate startDate;
@@ -18,14 +17,6 @@ public class TravelDto {
     private Rating rating;
     private Boolean favorite;
     private List<ExpenseRecordDto> expenses;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public TravelStatus getStatus() {
         return status;

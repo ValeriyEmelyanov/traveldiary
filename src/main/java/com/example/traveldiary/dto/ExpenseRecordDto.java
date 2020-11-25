@@ -1,20 +1,11 @@
 package com.example.traveldiary.dto;
 
 public class ExpenseRecordDto {
-    private Long id;
     private Integer recNo;
     private Long expenseTypeId;
     private String comment;
     private Integer planSum;
     private Integer factSum;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Integer getRecNo() {
         return recNo;

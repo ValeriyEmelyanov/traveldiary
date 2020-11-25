@@ -35,22 +35,25 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 
     @Override
     public void save(ExpenseTypeDto expenseTypeDto) {
-        save(expenseTypeDto, false);
+        save(null, expenseTypeDto, false);
     }
 
     @Override
-    public void update(ExpenseTypeDto expenseTypeDto) {
-        save(expenseTypeDto, true);
+    public void update(Long id, ExpenseTypeDto expenseTypeDto) {
+        if (id == null) {
+            throw new BadRequestException();
+        }
+        save(id, expenseTypeDto, true);
     }
 
-    private void save(ExpenseTypeDto expenseTypeDto, boolean isUpdate) {
+    private void save(Long id, ExpenseTypeDto expenseTypeDto, boolean isUpdate) {
         if (expenseTypeDto == null) {
             throw new BadRequestException();
         }
 
         ExpenseType expenseType;
         if (isUpdate) {
-            expenseType = getById(expenseTypeDto.getId());
+            expenseType = getById(id);
         } else {
             expenseType = new ExpenseType();
         }

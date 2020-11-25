@@ -46,15 +46,18 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public void save(TravelDto travelDto, String username) {
-        save(travelDto, username, false);
+        save(null, travelDto, username, false);
     }
 
     @Override
-    public void update(TravelDto travelDto, String username) {
-        save(travelDto, username, true);
+    public void update(Long id, TravelDto travelDto, String username) {
+        if (id == null) {
+            throw new BadRequestException();
+        }
+        save(id, travelDto, username, true);
     }
 
-    private void save(TravelDto travelDto, String username, boolean isUpdate) {
+    private void save(Long id, TravelDto travelDto, String username, boolean isUpdate) {
         if (travelDto == null) {
             throw new BadRequestException();
         }
@@ -63,7 +66,7 @@ public class TravelServiceImpl implements TravelService {
 
         Travel travel = null;
         if (isUpdate) {
-            travel = getById(travelDto.getId());
+            travel = getById(id);
             if (!user.equals(travel.getUser())) {
                 throw new ForbiddenException();
             }
@@ -88,7 +91,6 @@ public class TravelServiceImpl implements TravelService {
                 List<ExpenseRecord> expenses = new ArrayList<>(expensesSize);
                 for (ExpenseRecordDto recordDto : expensesDto) {
                     ExpenseRecord record = new ExpenseRecord();
-                    record.setId(recordDto.getId());
                     record.setRecNo(recordDto.getRecNo());
                     record.setExpenseType(expenseTypeService.getById(recordDto.getExpenseTypeId()));
                     record.setComment(recordDto.getComment());
