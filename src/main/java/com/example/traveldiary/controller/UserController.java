@@ -3,11 +3,13 @@ package com.example.traveldiary.controller;
 import com.example.traveldiary.dto.PasswordDto;
 import com.example.traveldiary.dto.UserDto;
 import com.example.traveldiary.model.User;
+import com.example.traveldiary.security.UserDetailsImpl;
 import com.example.traveldiary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -59,10 +60,19 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/password")
-    @PreAuthorize("hasAuthority('user:profile')")
-    public ResponseEntity<String> shangePassword(@RequestBody PasswordDto passwordDto, Principal principal) {
-        userService.changePassword(principal.getName(), passwordDto);
+    @PatchMapping("/{id}/password")
+    @PreAuthorize("hasAnyAuthority('user:write', 'user:profile')")
+    public ResponseEntity<String> shangePassword(
+            @PathVariable Long id,
+            @RequestBody PasswordDto passwordDto,
+            Authentication authentication) {
+
+        userService.changePassword(
+                ((UserDetailsImpl) authentication.getPrincipal()).getUsername(),
+                authentication.getAuthorities(),
+                id,
+                passwordDto);
+
         return ResponseEntity.ok().build();
     }
 

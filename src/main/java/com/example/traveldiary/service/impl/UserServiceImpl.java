@@ -6,14 +6,17 @@ import com.example.traveldiary.exception.BadPasswordException;
 import com.example.traveldiary.exception.BadRequestException;
 import com.example.traveldiary.exception.ForbiddenException;
 import com.example.traveldiary.exception.NotFoundException;
+import com.example.traveldiary.model.Permission;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.repository.UserRepositiry;
 import com.example.traveldiary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -82,18 +85,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changePassword(String username, PasswordDto passwordDto) {
+    public void changePassword(
+            String username,
+            Collection<? extends GrantedAuthority> authorities,
+            Long id,
+            PasswordDto passwordDto) {
+
         if (passwordDto == null || passwordDto.getPassword() == null) {
             throw new BadRequestException();
         }
-        if (!passwordDto.getPassword().equals(passwordDto.getMatchingPassword())) {
-            throw new BadPasswordException("Password not matching");
-        }
 
-        User user = getByUsername(username);
-        if (passwordDto.getOldPassword() == null
+        User currentUser = getByUsername(username);
+        User user = getById(id);
+        if (!currentUser.equals(user)) {
+            boolean hasPermissionUserWrite = authorities.stream()
+                    .anyMatch(grantedAuthority
+                            -> grantedAuthority.getAuthority().equals(Permission.USER_WRITE.getPermission()));
+            if (!hasPermissionUserWrite) {
+                throw new ForbiddenException();
+            }
+        } else if (passwordDto.getOldPassword() == null
                 || !passwordEncoder.matches(passwordDto.getOldPassword(), user.getPassword())) {
             throw new ForbiddenException();
+        }
+
+        if (!passwordDto.getPassword().equals(passwordDto.getMatchingPassword())) {
+            throw new BadPasswordException("Password not matching");
         }
 
         user.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
