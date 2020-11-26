@@ -3,13 +3,13 @@ package com.example.traveldiary.controller;
 import com.example.traveldiary.dto.PasswordDto;
 import com.example.traveldiary.dto.UserDto;
 import com.example.traveldiary.model.User;
-import com.example.traveldiary.security.UserDetailsImpl;
 import com.example.traveldiary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -62,13 +62,13 @@ public class UserController {
 
     @PatchMapping("/{id}/password")
     @PreAuthorize("hasAnyAuthority('user:write', 'user:profile')")
-    public ResponseEntity<String> shangePassword(
+    public ResponseEntity<String> сhangePassword(
             @PathVariable Long id,
             @RequestBody PasswordDto passwordDto,
             Authentication authentication) {
 
         userService.changePassword(
-                ((UserDetailsImpl) authentication.getPrincipal()).getUsername(),
+                ((UserDetails) authentication.getPrincipal()).getUsername(),
                 authentication.getAuthorities(),
                 id,
                 passwordDto);
