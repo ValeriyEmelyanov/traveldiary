@@ -2,10 +2,14 @@ package com.example.traveldiary.dto;
 
 import com.example.traveldiary.model.Rating;
 import com.example.traveldiary.model.TravelStatus;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Setter
+@Getter
 public class TravelDto {
     private TravelStatus status;
     private String title;
@@ -17,84 +21,4 @@ public class TravelDto {
     private Rating rating;
     private Boolean favorite;
     private List<ExpenseRecordDto> expenses;
-
-    public TravelStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TravelStatus status) {
-        this.status = status;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getPlanTotalSum() {
-        return planTotalSum;
-    }
-
-    public void setPlanTotalSum(Integer planTotalSum) {
-        this.planTotalSum = planTotalSum;
-    }
-
-    public Integer getFactTotalSum() {
-        return factTotalSum;
-    }
-
-    public void setFactTotalSum(Integer factTotalSum) {
-        this.factTotalSum = factTotalSum;
-    }
-
-    public Rating getRating() {
-        return rating;
-    }
-
-    public void setRating(Rating rating) {
-        this.rating = rating;
-    }
-
-    public Boolean getFavorite() {
-        return favorite;
-    }
-
-    public void setFavorite(Boolean favorite) {
-        this.favorite = favorite;
-    }
-
-    public List<ExpenseRecordDto> getExpenses() {
-        return expenses;
-    }
-
-    public void setExpenses(List<ExpenseRecordDto> expenses) {
-        this.expenses = expenses;
-    }
 }

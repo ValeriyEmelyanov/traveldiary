@@ -1,13 +1,12 @@
 package com.example.traveldiary.model;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public enum TravelStatus {
     PLAN("Plan"), DONE("Done"), CANCELED("Canceled");
 
     private final String name;
-
-    TravelStatus(String name) {
-        this.name = name;
-    }
 
     @Override
     public String toString() {

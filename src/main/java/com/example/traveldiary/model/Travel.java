@@ -3,6 +3,9 @@ package com.example.traveldiary.model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,6 +22,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "travel")
+@NoArgsConstructor
+@Setter
+@Getter
 public class Travel extends AbstractEntity {
 
     @Column(name = "status")
@@ -59,98 +65,4 @@ public class Travel extends AbstractEntity {
     @OneToMany(mappedBy = "travel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ExpenseRecord> expenses;
 
-    public Travel() {
-    }
-
-    public Travel(Long id) {
-        super(id);
-    }
-
-    public TravelStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TravelStatus status) {
-        this.status = status;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate date) {
-        this.startDate = date;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getPlanTotalSum() {
-        return planTotalSum;
-    }
-
-    public void setPlanTotalSum(Integer planTotalSum) {
-        this.planTotalSum = planTotalSum;
-    }
-
-    public Integer getFactTotalSum() {
-        return factTotalSum;
-    }
-
-    public void setFactTotalSum(Integer factTotalSum) {
-        this.factTotalSum = factTotalSum;
-    }
-
-    public Rating getRating() {
-        return rating;
-    }
-
-    public void setRating(Rating rating) {
-        this.rating = rating;
-    }
-
-    public Boolean getFavorite() {
-        return favorite;
-    }
-
-    public void setFavorite(Boolean favorite) {
-        this.favorite = favorite;
-    }
-
-    public List<ExpenseRecord> getExpenses() {
-        return expenses;
-    }
-
-    public void setExpenses(List<ExpenseRecord> expenses) {
-        this.expenses = expenses;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

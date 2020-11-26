@@ -1,6 +1,9 @@
 package com.example.traveldiary.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -19,6 +22,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@Setter
+@Getter
 public class User extends AbstractEntity {
 
     @Column(name = "username")
@@ -44,54 +50,4 @@ public class User extends AbstractEntity {
     @JsonIgnore
     private List<Travel> travels;
 
-    public User() {
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public LocalDateTime getCreated() {
-        return created;
-    }
-
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public List<Travel> getTravels() {
-        return travels;
-    }
-
-    public void setTravels(List<Travel> travels) {
-        this.travels = travels;
-    }
 }
