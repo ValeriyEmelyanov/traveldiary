@@ -62,7 +62,7 @@ public class UserController {
 
     @PatchMapping("/{id}/password")
     @PreAuthorize("hasAnyAuthority('user:write', 'user:profile')")
-    public ResponseEntity<String> сhangePassword(
+    public ResponseEntity<String> changePassword(
             @PathVariable Long id,
             @RequestBody PasswordDto passwordDto,
             Authentication authentication) {
