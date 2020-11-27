@@ -1,10 +1,10 @@
 package com.example.traveldiary.service.impl;
 
-import com.example.traveldiary.dto.ExpenseRecordDto;
 import com.example.traveldiary.dto.TravelDto;
 import com.example.traveldiary.exception.BadRequestException;
 import com.example.traveldiary.exception.ForbiddenException;
 import com.example.traveldiary.exception.NotFoundException;
+import com.example.traveldiary.mapper.TravelMapper;
 import com.example.traveldiary.model.ExpenseRecord;
 import com.example.traveldiary.model.Travel;
 import com.example.traveldiary.model.User;
@@ -15,7 +15,6 @@ import com.example.traveldiary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,12 +22,17 @@ public class TravelServiceImpl implements TravelService {
     private final TravelRepository travelRepository;
     private final ExpenseTypeService expenseTypeService;
     private final UserService userService;
+    private final TravelMapper travelMapper;
 
     @Autowired
-    public TravelServiceImpl(TravelRepository travelRepository, ExpenseTypeService expenseTypeService, UserService userService) {
+    public TravelServiceImpl(TravelRepository travelRepository,
+                             ExpenseTypeService expenseTypeService,
+                             UserService userService,
+                             TravelMapper travelMapper) {
         this.travelRepository = travelRepository;
         this.expenseTypeService = expenseTypeService;
         this.userService = userService;
+        this.travelMapper = travelMapper;
     }
 
     @Override
@@ -70,42 +74,14 @@ public class TravelServiceImpl implements TravelService {
             if (!user.equals(travel.getUser())) {
                 throw new ForbiddenException();
             }
+            travelMapper.updateTravel(travelDto, travel);
         } else {
-            travel = new Travel();
+            travel = travelMapper.toTravel(travelDto);
             travel.setUser(user);
         }
-        travel.setStatus(travelDto.getStatus());
-        travel.setTitle(travelDto.getTitle());
-        travel.setStartDate(travelDto.getStartDate());
-        travel.setEndDate(travelDto.getEndDate());
-        travel.setDescription(travelDto.getDescription());
-        travel.setPlanTotalSum(travelDto.getPlanTotalSum());
-        travel.setFactTotalSum(travelDto.getFactTotalSum());
-        travel.setRating(travelDto.getRating());
-        travel.setFavorite(travelDto.getFavorite());
 
-        List<ExpenseRecordDto> expensesDto = travelDto.getExpenses();
-        if (expensesDto != null) {
-            int expensesSize = expensesDto.size();
-            if (expensesSize > 0) {
-                List<ExpenseRecord> expenses = new ArrayList<>(expensesSize);
-                for (ExpenseRecordDto recordDto : expensesDto) {
-                    ExpenseRecord record = new ExpenseRecord();
-                    record.setRecNo(recordDto.getRecNo());
-                    record.setExpenseType(expenseTypeService.getById(recordDto.getExpenseTypeId()));
-                    record.setComment(recordDto.getComment());
-                    record.setPlanSum(recordDto.getPlanSum());
-                    record.setFactSum(recordDto.getFactSum());
-                    record.setTravel(travel);
-                    expenses.add(record);
-                }
-                if (isUpdate) {
-                    travel.getExpenses().clear();
-                    travel.getExpenses().addAll(expenses);
-                } else {
-                    travel.setExpenses(expenses);
-                }
-            }
+        for (ExpenseRecord expenseRecord : travel.getExpenses()) {
+            expenseRecord.setTravel(travel);
         }
 
         travelRepository.save(travel);
