@@ -1,5 +1,6 @@
 package com.example.traveldiary.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -18,6 +19,10 @@ import javax.persistence.MappedSuperclass;
 @Getter
 public class AbstractEntity {
 
+    @Schema(
+            description = "Unique identifier",
+            example = "1",
+            required = true)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;

@@ -4,6 +4,15 @@ import com.example.traveldiary.dto.PasswordDto;
 import com.example.traveldiary.dto.UserDto;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +31,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Tag(name = "user service", description = "the user API")
+@SecurityRequirement(name = "BasicAuth")
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
@@ -32,38 +43,99 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Operation(summary = "get all users", description = "")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = User.class)))),
+            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
+            @ApiResponse(responseCode = "403", description = "forbidden", content = @Content)})
     @GetMapping
     @PreAuthorize("hasAuthority('user:read')")
     public ResponseEntity<List<User>> getList() {
         return ResponseEntity.ok(userService.getList());
     }
 
+    @Operation(summary = "get a user type by id", description = "")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
+            @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
+            @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('user:read')")
-    public ResponseEntity<User> getById(@PathVariable Long id) {
+    public ResponseEntity<User> getById(
+            @Parameter(
+                    name = "id",
+                    description = "id  of the user to be obtained. Cannot be null",
+                    required = true)
+            @PathVariable Long id) {
         User user = userService.getById(id);
         return ResponseEntity.ok(user);
     }
 
+    @Operation(summary = "add a new user", description = "")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "user created", content = @Content),
+            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
+            @ApiResponse(responseCode = "403", description = "forbidden", content = @Content)})
     @PostMapping
     @PreAuthorize("hasAuthority('user:write')")
-    public ResponseEntity<String> create(@RequestBody UserDto userDto) {
+    public ResponseEntity<String> create(
+            @Parameter(
+                    description = "the user to add. Cannot be null",
+                    required = true,
+                    schema = @Schema(implementation = UserDto.class))
+            @RequestBody UserDto userDto) {
         userService.save(userDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @Operation(summary = "update an existing user", description = "")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
+            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
+            @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
+            @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('user:write')")
-    public ResponseEntity<String> update(@PathVariable Long id,
-                                         @RequestBody UserDto userDto) {
+    public ResponseEntity<String> update(
+            @Parameter(
+                    name = "id",
+                    description = "id of the user to be updated. Cannot be null.",
+                    required = true)
+            @PathVariable Long id,
+            @Parameter(
+                    description = "the user to be updated. Cannot be null.",
+                    required = true,
+                    schema = @Schema(implementation = UserDto.class))
+            @RequestBody UserDto userDto) {
         userService.update(id, userDto);
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "change a user password", description = "")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
+            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
+            @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
+            @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @PatchMapping("/{id}/password")
     @PreAuthorize("hasAnyAuthority('user:write', 'user:profile')")
     public ResponseEntity<String> changePassword(
+            @Parameter(
+                    name = "id",
+                    description = "id of the user to be changed password. Cannot be null.",
+                    required = true)
             @PathVariable Long id,
+            @Parameter(
+                    description = "password data. Cannot be null.",
+                    required = true,
+                    schema = @Schema(implementation = PasswordDto.class))
             @RequestBody PasswordDto passwordDto,
             Authentication authentication) {
 
@@ -76,9 +148,20 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "deletes a user", description = "")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
+            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
+            @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
+            @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('user:write')")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
+    public ResponseEntity<String> delete(
+            @Parameter(
+                    name = "id",
+                    description = "id of the user to be deleted. Cannot be null",
+                    required = true)
+            @PathVariable Long id) {
         userService.delete(id);
         return ResponseEntity.ok().build();
     }

@@ -1,6 +1,6 @@
 package com.example.traveldiary.model;
 
-import lombok.Data;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +16,10 @@ import javax.persistence.Table;
 @Getter
 public class ExpenseType extends AbstractEntity {
 
+    @Schema(
+            description = "name of the expense type",
+            example = "Transort",
+            required = true)
     @Column(name = "name")
     private String name;
 

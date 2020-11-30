@@ -9,7 +9,6 @@ import com.example.traveldiary.model.ExpenseRecord;
 import com.example.traveldiary.model.Travel;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.repository.TravelRepository;
-import com.example.traveldiary.service.ExpenseTypeService;
 import com.example.traveldiary.service.TravelService;
 import com.example.traveldiary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +19,14 @@ import java.util.List;
 @Service
 public class TravelServiceImpl implements TravelService {
     private final TravelRepository travelRepository;
-    private final ExpenseTypeService expenseTypeService;
     private final UserService userService;
     private final TravelMapper travelMapper;
 
     @Autowired
     public TravelServiceImpl(TravelRepository travelRepository,
-                             ExpenseTypeService expenseTypeService,
                              UserService userService,
                              TravelMapper travelMapper) {
         this.travelRepository = travelRepository;
-        this.expenseTypeService = expenseTypeService;
         this.userService = userService;
         this.travelMapper = travelMapper;
     }
