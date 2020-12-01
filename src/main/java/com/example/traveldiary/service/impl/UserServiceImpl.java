@@ -6,6 +6,7 @@ import com.example.traveldiary.exception.BadPasswordException;
 import com.example.traveldiary.exception.BadRequestException;
 import com.example.traveldiary.exception.ForbiddenException;
 import com.example.traveldiary.exception.NotFoundException;
+import com.example.traveldiary.mapper.UserMapper;
 import com.example.traveldiary.model.Permission;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.repository.UserRepositiry;
@@ -23,11 +24,15 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepositiry userRepositiry;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     @Autowired
-    public UserServiceImpl(UserRepositiry userRepositiry, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepositiry userRepositiry,
+                           PasswordEncoder passwordEncoder,
+                           UserMapper userMapper) {
         this.userRepositiry = userRepositiry;
         this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -72,14 +77,13 @@ public class UserServiceImpl implements UserService {
         User user = null;
         if (isUpdate) {
             user = getById(id);
+            userMapper.updateUser(userDto, user);
         } else {
-            user = new User();
+            user = userMapper.toUser(userDto);
             user.setCreated(LocalDateTime.now());
         }
-        user.setUsername(userDto.getUsername());
+
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setEnabled(userDto.getEnabled());
-        user.setRoles(userDto.getRoles());
 
         userRepositiry.save(user);
     }

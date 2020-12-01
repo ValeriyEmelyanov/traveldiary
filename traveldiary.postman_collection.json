@@ -544,19 +544,19 @@
 			"response": []
 		},
 		{
-			"name": "users/password",
+			"name": "users/8/password",
 			"request": {
 				"auth": {
 					"type": "basic",
 					"basic": [
 						{
-							"key": "username",
-							"value": "user3a",
+							"key": "password",
+							"value": "man1",
 							"type": "string"
 						},
 						{
-							"key": "password",
-							"value": "user3a",
+							"key": "username",
+							"value": "man1",
 							"type": "string"
 						}
 					]
@@ -565,7 +565,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"oldPassword\": \"user3a\",\r\n    \"password\": \"user\",\r\n    \"matchingPassword\": \"user\"\r\n}",
+					"raw": "{\r\n    \"oldPassword\": \"man1\",\r\n    \"password\": \"man1\",\r\n    \"matchingPassword\": \"man1\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -573,7 +573,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/users/password",
+					"raw": "http://localhost:8080/api/v1/users/8/password",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -583,6 +583,7 @@
 						"api",
 						"v1",
 						"users",
+						"8",
 						"password"
 					]
 				}
@@ -590,7 +591,7 @@
 			"response": []
 		},
 		{
-			"name": "users/9",
+			"name": "users/8",
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -611,7 +612,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"user3a\",\r\n    \"password\": \"user3a\",\r\n    \"enabled\": \"true\",\r\n    \"roles\": [\r\n        \"USER\"\r\n    ]\r\n}\r\n",
+					"raw": "{\r\n    \"username\": \"man1\",\r\n    \"password\": \"man1\",\r\n    \"enabled\": \"true\",\r\n    \"roles\": [\r\n        \"USER\"\r\n    ]\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -619,7 +620,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/users/9",
+					"raw": "http://localhost:8080/api/v1/users/8",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -629,14 +630,14 @@
 						"api",
 						"v1",
 						"users",
-						"9"
+						"8"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "users/9",
+			"name": "users/8",
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -656,7 +657,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/users/9",
+					"raw": "http://localhost:8080/api/v1/users/8",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -666,7 +667,7 @@
 						"api",
 						"v1",
 						"users",
-						"9"
+						"8"
 					]
 				}
 			},

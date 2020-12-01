@@ -1,3 +1,5 @@
+server:
+  port: 8080
 spring:
   datasource:
     initialization-mode: always
@@ -6,4 +8,8 @@ spring:
     url: jdbc:postgresql://localhost:5433/travel
     username: postgres
     password: postgres
-
+  jpa:
+    show-sql: false
+springdoc:
+  swagger-ui:
+    path: /doc/swagger-ui.html

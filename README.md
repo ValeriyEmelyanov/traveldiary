@@ -18,6 +18,9 @@ In progress ...
 * Spring Security
 * PostgreSQL 12
 * Flyway
+* Lombok
+* MapStruct
+* SpringDoc & OpenAPI 3.0 & Swagger
 * Maven
 
 #### Roles and authorities

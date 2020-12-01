@@ -1,31 +1,31 @@
 package com.example.traveldiary.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
 public class AbstractEntity {
 
+    @Schema(
+            description = "Unique identifier",
+            example = "1",
+            required = true)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
-
-    public AbstractEntity() {
-    }
-
-    public AbstractEntity(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Override
     public String toString() {

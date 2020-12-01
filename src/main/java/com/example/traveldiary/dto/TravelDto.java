@@ -2,99 +2,74 @@ package com.example.traveldiary.dto;
 
 import com.example.traveldiary.model.Rating;
 import com.example.traveldiary.model.TravelStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Setter
+@Getter
 public class TravelDto {
+
+    @Schema(
+            description = "",
+            example = "PLAN",
+            required = true)
     private TravelStatus status;
+
+    @Schema(
+            description = "",
+            example = "Anapa for weekend",
+            required = true)
     private String title;
+
+    @Schema(
+            description = "date when to start the travel",
+            example = "2021-03-08",
+            required = true)
     private LocalDate startDate;
+
+    @Schema(
+            description = "date when to finish the travel",
+            example = "2021-03-09",
+            required = true)
     private LocalDate endDate;
+
+    @Schema(
+            description = "some description",
+            example = "the Black sea, a deserted beach strewn with seashells",
+            required = true)
     private String description;
+
+    @Schema(
+            description = "total planned sum of expenses",
+            example = "2000",
+            required = true)
     private Integer planTotalSum;
+
+    @Schema(
+            description = "total actual sum of expenses",
+            example = "0",
+            required = true)
     private Integer factTotalSum;
+
+    @Schema(
+            description = "",
+            example = "NONE",
+            required = true)
     private Rating rating;
+
+    @Schema(
+            description = "mark as favorites",
+            example = "false",
+            required = true)
     private Boolean favorite;
+
+    @Schema(
+            description = "list of expenses",
+            required = false)
     private List<ExpenseRecordDto> expenses;
 
-    public TravelStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TravelStatus status) {
-        this.status = status;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getPlanTotalSum() {
-        return planTotalSum;
-    }
-
-    public void setPlanTotalSum(Integer planTotalSum) {
-        this.planTotalSum = planTotalSum;
-    }
-
-    public Integer getFactTotalSum() {
-        return factTotalSum;
-    }
-
-    public void setFactTotalSum(Integer factTotalSum) {
-        this.factTotalSum = factTotalSum;
-    }
-
-    public Rating getRating() {
-        return rating;
-    }
-
-    public void setRating(Rating rating) {
-        this.rating = rating;
-    }
-
-    public Boolean getFavorite() {
-        return favorite;
-    }
-
-    public void setFavorite(Boolean favorite) {
-        this.favorite = favorite;
-    }
-
-    public List<ExpenseRecordDto> getExpenses() {
-        return expenses;
-    }
-
-    public void setExpenses(List<ExpenseRecordDto> expenses) {
-        this.expenses = expenses;
-    }
 }

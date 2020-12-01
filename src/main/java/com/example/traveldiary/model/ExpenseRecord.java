@@ -1,6 +1,10 @@
 package com.example.traveldiary.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +14,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "expense_record")
+@NoArgsConstructor
+@Setter
+@Getter
 public class ExpenseRecord extends AbstractEntity {
 
     @ManyToOne
@@ -17,74 +24,39 @@ public class ExpenseRecord extends AbstractEntity {
     @JsonIgnore
     private Travel travel;
 
+    @Schema(
+            description = "",
+            example = "1",
+            required = true)
     @Column(name = "rec_no")
     private Integer recNo;
 
+    @Schema(
+            description = "the expense type",
+            required = true)
     @ManyToOne
     @JoinColumn(name = "expense_type_id")
     private ExpenseType expenseType;
 
+    @Schema(
+            description = "some text",
+            example = "full tank refueling was enough",
+            required = false)
     @Column(name = "comment")
     private String comment;
 
+    @Schema(
+            description = "planned sum of expenses for this type",
+            example = "2000",
+            required = true)
     @Column(name = "plan_sum")
     private Integer planSum;
 
+    @Schema(
+            description = "total actual sum of expenses for this type",
+            example = "0",
+            required = true)
     @Column(name = "fact_sum")
     private Integer factSum;
 
-    public ExpenseRecord() {
-    }
-
-    public ExpenseRecord(Long id) {
-        super(id);
-    }
-
-    public Travel getTravel() {
-        return travel;
-    }
-
-    public void setTravel(Travel travel) {
-        this.travel = travel;
-    }
-
-    public Integer getRecNo() {
-        return recNo;
-    }
-
-    public void setRecNo(Integer recNo) {
-        this.recNo = recNo;
-    }
-
-    public ExpenseType getExpenseType() {
-        return expenseType;
-    }
-
-    public void setExpenseType(ExpenseType expenseType) {
-        this.expenseType = expenseType;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public Integer getPlanSum() {
-        return planSum;
-    }
-
-    public void setPlanSum(Integer planSum) {
-        this.planSum = planSum;
-    }
-
-    public Integer getFactSum() {
-        return factSum;
-    }
-
-    public void setFactSum(Integer factPlan) {
-        this.factSum = factPlan;
-    }
 }
