@@ -2,10 +2,10 @@ package com.example.traveldiary.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +17,7 @@ import javax.persistence.MappedSuperclass;
 @AllArgsConstructor
 @Setter
 @Getter
+@SuperBuilder
 public class AbstractEntity {
 
     @Schema(

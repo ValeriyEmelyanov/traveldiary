@@ -3,14 +3,20 @@ package com.example.traveldiary.dto;
 import com.example.traveldiary.model.Rating;
 import com.example.traveldiary.model.TravelStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
+@Builder
 public class TravelDto {
 
     @Schema(

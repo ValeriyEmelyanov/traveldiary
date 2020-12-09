@@ -22,6 +22,9 @@ In progress ...
 * MapStruct
 * SpringDoc & OpenAPI 3.0 & Swagger
 * Maven
+* JUnit 5
+* Mockito
+* Hamcrest
 
 #### Roles and authorities
 

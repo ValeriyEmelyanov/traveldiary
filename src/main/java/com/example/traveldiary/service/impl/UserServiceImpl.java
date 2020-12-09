@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
             throw new BadRequestException();
         }
 
-        User user = null;
+        User user;
         if (isUpdate) {
             user = getById(id);
             userMapper.updateUser(userDto, user);

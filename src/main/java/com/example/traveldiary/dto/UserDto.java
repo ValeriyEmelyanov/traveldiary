@@ -2,6 +2,7 @@ package com.example.traveldiary.dto;
 
 import com.example.traveldiary.model.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import java.util.Set;
 
 @Setter
 @Getter
+@Builder
 public class UserDto {
 
     @Schema(

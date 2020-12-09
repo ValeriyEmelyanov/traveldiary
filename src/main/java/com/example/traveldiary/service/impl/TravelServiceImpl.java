@@ -64,7 +64,7 @@ public class TravelServiceImpl implements TravelService {
 
         User user = userService.getByUsername(username);
 
-        Travel travel = null;
+        Travel travel;
         if (isUpdate) {
             travel = getById(id);
             if (!user.equals(travel.getUser())) {
@@ -76,8 +76,10 @@ public class TravelServiceImpl implements TravelService {
             travel.setUser(user);
         }
 
-        for (ExpenseRecord expenseRecord : travel.getExpenses()) {
-            expenseRecord.setTravel(travel);
+        if (travel.getExpenses() != null) {
+            for (ExpenseRecord expenseRecord : travel.getExpenses()) {
+                expenseRecord.setTravel(travel);
+            }
         }
 
         travelRepository.save(travel);

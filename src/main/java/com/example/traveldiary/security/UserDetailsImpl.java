@@ -63,7 +63,9 @@ public class UserDetailsImpl implements UserDetails {
                 user.getUsername(),
                 user.getPassword(),
                 user.getEnabled(),
-                user.getRoles().stream().flatMap(role -> role.getAuthorities().stream()).collect(Collectors.toSet())
+                user.getRoles().stream()
+                        .flatMap(role -> role.getAuthorities().stream())
+                        .collect(Collectors.toSet())
         );
     }
 }
