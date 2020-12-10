@@ -9,7 +9,7 @@ import com.example.traveldiary.exception.NotFoundException;
 import com.example.traveldiary.mapper.UserMapper;
 import com.example.traveldiary.model.Permission;
 import com.example.traveldiary.model.User;
-import com.example.traveldiary.repository.UserRepositiry;
+import com.example.traveldiary.repository.UserRepository;
 import com.example.traveldiary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,12 +22,12 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserRepositiry userRepositiry;
+    private final UserRepository userRepositiry;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
     @Autowired
-    public UserServiceImpl(UserRepositiry userRepositiry,
+    public UserServiceImpl(UserRepository userRepositiry,
                            PasswordEncoder passwordEncoder,
                            UserMapper userMapper) {
         this.userRepositiry = userRepositiry;

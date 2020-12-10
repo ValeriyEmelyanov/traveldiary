@@ -8,7 +8,7 @@ import com.example.traveldiary.exception.NotFoundException;
 import com.example.traveldiary.mapper.UserMapper;
 import com.example.traveldiary.model.Role;
 import com.example.traveldiary.model.User;
-import com.example.traveldiary.repository.UserRepositiry;
+import com.example.traveldiary.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -36,7 +36,7 @@ class UserServiceImplTest {
     private UserServiceImpl userService;
 
     @Mock
-    private UserRepositiry userRepositiry;
+    private UserRepository userRepositiry;
 
     @Mock
     private PasswordEncoder passwordEncoder;
