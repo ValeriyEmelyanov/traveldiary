@@ -1,5 +1,6 @@
 package com.example.traveldiary.service.impl;
 
+import com.example.traveldiary.util.LocalDateTimeMatcher;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -25,17 +26,15 @@ class DateTimeServiceImplTest {
 
     @Test
     void getNow() {
-        LocalDateTime before = LocalDateTime.now().withNano(0).withSecond(0);
-        String strintNow = dateTimeService.getNow();
-        LocalDateTime after = LocalDateTime.now().withNano(0).withSecond(0);
+        LocalDateTime before = LocalDateTime.now();
+        String stringNow = dateTimeService.getNow();
+        LocalDateTime after = LocalDateTime.now();
 
-        assertNotNull(strintNow);
+        assertNotNull(stringNow);
+        assertTrue(stringNow.startsWith("Now is "));
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime now = LocalDateTime.parse(strintNow.replace("Now is ", ""), formatter);
-
-        assertTrue(before.isBefore(now) || before.equals(now));
-        assertTrue(after.isAfter(now) || after.equals(now));
+        String strDateTime = stringNow.replace("Now is ", "");
+        assertThat(strDateTime, LocalDateTimeMatcher.betweenInclusive(before, after));
     }
 
     @Test
