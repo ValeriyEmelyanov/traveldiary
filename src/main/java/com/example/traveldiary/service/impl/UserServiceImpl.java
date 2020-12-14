@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -35,11 +36,13 @@ public class UserServiceImpl implements UserService {
         this.userMapper = userMapper;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<User> getList() {
         return userRepositiry.findAll();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public User getById(Long id) {
         if (id == null) {
@@ -48,6 +51,7 @@ public class UserServiceImpl implements UserService {
         return userRepositiry.findById(id).orElseThrow(NotFoundException::new);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public User getByUsername(String username) {
         if (username == null) {
@@ -56,11 +60,13 @@ public class UserServiceImpl implements UserService {
         return userRepositiry.findByUsername(username).orElseThrow(NotFoundException::new);
     }
 
+    @Transactional
     @Override
     public void save(UserDto userDto) {
         save(null, userDto, false);
     }
 
+    @Transactional
     @Override
     public void update(Long id, UserDto userDto) {
         if (id == null) {
@@ -88,6 +94,7 @@ public class UserServiceImpl implements UserService {
         userRepositiry.save(user);
     }
 
+    @Transactional
     @Override
     public void changePassword(
             String username,
@@ -122,6 +129,7 @@ public class UserServiceImpl implements UserService {
         userRepositiry.save(user);
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         getById(id);
