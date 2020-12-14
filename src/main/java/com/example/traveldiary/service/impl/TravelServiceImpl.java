@@ -13,6 +13,7 @@ import com.example.traveldiary.service.TravelService;
 import com.example.traveldiary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,11 +32,13 @@ public class TravelServiceImpl implements TravelService {
         this.travelMapper = travelMapper;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Travel> getList() {
         return travelRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Travel getById(Long id) {
         if (id == null) {
@@ -44,11 +47,13 @@ public class TravelServiceImpl implements TravelService {
         return travelRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
+    @Transactional
     @Override
     public void save(TravelDto travelDto, String username) {
         save(null, travelDto, username, false);
     }
 
+    @Transactional
     @Override
     public void update(Long id, TravelDto travelDto, String username) {
         if (id == null) {
@@ -85,6 +90,7 @@ public class TravelServiceImpl implements TravelService {
         travelRepository.save(travel);
     }
 
+    @Transactional
     @Override
     public void delete(Long id, String username) {
         Travel travel = getById(id);

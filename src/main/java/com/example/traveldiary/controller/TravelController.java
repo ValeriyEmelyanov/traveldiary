@@ -1,5 +1,6 @@
 package com.example.traveldiary.controller;
 
+import com.example.traveldiary.aop.LastActivity;
 import com.example.traveldiary.dto.TravelDto;
 import com.example.traveldiary.model.Travel;
 import com.example.traveldiary.service.TravelService;
@@ -48,6 +49,7 @@ public class TravelController {
                             array = @ArraySchema(schema = @Schema(implementation = Travel.class)))),
             @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content)})
+    @LastActivity
     @GetMapping
     @PreAuthorize("hasAuthority('travel:read')")
     public ResponseEntity<List<Travel>> getList() {
@@ -63,6 +65,7 @@ public class TravelController {
             @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
+    @LastActivity
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('travel:read')")
     public ResponseEntity<Travel> getById(
@@ -80,6 +83,7 @@ public class TravelController {
             @ApiResponse(responseCode = "201", description = "expense type created", content = @Content),
             @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content)})
+    @LastActivity
     @PostMapping
     @PreAuthorize("hasAuthority('travel:write')")
     public ResponseEntity<String> create(
@@ -99,6 +103,7 @@ public class TravelController {
             @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
+    @LastActivity
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('travel:write')")
     public ResponseEntity<String> update(
@@ -123,6 +128,7 @@ public class TravelController {
             @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
+    @LastActivity
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('travel:write')")
     public ResponseEntity<String> delete(

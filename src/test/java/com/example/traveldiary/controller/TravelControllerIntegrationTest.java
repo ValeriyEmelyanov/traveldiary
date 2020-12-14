@@ -188,7 +188,7 @@ class TravelControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(authorities = {"travel:read"})
+    @WithMockUser(username = "user1", authorities = {"travel:read"})
     void getList() throws Exception {
         int size = travelRepository.findAll().size();
 
@@ -215,7 +215,7 @@ class TravelControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(authorities = {"travel:read"})
+    @WithMockUser(username = "user1", authorities = {"travel:read"})
     void getById() throws Exception {
         mockMvc.perform(get("/api/v1/travels/1"))
                 .andDo(print())
