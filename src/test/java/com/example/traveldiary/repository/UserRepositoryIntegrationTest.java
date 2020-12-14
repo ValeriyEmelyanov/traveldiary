@@ -11,7 +11,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -49,7 +48,6 @@ class UserRepositoryIntegrationTest {
 
         assertTrue(optionalUser.isPresent());
         User byUsername = optionalUser.get();
-        assertNotNull(byUsername);
         assertEquals(user, byUsername);
         assertEquals(username, byUsername.getUsername());
         assertEquals(user.getEnabled(), byUsername.getEnabled());
