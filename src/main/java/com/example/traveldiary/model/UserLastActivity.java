@@ -1,7 +1,7 @@
 package com.example.traveldiary.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "user_last_activity")
 @NoArgsConstructor
-@AllArgsConstructor
 @Setter
 @Getter
 @SuperBuilder
@@ -29,6 +28,7 @@ public class UserLastActivity extends AbstractEntity {
             example = "user",
             required = true)
     @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JsonIgnore
     private User user;
 
     @Schema(

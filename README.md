@@ -16,6 +16,7 @@ In progress ...
 * SpringBoot
 * Spring Data JPA
 * Spring Security
+* Spring AOP
 * PostgreSQL 12
 * Flyway
 * Lombok

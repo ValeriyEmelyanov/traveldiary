@@ -14,12 +14,15 @@ import java.util.Optional;
 
 @Service
 public class UserLastActivityServiceImpl implements UserLastActivityService {
+    private final UserService userService;
+    private final UserLastActivityRepository lastActivityRepository;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserLastActivityRepository lastActivityRepository;
+    public UserLastActivityServiceImpl(UserService userService,
+                                       UserLastActivityRepository lastActivityRepository) {
+        this.userService = userService;
+        this.lastActivityRepository = lastActivityRepository;
+    }
 
     @Transactional
     @Override
