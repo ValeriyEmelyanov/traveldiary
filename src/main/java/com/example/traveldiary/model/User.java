@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -16,6 +17,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,6 +28,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Setter
 @Getter
+@SuperBuilder
 public class User extends AbstractEntity {
 
     @Schema(
@@ -74,5 +77,12 @@ public class User extends AbstractEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Travel> travels;
+
+    @Schema(
+            description = "when and what user did last time",
+            example = "")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserLastActivity lastActivity;
 
 }

@@ -22,7 +22,7 @@ public class PlayController {
     private DateTimeService dateTimeService;
 
     @Autowired
-    public void setDateTimeService(DateTimeService dateTimeService) {
+    public PlayController(DateTimeService dateTimeService) {
         this.dateTimeService = dateTimeService;
     }
 

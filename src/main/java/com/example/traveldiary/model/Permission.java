@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-
 @Getter
 public enum Permission {
     USER_READ("user:read"),

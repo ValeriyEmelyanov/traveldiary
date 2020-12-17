@@ -1,11 +1,17 @@
 package com.example.traveldiary.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
+@Builder
 public class PasswordDto {
 
     @Schema(

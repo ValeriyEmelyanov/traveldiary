@@ -8,6 +8,7 @@ import com.example.traveldiary.repository.ExpenseTypeRepository;
 import com.example.traveldiary.service.ExpenseTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,11 +21,13 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
         this.expenseTypeRepository = expenseTypeRepository;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ExpenseType> getList() {
         return expenseTypeRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public ExpenseType getById(Long id) {
         if (id == null) {
@@ -33,11 +36,13 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
         return expenseTypeRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
+    @Transactional
     @Override
     public void save(ExpenseTypeDto expenseTypeDto) {
         save(null, expenseTypeDto, false);
     }
 
+    @Transactional
     @Override
     public void update(Long id, ExpenseTypeDto expenseTypeDto) {
         if (id == null) {
@@ -62,6 +67,7 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
         expenseTypeRepository.save(expenseType);
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         if (id == null) {
