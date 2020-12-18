@@ -1,8 +1,8 @@
 package com.example.traveldiary.service;
 
 
-import com.example.traveldiary.dto.PasswordDto;
-import com.example.traveldiary.dto.UserDto;
+import com.example.traveldiary.dto.request.PasswordDto;
+import com.example.traveldiary.dto.request.UserDto;
 import com.example.traveldiary.model.User;
 import org.springframework.security.core.GrantedAuthority;
 

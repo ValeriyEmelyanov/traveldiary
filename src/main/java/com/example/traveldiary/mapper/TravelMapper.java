@@ -1,7 +1,7 @@
 package com.example.traveldiary.mapper;
 
-import com.example.traveldiary.dto.ExpenseRecordDto;
-import com.example.traveldiary.dto.TravelDto;
+import com.example.traveldiary.dto.request.ExpenseRecordDto;
+import com.example.traveldiary.dto.request.TravelDto;
 import com.example.traveldiary.model.ExpenseRecord;
 import com.example.traveldiary.model.Travel;
 import com.example.traveldiary.service.ExpenseTypeService;

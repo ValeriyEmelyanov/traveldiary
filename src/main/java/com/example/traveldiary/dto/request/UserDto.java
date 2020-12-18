@@ -1,4 +1,4 @@
-package com.example.traveldiary.dto;
+package com.example.traveldiary.dto.request;
 
 import com.example.traveldiary.model.Role;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -9,3 +9,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+jwt:
+  secret: 2dfe2sd45xqe34z9je4
+  duration: 15

@@ -1,7 +1,7 @@
 package com.example.traveldiary.service.impl;
 
-import com.example.traveldiary.dto.ExpenseRecordDto;
-import com.example.traveldiary.dto.TravelDto;
+import com.example.traveldiary.dto.request.ExpenseRecordDto;
+import com.example.traveldiary.dto.request.TravelDto;
 import com.example.traveldiary.exception.ForbiddenException;
 import com.example.traveldiary.exception.NotFoundException;
 import com.example.traveldiary.mapper.TravelMapper;

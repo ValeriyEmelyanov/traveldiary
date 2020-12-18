@@ -1,6 +1,6 @@
 package com.example.traveldiary.mapper;
 
-import com.example.traveldiary.dto.UserDto;
+import com.example.traveldiary.dto.request.UserDto;
 import com.example.traveldiary.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

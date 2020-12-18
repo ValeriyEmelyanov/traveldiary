@@ -8,17 +8,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class OpenApiConfog {
+public class OpenApiConfig {
 
     @Bean
     public OpenAPI traveldiaryOpenAPI() {
         return new OpenAPI()
                 .components(new Components()
                         .addSecuritySchemes(
-                                "BasicAuth",
+                                "bearerAuth",
                                 new SecurityScheme()
+                                        .name("bearerAuth")
                                         .type(SecurityScheme.Type.HTTP)
-                                        .scheme("basic")))
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")
+                                        .in(SecurityScheme.In.HEADER)))
                 .info(new Info()
                         .title("Travel Diary API")
                         .description("This is Travel Diary REST service."));

@@ -13,9 +13,9 @@ In progress ...
 
 * Java 11
 * REST API
-* SpringBoot
+* Spring Boot
 * Spring Data JPA
-* Spring Security
+* Spring Security + JWT
 * Spring AOP
 * PostgreSQL 12
 * Flyway

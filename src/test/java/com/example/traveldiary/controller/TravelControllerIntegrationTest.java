@@ -1,7 +1,7 @@
 package com.example.traveldiary.controller;
 
-import com.example.traveldiary.dto.ExpenseRecordDto;
-import com.example.traveldiary.dto.TravelDto;
+import com.example.traveldiary.dto.request.ExpenseRecordDto;
+import com.example.traveldiary.dto.request.TravelDto;
 import com.example.traveldiary.model.ExpenseRecord;
 import com.example.traveldiary.model.ExpenseType;
 import com.example.traveldiary.model.Rating;
@@ -203,7 +203,7 @@ class TravelControllerIntegrationTest {
     void getListUnauthorized() throws Exception {
         mockMvc.perform(get("/api/v1/travels"))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -229,7 +229,7 @@ class TravelControllerIntegrationTest {
     void getByIdUnauthorized() throws Exception {
         mockMvc.perform(get("/api/v1/travels/1"))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -316,7 +316,7 @@ class TravelControllerIntegrationTest {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content("{}"))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -402,7 +402,7 @@ class TravelControllerIntegrationTest {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content("{}"))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -454,7 +454,7 @@ class TravelControllerIntegrationTest {
     void deleteUnauthorized() throws Exception {
         mockMvc.perform(delete("/api/v1/travels/2"))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test

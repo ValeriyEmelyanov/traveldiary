@@ -1,6 +1,6 @@
 package com.example.traveldiary.service.impl;
 
-import com.example.traveldiary.dto.ExpenseTypeDto;
+import com.example.traveldiary.dto.request.ExpenseTypeDto;
 import com.example.traveldiary.exception.BadRequestException;
 import com.example.traveldiary.exception.NotFoundException;
 import com.example.traveldiary.model.ExpenseType;
