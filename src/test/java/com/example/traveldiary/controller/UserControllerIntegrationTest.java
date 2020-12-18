@@ -1,7 +1,7 @@
 package com.example.traveldiary.controller;
 
-import com.example.traveldiary.dto.PasswordDto;
-import com.example.traveldiary.dto.UserDto;
+import com.example.traveldiary.dto.request.PasswordDto;
+import com.example.traveldiary.dto.request.UserDto;
 import com.example.traveldiary.model.Role;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.repository.UserRepository;
@@ -105,7 +105,7 @@ class UserControllerIntegrationTest {
     void getListUnauthorized() throws Exception {
         mockMvc.perform(get("/api/v1/users"))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -133,7 +133,7 @@ class UserControllerIntegrationTest {
     void getByIdUnauthorized() throws Exception {
         mockMvc.perform(get("/api/v1/users/1"))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -184,7 +184,7 @@ class UserControllerIntegrationTest {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content("{}"))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -274,7 +274,7 @@ class UserControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content("{}"))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -337,7 +337,7 @@ class UserControllerIntegrationTest {
     void deleteTestUnauthorized() throws Exception {
         mockMvc.perform(delete("/api/v1/users/1"))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test

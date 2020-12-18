@@ -1,6 +1,6 @@
 package com.example.traveldiary.controller;
 
-import com.example.traveldiary.dto.ExpenseTypeDto;
+import com.example.traveldiary.dto.request.ExpenseTypeDto;
 import com.example.traveldiary.model.ExpenseType;
 import com.example.traveldiary.repository.ExpenseTypeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -84,7 +84,7 @@ class ExpenseTypeControllerIntegrationTest {
     void getListUnauthorized() throws Exception {
         mockMvc.perform(get("/api/v1/expensetypes"))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -110,7 +110,7 @@ class ExpenseTypeControllerIntegrationTest {
     void getByIdUnauthorized() throws Exception {
         mockMvc.perform(get("/api/v1/expensetypes/1"))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -145,7 +145,7 @@ class ExpenseTypeControllerIntegrationTest {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content("{}"))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -192,7 +192,7 @@ class ExpenseTypeControllerIntegrationTest {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content("{}"))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -231,7 +231,7 @@ class ExpenseTypeControllerIntegrationTest {
     void deleteUnauthorized() throws Exception {
         mockMvc.perform(delete("/api/v1/expensetypes/2"))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test

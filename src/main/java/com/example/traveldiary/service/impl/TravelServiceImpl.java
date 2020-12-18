@@ -1,6 +1,6 @@
 package com.example.traveldiary.service.impl;
 
-import com.example.traveldiary.dto.TravelDto;
+import com.example.traveldiary.dto.request.TravelDto;
 import com.example.traveldiary.exception.BadRequestException;
 import com.example.traveldiary.exception.ForbiddenException;
 import com.example.traveldiary.exception.NotFoundException;

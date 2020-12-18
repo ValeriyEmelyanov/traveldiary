@@ -13,3 +13,6 @@ spring:
 springdoc:
   swagger-ui:
     path: /doc/swagger-ui.html
+jwt:
+  secret: 2dfe2sd45xqe34z9je4
+  duration: 15

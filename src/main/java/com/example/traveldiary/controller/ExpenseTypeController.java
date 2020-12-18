@@ -1,6 +1,6 @@
 package com.example.traveldiary.controller;
 
-import com.example.traveldiary.dto.ExpenseTypeDto;
+import com.example.traveldiary.dto.request.ExpenseTypeDto;
 import com.example.traveldiary.model.ExpenseType;
 import com.example.traveldiary.service.ExpenseTypeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,13 +39,13 @@ public class ExpenseTypeController {
         this.expenseTypeService = expenseTypeService;
     }
 
-    @Operation(summary = "get all expense types", description = "")
+    @Operation(summary = "get all expense types",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(
                             mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = ExpenseType.class)))),
-            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content)})
     @GetMapping
     @PreAuthorize("hasAuthority('expense_type:read')")
@@ -53,13 +53,13 @@ public class ExpenseTypeController {
         return ResponseEntity.ok(expenseTypeService.getList());
     }
 
-    @Operation(summary = "get an expense type by id", description = "")
+    @Operation(summary = "get an expense type by id",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = ExpenseType.class))),
-            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @GetMapping("/{id}")
@@ -74,10 +74,10 @@ public class ExpenseTypeController {
         return ResponseEntity.ok(expenseType);
     }
 
-    @Operation(summary = "add a new expense type", description = "")
+    @Operation(summary = "add a new expense type",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "expense type created", content = @Content),
-            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content)})
     @PostMapping
     @PreAuthorize("hasAuthority('expense_type:write')")
@@ -91,10 +91,10 @@ public class ExpenseTypeController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @Operation(summary = "update an existing expense type", description = "")
+    @Operation(summary = "update an existing expense type",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
-            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @PutMapping("/{id}")
@@ -114,10 +114,10 @@ public class ExpenseTypeController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "deletes an expense type", description = "")
+    @Operation(summary = "deletes an expense type",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
-            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @DeleteMapping("/{id}")

@@ -1,7 +1,7 @@
 package com.example.traveldiary.controller;
 
-import com.example.traveldiary.dto.PasswordDto;
-import com.example.traveldiary.dto.UserDto;
+import com.example.traveldiary.dto.request.PasswordDto;
+import com.example.traveldiary.dto.request.UserDto;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,13 +43,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @Operation(summary = "get all users", description = "")
+    @Operation(summary = "get all users",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(
                             mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = User.class)))),
-            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content)})
     @GetMapping
     @PreAuthorize("hasAuthority('user:read')")
@@ -57,7 +57,8 @@ public class UserController {
         return ResponseEntity.ok(userService.getList());
     }
 
-    @Operation(summary = "get a user type by id", description = "")
+    @Operation(summary = "get a user type by id",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(
@@ -78,10 +79,10 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @Operation(summary = "add a new user", description = "")
+    @Operation(summary = "add a new user",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "user created", content = @Content),
-            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content)})
     @PostMapping
     @PreAuthorize("hasAuthority('user:write')")
@@ -95,10 +96,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @Operation(summary = "update an existing user", description = "")
+    @Operation(summary = "update an existing user",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
-            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @PutMapping("/{id}")
@@ -118,10 +119,10 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "change a user password", description = "")
+    @Operation(summary = "change a user password",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
-            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @PatchMapping("/{id}/password")
@@ -148,10 +149,10 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "deletes a user", description = "")
+    @Operation(summary = "deletes a user",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
-            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @DeleteMapping("/{id}")

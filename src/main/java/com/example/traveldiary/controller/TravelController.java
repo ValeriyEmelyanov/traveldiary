@@ -1,7 +1,7 @@
 package com.example.traveldiary.controller;
 
 import com.example.traveldiary.aop.LastActivity;
-import com.example.traveldiary.dto.TravelDto;
+import com.example.traveldiary.dto.request.TravelDto;
 import com.example.traveldiary.model.Travel;
 import com.example.traveldiary.service.TravelService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,13 +41,13 @@ public class TravelController {
         this.travelService = travelService;
     }
 
-    @Operation(summary = "get all travels", description = "")
+    @Operation(summary = "get all travels",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(
                             mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = Travel.class)))),
-            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content)})
     @LastActivity
     @GetMapping
@@ -56,13 +56,13 @@ public class TravelController {
         return ResponseEntity.ok(travelService.getList());
     }
 
-    @Operation(summary = "get a travel by id", description = "")
+    @Operation(summary = "get a travel by id",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = Travel.class))),
-            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @LastActivity
@@ -78,10 +78,10 @@ public class TravelController {
         return ResponseEntity.ok(travel);
     }
 
-    @Operation(summary = "add a new travel type", description = "")
+    @Operation(summary = "add a new travel type",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "expense type created", content = @Content),
-            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content)})
     @LastActivity
     @PostMapping
@@ -97,10 +97,10 @@ public class TravelController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @Operation(summary = "update an existing travel", description = "")
+    @Operation(summary = "update an existing travel",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
-            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @LastActivity
@@ -122,10 +122,10 @@ public class TravelController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "deletes a travel", description = "")
+    @Operation(summary = "deletes a travel",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
-            @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @LastActivity

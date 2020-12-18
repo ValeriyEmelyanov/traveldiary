@@ -1,4 +1,4 @@
-package com.example.traveldiary.dto;
+package com.example.traveldiary.dto.request;
 
 import com.example.traveldiary.model.Rating;
 import com.example.traveldiary.model.TravelStatus;

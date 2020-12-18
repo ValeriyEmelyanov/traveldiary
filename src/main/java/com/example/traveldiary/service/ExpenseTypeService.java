@@ -1,6 +1,6 @@
 package com.example.traveldiary.service;
 
-import com.example.traveldiary.dto.ExpenseTypeDto;
+import com.example.traveldiary.dto.request.ExpenseTypeDto;
 import com.example.traveldiary.model.ExpenseType;
 
 import java.util.List;

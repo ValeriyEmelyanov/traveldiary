@@ -33,4 +33,9 @@ public class AppExceptionHandler {
     public ResponseEntity<String> handlerUsernameNotFoundException(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+
+    @ExceptionHandler(value = BadLoginPasswordException.class)
+    public ResponseEntity<String> handlerBadLoginPasswordException(RuntimeException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
 }
