@@ -1,5 +1,6 @@
 package com.example.traveldiary.controller;
 
+import com.example.traveldiary.Urls;
 import com.example.traveldiary.dto.request.PasswordDto;
 import com.example.traveldiary.dto.request.UserDto;
 import com.example.traveldiary.model.Role;
@@ -94,7 +95,7 @@ class UserControllerIntegrationTest {
     void getList() throws Exception {
         int size = userRepository.findAll().size();
 
-        mockMvc.perform(get("/api/v1/users"))
+        mockMvc.perform(get(Urls.Users.FULL))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -103,7 +104,7 @@ class UserControllerIntegrationTest {
 
     @Test
     void getListUnauthorized() throws Exception {
-        mockMvc.perform(get("/api/v1/users"))
+        mockMvc.perform(get(Urls.Users.FULL))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -111,7 +112,7 @@ class UserControllerIntegrationTest {
     @Test
     @WithMockUser
     void getListForbidden() throws Exception {
-        mockMvc.perform(get("/api/v1/users"))
+        mockMvc.perform(get(Urls.Users.FULL))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -121,7 +122,7 @@ class UserControllerIntegrationTest {
     void getById() throws Exception {
         int id = 1;
 
-        mockMvc.perform(get("/api/v1/users/" + id))
+        mockMvc.perform(get(Urls.Users.FULL + "/" + id))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -131,7 +132,7 @@ class UserControllerIntegrationTest {
 
     @Test
     void getByIdUnauthorized() throws Exception {
-        mockMvc.perform(get("/api/v1/users/1"))
+        mockMvc.perform(get(Urls.Users.FULL + "/1"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -139,7 +140,7 @@ class UserControllerIntegrationTest {
     @Test
     @WithMockUser
     void getByIdForbidden() throws Exception {
-        mockMvc.perform(get("/api/v1/users/1"))
+        mockMvc.perform(get(Urls.Users.FULL + "/1"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -159,7 +160,7 @@ class UserControllerIntegrationTest {
                 .build();
         LocalDateTime before = LocalDateTime.now();
 
-        mockMvc.perform(post("/api/v1/users")
+        mockMvc.perform(post(Urls.Users.FULL)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andDo(print())
@@ -180,7 +181,7 @@ class UserControllerIntegrationTest {
 
     @Test
     void createUnauthorized() throws Exception {
-        mockMvc.perform(post("/api/v1/users")
+        mockMvc.perform(post(Urls.Users.FULL)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content("{}"))
                 .andDo(print())
@@ -190,7 +191,7 @@ class UserControllerIntegrationTest {
     @Test
     @WithMockUser
     void createForbidden() throws Exception {
-        mockMvc.perform(post("/api/v1/users")
+        mockMvc.perform(post(Urls.Users.FULL)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content("{}"))
                 .andDo(print())
@@ -211,7 +212,7 @@ class UserControllerIntegrationTest {
                 .roles(roles)
                 .build();
 
-        mockMvc.perform(put("/api/v1/users/" + id)
+        mockMvc.perform(put(Urls.Users.FULL + "/" + id)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andDo(print())
@@ -235,7 +236,7 @@ class UserControllerIntegrationTest {
                 .matchingPassword(password)
                 .build();
 
-        mockMvc.perform(patch("/api/v1/users/" + id + "/password")
+        mockMvc.perform(patch(Urls.Users.FULL + "/" + id + "/" + Urls.Users.Password.PART)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andDo(print())
@@ -257,7 +258,7 @@ class UserControllerIntegrationTest {
                 .matchingPassword(password)
                 .build();
 
-        mockMvc.perform(patch("/api/v1/users/" + id + "/password")
+        mockMvc.perform(patch(Urls.Users.FULL + "/" + id + "/" + Urls.Users.Password.PART)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andDo(print())
@@ -270,7 +271,7 @@ class UserControllerIntegrationTest {
 
     @Test
     void changePasswordUnauthorized() throws Exception {
-        mockMvc.perform(patch("/api/v1/users/1/password")
+        mockMvc.perform(patch(Urls.Users.FULL + "/1/" + Urls.Users.Password.PART)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content("{}"))
                 .andDo(print())
@@ -280,7 +281,7 @@ class UserControllerIntegrationTest {
     @Test
     @WithMockUser
     void changePasswordForbidden() throws Exception {
-        mockMvc.perform(patch("/api/v1/users/1/password")
+        mockMvc.perform(patch(Urls.Users.FULL + "/1/" + Urls.Users.Password.PART)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content("{}"))
                 .andDo(print())
@@ -295,7 +296,7 @@ class UserControllerIntegrationTest {
                 .password(password)
                 .build();
 
-        mockMvc.perform(patch("/api/v1/users/2/password")
+        mockMvc.perform(patch(Urls.Users.FULL + "/2/" + Urls.Users.Password.PART)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andDo(print())
@@ -312,7 +313,7 @@ class UserControllerIntegrationTest {
                 .matchingPassword(password + "more")
                 .build();
 
-        mockMvc.perform(patch("/api/v1/users/1/password")
+        mockMvc.perform(patch(Urls.Users.FULL + "/1/" + Urls.Users.Password.PART)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andDo(print())
@@ -325,7 +326,7 @@ class UserControllerIntegrationTest {
         int size = userRepository.findAll().size();
         long id = 3L;
 
-        mockMvc.perform(delete("/api/v1/users/" + id))
+        mockMvc.perform(delete(Urls.Users.FULL + "/" + id))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -335,7 +336,7 @@ class UserControllerIntegrationTest {
 
     @Test
     void deleteTestUnauthorized() throws Exception {
-        mockMvc.perform(delete("/api/v1/users/1"))
+        mockMvc.perform(delete(Urls.Users.FULL + "/1"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -343,7 +344,7 @@ class UserControllerIntegrationTest {
     @Test
     @WithMockUser
     void deleteTestForbidden() throws Exception {
-        mockMvc.perform(delete("/api/v1/users/1"))
+        mockMvc.perform(delete(Urls.Users.FULL + "/1"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -351,7 +352,7 @@ class UserControllerIntegrationTest {
     @Test
     @WithMockUser(authorities = {"user:write"})
     void deleteTestNotFound() throws Exception {
-        mockMvc.perform(delete("/api/v1/users/999"))
+        mockMvc.perform(delete(Urls.Users.FULL + "/999"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }

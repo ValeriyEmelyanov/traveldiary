@@ -1,5 +1,6 @@
 package com.example.traveldiary.controller;
 
+import com.example.traveldiary.Urls;
 import com.example.traveldiary.service.DateTimeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "play service", description = "the Play API")
 @RestController
-@RequestMapping("/api/v1/play")
+@RequestMapping(Urls.Play.FULL)
 public class PlayController {
-    private DateTimeService dateTimeService;
+    private final DateTimeService dateTimeService;
 
     @Autowired
     public PlayController(DateTimeService dateTimeService) {
@@ -32,7 +33,7 @@ public class PlayController {
                     responseCode = "200",
                     description = "successful operation",
                     content = @Content(mediaType = "text/plain"))})
-    @GetMapping("/now")
+    @GetMapping(Urls.Play.Now.PART)
     public ResponseEntity<String> printDateTime() {
         return new ResponseEntity<>(
                 dateTimeService.getNow(),
@@ -45,7 +46,7 @@ public class PlayController {
                     responseCode = "200",
                     description = "successful operation",
                     content = @Content(mediaType = "text/plain"))})
-    @GetMapping({"/greeting", "/greeting/{name}"})
+    @GetMapping({Urls.Play.Greeting.PART, Urls.Play.Greeting.PART + "/{name}"})
     public ResponseEntity<String> printGreeting(
             @Parameter(name = "name", description = "the one we greet", required = false)
             @PathVariable(required = false) String name) {

@@ -1,5 +1,6 @@
 package com.example.traveldiary.controller;
 
+import com.example.traveldiary.Urls;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,7 +29,7 @@ class PlayControllerIntegrationTest {
 
     @Test
     void printDateTime() throws Exception {
-        MvcResult result = mockMvc.perform(get("/api/v1/play/now"))
+        MvcResult result = mockMvc.perform(get(Urls.Play.Now.FULL))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/plain;charset=UTF-8"))
@@ -45,7 +46,7 @@ class PlayControllerIntegrationTest {
 
     @Test
     void printGreeting() throws Exception {
-        MvcResult result = mockMvc.perform(get("/api/v1/play/greeting"))
+        MvcResult result = mockMvc.perform(get(Urls.Play.Greeting.FULL))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/plain;charset=UTF-8"))
@@ -62,7 +63,7 @@ class PlayControllerIntegrationTest {
     void printGreetingWithName() throws Exception {
         String name = "Robin";
 
-        MvcResult result = mockMvc.perform(get("/api/v1/play/greeting/" + name))
+        MvcResult result = mockMvc.perform(get(Urls.Play.Greeting.FULL + "/" + name))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/plain;charset=UTF-8"))

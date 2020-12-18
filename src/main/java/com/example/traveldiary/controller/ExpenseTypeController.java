@@ -1,5 +1,6 @@
 package com.example.traveldiary.controller;
 
+import com.example.traveldiary.Urls;
 import com.example.traveldiary.dto.request.ExpenseTypeDto;
 import com.example.traveldiary.model.ExpenseType;
 import com.example.traveldiary.service.ExpenseTypeService;
@@ -30,7 +31,7 @@ import java.util.List;
 @Tag(name = "expense type service", description = "the Expense Type API")
 @SecurityRequirement(name = "BasicAuth")
 @RestController
-@RequestMapping("/api/v1/expensetypes")
+@RequestMapping(Urls.ExpenseTypes.FULL)
 public class ExpenseTypeController {
     private final ExpenseTypeService expenseTypeService;
 

@@ -1,5 +1,6 @@
 package com.example.traveldiary.controller;
 
+import com.example.traveldiary.Urls;
 import com.example.traveldiary.dto.request.UserLoginDto;
 import com.example.traveldiary.dto.response.AuthResponse;
 import com.example.traveldiary.service.AuthService;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "auth service", description = "")
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping(Urls.Auth.FULL)
 public class AuthController {
     private final AuthService authService;
 

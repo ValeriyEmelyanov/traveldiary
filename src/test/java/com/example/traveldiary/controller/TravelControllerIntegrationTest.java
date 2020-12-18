@@ -1,5 +1,6 @@
 package com.example.traveldiary.controller;
 
+import com.example.traveldiary.Urls;
 import com.example.traveldiary.dto.request.ExpenseRecordDto;
 import com.example.traveldiary.dto.request.TravelDto;
 import com.example.traveldiary.model.ExpenseRecord;
@@ -192,7 +193,7 @@ class TravelControllerIntegrationTest {
     void getList() throws Exception {
         int size = travelRepository.findAll().size();
 
-        mockMvc.perform(get("/api/v1/travels"))
+        mockMvc.perform(get(Urls.Travels.FULL))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -201,7 +202,7 @@ class TravelControllerIntegrationTest {
 
     @Test
     void getListUnauthorized() throws Exception {
-        mockMvc.perform(get("/api/v1/travels"))
+        mockMvc.perform(get(Urls.Travels.FULL))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -209,7 +210,7 @@ class TravelControllerIntegrationTest {
     @Test
     @WithMockUser
     void getListForbidden() throws Exception {
-        mockMvc.perform(get("/api/v1/travels"))
+        mockMvc.perform(get(Urls.Travels.FULL))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -217,7 +218,7 @@ class TravelControllerIntegrationTest {
     @Test
     @WithMockUser(username = "user1", authorities = {"travel:read"})
     void getById() throws Exception {
-        mockMvc.perform(get("/api/v1/travels/1"))
+        mockMvc.perform(get(Urls.Travels.FULL + "/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -227,7 +228,7 @@ class TravelControllerIntegrationTest {
 
     @Test
     void getByIdUnauthorized() throws Exception {
-        mockMvc.perform(get("/api/v1/travels/1"))
+        mockMvc.perform(get(Urls.Travels.FULL + "/1"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -235,7 +236,7 @@ class TravelControllerIntegrationTest {
     @Test
     @WithMockUser
     void getByIdForbidden() throws Exception {
-        mockMvc.perform(get("/api/v1/travels/1"))
+        mockMvc.perform(get(Urls.Travels.FULL + "/1"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -271,7 +272,7 @@ class TravelControllerIntegrationTest {
                 .build();
         dto.setExpenses(List.of(recordDto1, recordDto2));
 
-        mockMvc.perform(post("/api/v1/travels")
+        mockMvc.perform(post(Urls.Travels.FULL)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andDo(print())
@@ -312,7 +313,7 @@ class TravelControllerIntegrationTest {
 
     @Test
     void createUnauthorized() throws Exception {
-        mockMvc.perform(post("/api/v1/travels")
+        mockMvc.perform(post(Urls.Travels.FULL)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content("{}"))
                 .andDo(print())
@@ -322,7 +323,7 @@ class TravelControllerIntegrationTest {
     @Test
     @WithMockUser
     void createForbidden() throws Exception {
-        mockMvc.perform(post("/api/v1/travels")
+        mockMvc.perform(post(Urls.Travels.FULL)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content("{}"))
                 .andDo(print())
@@ -353,7 +354,7 @@ class TravelControllerIntegrationTest {
                 .build();
         dto.setExpenses(List.of(recordDto1));
 
-        mockMvc.perform(put("/api/v1/travels/" + id)
+        mockMvc.perform(put(Urls.Travels.FULL + "/" + id)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andDo(print())
@@ -389,7 +390,7 @@ class TravelControllerIntegrationTest {
     @Test
     @WithMockUser(username = "user1", authorities = {"travel:write"})
     void updateNotFound() throws Exception {
-        mockMvc.perform(put("/api/v1/travels/999")
+        mockMvc.perform(put(Urls.Travels.FULL + "/999")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content("{}"))
                 .andDo(print())
@@ -398,7 +399,7 @@ class TravelControllerIntegrationTest {
 
     @Test
     void updateUnauthorized() throws Exception {
-        mockMvc.perform(put("/api/v1/travels/2")
+        mockMvc.perform(put(Urls.Travels.FULL + "/2")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content("{}"))
                 .andDo(print())
@@ -408,7 +409,7 @@ class TravelControllerIntegrationTest {
     @Test
     @WithMockUser
     void updateForbidden() throws Exception {
-        mockMvc.perform(put("/api/v1/travels/2")
+        mockMvc.perform(put(Urls.Travels.FULL + "/2")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content("{}"))
                 .andDo(print())
@@ -421,7 +422,7 @@ class TravelControllerIntegrationTest {
         TravelDto dto = TravelDto.builder()
                 .build();
 
-        mockMvc.perform(put("/api/v1/travels/2")
+        mockMvc.perform(put(Urls.Travels.FULL + "/2")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andDo(print())
@@ -434,7 +435,7 @@ class TravelControllerIntegrationTest {
         int size = travelRepository.findAll().size();
         long id = 3L;
 
-        mockMvc.perform(delete("/api/v1/travels/" + id))
+        mockMvc.perform(delete(Urls.Travels.FULL + "/" + id))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -445,14 +446,14 @@ class TravelControllerIntegrationTest {
     @Test
     @WithMockUser(username = "user1", authorities = {"travel:write"})
     void deleteNotFound() throws Exception {
-        mockMvc.perform(delete("/api/v1/travels/999"))
+        mockMvc.perform(delete(Urls.Travels.FULL + "/999"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void deleteUnauthorized() throws Exception {
-        mockMvc.perform(delete("/api/v1/travels/2"))
+        mockMvc.perform(delete(Urls.Travels.FULL + "/2"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -460,7 +461,7 @@ class TravelControllerIntegrationTest {
     @Test
     @WithMockUser
     void deleteForbidden() throws Exception {
-        mockMvc.perform(delete("/api/v1/travels/2"))
+        mockMvc.perform(delete(Urls.Travels.FULL + "/2"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -468,7 +469,7 @@ class TravelControllerIntegrationTest {
     @Test
     @WithMockUser(username = "user2", authorities = {"travel:write"})
     void deleteOtherUser() throws Exception {
-        mockMvc.perform(delete("/api/v1/travels/2"))
+        mockMvc.perform(delete(Urls.Travels.FULL + "/2"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }

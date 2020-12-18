@@ -1,5 +1,6 @@
 package com.example.traveldiary.controller;
 
+import com.example.traveldiary.Urls;
 import com.example.traveldiary.dto.request.PasswordDto;
 import com.example.traveldiary.dto.request.UserDto;
 import com.example.traveldiary.model.User;
@@ -34,7 +35,7 @@ import java.util.List;
 @Tag(name = "user service", description = "the user API")
 @SecurityRequirement(name = "BasicAuth")
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping(Urls.Users.FULL)
 public class UserController {
     private final UserService userService;
 
@@ -125,7 +126,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
-    @PatchMapping("/{id}/password")
+    @PatchMapping("/{id}/" + Urls.Users.Password.PART)
     @PreAuthorize("hasAnyAuthority('user:write', 'user:profile')")
     public ResponseEntity<String> changePassword(
             @Parameter(
