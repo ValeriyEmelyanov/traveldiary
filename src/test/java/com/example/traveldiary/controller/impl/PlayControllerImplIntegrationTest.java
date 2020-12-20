@@ -1,4 +1,4 @@
-package com.example.traveldiary.controller;
+package com.example.traveldiary.controller.impl;
 
 import com.example.traveldiary.Urls;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class PlayControllerIntegrationTest {
+class PlayControllerImplIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;

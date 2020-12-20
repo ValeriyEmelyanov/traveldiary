@@ -14,22 +14,18 @@ import lombok.Setter;
 @Builder
 public class PasswordDto {
 
-    @Schema(
-            description = "old password",
+    @Schema(description = "old password",
             example = "AbC1*3",
             required = true)
     private String oldPassword;
 
-    @Schema(
-            description = "new password",
+    @Schema(description = "new password",
             example = "dEf_5+",
             required = true)
     private String password;
 
-    @Schema(
-            description = "matching password",
+    @Schema(description = "matching password",
             example = "dEf_5+",
             required = true)
     private String matchingPassword;
-
 }

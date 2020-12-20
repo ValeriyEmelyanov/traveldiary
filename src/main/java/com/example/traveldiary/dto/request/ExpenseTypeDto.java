@@ -12,8 +12,7 @@ import lombok.Setter;
 @Getter
 public class ExpenseTypeDto {
 
-    @Schema(
-            description = "name of the expense type",
+    @Schema(description = "name of the expense type",
             example = "Transort",
             required = true)
     private String name;

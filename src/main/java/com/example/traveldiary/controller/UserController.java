@@ -4,7 +4,6 @@ import com.example.traveldiary.Urls;
 import com.example.traveldiary.dto.request.PasswordDto;
 import com.example.traveldiary.dto.request.UserDto;
 import com.example.traveldiary.model.User;
-import com.example.traveldiary.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -14,12 +13,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -28,24 +24,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @Tag(name = "user service", description = "the user API")
-@SecurityRequirement(name = "BasicAuth")
-@RestController
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping(Urls.Users.FULL)
-public class UserController {
-    private final UserService userService;
+public interface UserController {
+    String USER_ID_PATH_VARIABLE = "/{id}";
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
-    @Operation(summary = "get all users",
-            security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "get all users")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(
@@ -54,12 +42,9 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content)})
     @GetMapping
     @PreAuthorize("hasAuthority('user:read')")
-    public ResponseEntity<List<User>> getList() {
-        return ResponseEntity.ok(userService.getList());
-    }
+    ResponseEntity<List<User>> getList();
 
-    @Operation(summary = "get a user type by id",
-            security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "get a user type by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(
@@ -68,44 +53,36 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
-    @GetMapping("/{id}")
+    @GetMapping(USER_ID_PATH_VARIABLE)
     @PreAuthorize("hasAuthority('user:read')")
-    public ResponseEntity<User> getById(
+    ResponseEntity<User> getById(
             @Parameter(
                     name = "id",
                     description = "id  of the user to be obtained. Cannot be null",
                     required = true)
-            @PathVariable Long id) {
-        User user = userService.getById(id);
-        return ResponseEntity.ok(user);
-    }
+            @PathVariable Long id);
 
-    @Operation(summary = "add a new user",
-            security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "add a new user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "user created", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content)})
     @PostMapping
     @PreAuthorize("hasAuthority('user:write')")
-    public ResponseEntity<String> create(
+    ResponseEntity<String> create(
             @Parameter(
                     description = "the user to add. Cannot be null",
                     required = true,
                     schema = @Schema(implementation = UserDto.class))
-            @RequestBody UserDto userDto) {
-        userService.save(userDto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
+            @RequestBody UserDto userDto);
 
-    @Operation(summary = "update an existing user",
-            security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "update an existing user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
-    @PutMapping("/{id}")
+    @PutMapping(USER_ID_PATH_VARIABLE)
     @PreAuthorize("hasAuthority('user:write')")
-    public ResponseEntity<String> update(
+    ResponseEntity<String> update(
             @Parameter(
                     name = "id",
                     description = "id of the user to be updated. Cannot be null.",
@@ -115,20 +92,16 @@ public class UserController {
                     description = "the user to be updated. Cannot be null.",
                     required = true,
                     schema = @Schema(implementation = UserDto.class))
-            @RequestBody UserDto userDto) {
-        userService.update(id, userDto);
-        return ResponseEntity.ok().build();
-    }
+            @RequestBody UserDto userDto);
 
-    @Operation(summary = "change a user password",
-            security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "change a user password")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
-    @PatchMapping("/{id}/" + Urls.Users.Password.PART)
+    @PatchMapping(USER_ID_PATH_VARIABLE + "/" + Urls.Users.Password.PART)
     @PreAuthorize("hasAnyAuthority('user:write', 'user:profile')")
-    public ResponseEntity<String> changePassword(
+    ResponseEntity<String> changePassword(
             @Parameter(
                     name = "id",
                     description = "id of the user to be changed password. Cannot be null.",
@@ -139,32 +112,20 @@ public class UserController {
                     required = true,
                     schema = @Schema(implementation = PasswordDto.class))
             @RequestBody PasswordDto passwordDto,
-            Authentication authentication) {
+            Authentication authentication);
 
-        userService.changePassword(
-                ((UserDetails) authentication.getPrincipal()).getUsername(),
-                authentication.getAuthorities(),
-                id,
-                passwordDto);
-
-        return ResponseEntity.ok().build();
-    }
-
-    @Operation(summary = "deletes a user",
-            security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "deletes a user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
-    @DeleteMapping("/{id}")
+    @DeleteMapping(USER_ID_PATH_VARIABLE)
     @PreAuthorize("hasAuthority('user:write')")
-    public ResponseEntity<String> delete(
+    ResponseEntity<String> delete(
             @Parameter(
                     name = "id",
                     description = "id of the user to be deleted. Cannot be null",
                     required = true)
-            @PathVariable Long id) {
-        userService.delete(id);
-        return ResponseEntity.ok().build();
-    }
+            @PathVariable Long id);
+
 }

@@ -1,4 +1,4 @@
-package com.example.traveldiary.controller;
+package com.example.traveldiary.controller.impl;
 
 import com.example.traveldiary.Urls;
 import com.example.traveldiary.dto.request.ExpenseRecordDto;
@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class TravelControllerIntegrationTest {
+class TravelControllerImplIntegrationTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -70,7 +70,7 @@ class TravelControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        if (travelRepository.findAll().size() == 0) {
+        if (travelRepository.findAll().isEmpty()) {
             prepareTestData();
         }
     }

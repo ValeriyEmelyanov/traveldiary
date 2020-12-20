@@ -1,4 +1,4 @@
-package com.example.traveldiary.controller;
+package com.example.traveldiary.controller.impl;
 
 import com.example.traveldiary.Urls;
 import com.example.traveldiary.dto.request.PasswordDto;
@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class UserControllerIntegrationTest {
+class UserControllerImplIntegrationTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final String oldPassword = "password";
@@ -56,9 +56,7 @@ class UserControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        if (userRepository.findAll().size() == 0) {
-            prepareTestData();
-        }
+        prepareTestData();
     }
 
     private void prepareTestData() {

@@ -1,4 +1,4 @@
-package com.example.traveldiary.controller;
+package com.example.traveldiary.controller.impl;
 
 import com.example.traveldiary.Urls;
 import com.example.traveldiary.dto.request.ExpenseTypeDto;
@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class ExpenseTypeControllerIntegrationTest {
+class ExpenseTypeControllerImplIntegrationTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -45,7 +45,7 @@ class ExpenseTypeControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        if (expenseTypeRepository.findAll().size() == 0) {
+        if (expenseTypeRepository.findAll().isEmpty()) {
             prepareTestData();
         }
     }

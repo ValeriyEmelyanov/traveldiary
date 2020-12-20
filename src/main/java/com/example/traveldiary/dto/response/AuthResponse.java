@@ -12,8 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AuthResponse {
 
-    @Schema(
-            description = "access token",
+    @Schema(description = "access token",
             example = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjA5NDQ4NDAwfQ."
                     + "1aYAzg_s1pqz7kRwKzduNiG953mv5rcpYfnUq6OXzY1z_yxZaKnF0ED9Eoq2M6J6kwAoGlcOoX9Pzhlrqmzt6w",
             required = true)

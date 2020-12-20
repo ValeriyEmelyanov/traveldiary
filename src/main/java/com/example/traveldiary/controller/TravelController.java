@@ -4,7 +4,6 @@ import com.example.traveldiary.Urls;
 import com.example.traveldiary.aop.LastActivity;
 import com.example.traveldiary.dto.request.TravelDto;
 import com.example.traveldiary.model.Travel;
-import com.example.traveldiary.service.TravelService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -14,8 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,25 +22,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.List;
 
 @Tag(name = "travel service", description = "the Travel API")
-@SecurityRequirement(name = "BasicAuth")
-@RestController
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping(Urls.Travels.FULL)
-public class TravelController {
-    private final TravelService travelService;
+public interface TravelController {
+    String TRAVEL_ID_PATH_VARIABLE = "/{id}";
 
-    @Autowired
-    public TravelController(TravelService travelService) {
-        this.travelService = travelService;
-    }
-
-    @Operation(summary = "get all travels",
-            security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "get all travels")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(
@@ -53,12 +42,9 @@ public class TravelController {
     @LastActivity
     @GetMapping
     @PreAuthorize("hasAuthority('travel:read')")
-    public ResponseEntity<List<Travel>> getList() {
-        return ResponseEntity.ok(travelService.getList());
-    }
+    ResponseEntity<List<Travel>> getList();
 
-    @Operation(summary = "get a travel by id",
-            security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "get a travel by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(
@@ -67,47 +53,39 @@ public class TravelController {
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @LastActivity
-    @GetMapping("/{id}")
+    @GetMapping(TRAVEL_ID_PATH_VARIABLE)
     @PreAuthorize("hasAuthority('travel:read')")
-    public ResponseEntity<Travel> getById(
+    ResponseEntity<Travel> getById(
             @Parameter(
                     name = "id",
                     description = "id  of the travel to be obtained. Cannot be null",
                     required = true)
-            @PathVariable Long id) {
-        Travel travel = travelService.getById(id);
-        return ResponseEntity.ok(travel);
-    }
+            @PathVariable Long id);
 
-    @Operation(summary = "add a new travel type",
-            security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "add a new travel type")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "expense type created", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content)})
     @LastActivity
     @PostMapping
     @PreAuthorize("hasAuthority('travel:write')")
-    public ResponseEntity<String> create(
+    ResponseEntity<String> create(
             @Parameter(
                     description = "the travel to add. Cannot be null",
                     required = true,
                     schema = @Schema(implementation = TravelDto.class))
             @RequestBody TravelDto travelDto,
-            Principal principal) {
-        travelService.save(travelDto, principal.getName());
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
+            Principal principal);
 
-    @Operation(summary = "update an existing travel",
-            security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "update an existing travel")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @LastActivity
-    @PutMapping("/{id}")
+    @PutMapping(TRAVEL_ID_PATH_VARIABLE)
     @PreAuthorize("hasAuthority('travel:write')")
-    public ResponseEntity<String> update(
+    ResponseEntity<String> update(
             @Parameter(
                     name = "id",
                     description = "id of the travel to be updated. Cannot be null.",
@@ -118,28 +96,21 @@ public class TravelController {
                     required = true,
                     schema = @Schema(implementation = TravelDto.class))
             @RequestBody TravelDto travelDto,
-            Principal principal) {
-        travelService.update(id, travelDto, principal.getName());
-        return ResponseEntity.ok().build();
-    }
+            Principal principal);
 
-    @Operation(summary = "deletes a travel",
-            security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "deletes a travel")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @LastActivity
-    @DeleteMapping("/{id}")
+    @DeleteMapping(TRAVEL_ID_PATH_VARIABLE)
     @PreAuthorize("hasAuthority('travel:write')")
-    public ResponseEntity<String> delete(
+    ResponseEntity<String> delete(
             @Parameter(
                     name = "id",
                     description = "id of the travel to be deleted. Cannot be null",
                     required = true)
             @PathVariable Long id,
-            Principal principal) {
-        travelService.delete(id, principal.getName());
-        return ResponseEntity.ok().build();
-    }
+            Principal principal);
 }

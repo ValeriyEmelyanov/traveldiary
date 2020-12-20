@@ -18,8 +18,7 @@ import javax.persistence.Table;
 @SuperBuilder
 public class ExpenseType extends AbstractEntity {
 
-    @Schema(
-            description = "name of the expense type",
+    @Schema(description = "name of the expense type",
             example = "Transort",
             required = true)
     @Column(name = "name")

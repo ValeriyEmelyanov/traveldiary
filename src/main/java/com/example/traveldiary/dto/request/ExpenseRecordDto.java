@@ -14,34 +14,26 @@ import lombok.Setter;
 @Builder
 public class ExpenseRecordDto {
 
-    @Schema(
-            description = "",
-            example = "1",
+    @Schema(example = "1",
             required = true)
     private Integer recNo;
 
-    @Schema(
-            description = "Unique identifier of the expense type",
+    @Schema(description = "Unique identifier of the expense type",
             example = "1",
             required = true)
     private Long expenseTypeId;
 
-    @Schema(
-            description = "some text",
-            example = "full tank refueling was enough",
-            required = false)
+    @Schema(description = "some text",
+            example = "full tank refueling was enough")
     private String comment;
 
-    @Schema(
-            description = "planned sum of expenses for this type",
+    @Schema(description = "planned sum of expenses for this type",
             example = "2000",
             required = true)
     private Integer planSum;
 
-    @Schema(
-            description = "total actual sum of expenses for this type",
+    @Schema(description = "total actual sum of expenses for this type",
             example = "0",
             required = true)
     private Integer factSum;
-
 }
