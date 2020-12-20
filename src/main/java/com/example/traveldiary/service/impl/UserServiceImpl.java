@@ -2,6 +2,7 @@ package com.example.traveldiary.service.impl;
 
 import com.example.traveldiary.dto.request.PasswordDto;
 import com.example.traveldiary.dto.request.UserDto;
+import com.example.traveldiary.dto.response.ErrorMessages;
 import com.example.traveldiary.exception.BadPasswordException;
 import com.example.traveldiary.exception.BadRequestException;
 import com.example.traveldiary.exception.ForbiddenException;
@@ -46,18 +47,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getById(Long id) {
         if (id == null) {
-            throw new BadRequestException();
+            throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
-        return userRepositiry.findById(id).orElseThrow(NotFoundException::new);
+        return userRepositiry.findById(id)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND.getErrorMessage()));
     }
 
     @Transactional(readOnly = true)
     @Override
     public User getByUsername(String username) {
         if (username == null) {
-            throw new BadRequestException();
+            throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
-        return userRepositiry.findByUsername(username).orElseThrow(NotFoundException::new);
+        return userRepositiry.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND.getErrorMessage()));
     }
 
     @Transactional
@@ -70,14 +73,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void update(Long id, UserDto userDto) {
         if (id == null) {
-            throw new BadRequestException();
+            throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
         save(id, userDto, true);
     }
 
     private void save(Long id, UserDto userDto, boolean isUpdate) {
         if (userDto == null) {
-            throw new BadRequestException();
+            throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
 
         User user;
@@ -103,7 +106,7 @@ public class UserServiceImpl implements UserService {
             PasswordDto passwordDto) {
 
         if (passwordDto == null || passwordDto.getPassword() == null) {
-            throw new BadRequestException();
+            throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
 
         User currentUser = getByUsername(username);
@@ -113,15 +116,15 @@ public class UserServiceImpl implements UserService {
                     .anyMatch(grantedAuthority
                             -> grantedAuthority.getAuthority().equals(Permission.USER_WRITE.getPermission()));
             if (!hasPermissionUserWrite) {
-                throw new ForbiddenException();
+                throw new ForbiddenException(ErrorMessages.NO_PERMISSIONS.getErrorMessage());
             }
         } else if (passwordDto.getOldPassword() == null
                 || !passwordEncoder.matches(passwordDto.getOldPassword(), user.getPassword())) {
-            throw new ForbiddenException();
+            throw new ForbiddenException(ErrorMessages.WRONG_OLD_PASSWORD.getErrorMessage());
         }
 
         if (!passwordDto.getPassword().equals(passwordDto.getMatchingPassword())) {
-            throw new BadPasswordException("Password not matching");
+            throw new BadPasswordException(ErrorMessages.BAD_PASSWORD_NOT_MATCHING.getErrorMessage());
         }
 
         user.setPassword(passwordEncoder.encode(passwordDto.getPassword()));

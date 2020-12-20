@@ -2,7 +2,7 @@ package com.example.traveldiary.controller.impl;
 
 import com.example.traveldiary.controller.AuthController;
 import com.example.traveldiary.dto.request.UserLoginDto;
-import com.example.traveldiary.dto.response.AuthResponse;
+import com.example.traveldiary.dto.response.AuthRest;
 import com.example.traveldiary.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +19,9 @@ public class AuthControllerImpl implements AuthController {
 
 
     @Override
-    public ResponseEntity<AuthResponse> auth(UserLoginDto loginDto) {
+    public ResponseEntity<AuthRest> auth(UserLoginDto loginDto) {
         return ResponseEntity.ok(
-                new AuthResponse(authService.auth(
+                new AuthRest(authService.auth(
                         loginDto.getUsername(),
                         loginDto.getPassword())));
     }

@@ -1,6 +1,7 @@
 package com.example.traveldiary.service.impl;
 
 import com.example.traveldiary.dto.request.TravelDto;
+import com.example.traveldiary.dto.response.ErrorMessages;
 import com.example.traveldiary.exception.BadRequestException;
 import com.example.traveldiary.exception.ForbiddenException;
 import com.example.traveldiary.exception.NotFoundException;
@@ -42,9 +43,10 @@ public class TravelServiceImpl implements TravelService {
     @Override
     public Travel getById(Long id) {
         if (id == null) {
-            throw new BadRequestException();
+            throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
-        return travelRepository.findById(id).orElseThrow(NotFoundException::new);
+        return travelRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND.getErrorMessage()));
     }
 
     @Transactional
@@ -57,14 +59,14 @@ public class TravelServiceImpl implements TravelService {
     @Override
     public void update(Long id, TravelDto travelDto, String username) {
         if (id == null) {
-            throw new BadRequestException();
+            throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
         save(id, travelDto, username, true);
     }
 
     private void save(Long id, TravelDto travelDto, String username, boolean isUpdate) {
         if (travelDto == null) {
-            throw new BadRequestException();
+            throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
 
         User user = userService.getByUsername(username);
@@ -73,7 +75,7 @@ public class TravelServiceImpl implements TravelService {
         if (isUpdate) {
             travel = getById(id);
             if (!user.equals(travel.getUser())) {
-                throw new ForbiddenException();
+                throw new ForbiddenException(ErrorMessages.WRONG_USER.getErrorMessage());
             }
             travelMapper.updateTravel(travelDto, travel);
         } else {
@@ -96,7 +98,7 @@ public class TravelServiceImpl implements TravelService {
         Travel travel = getById(id);
         User user = userService.getByUsername(username);
         if (!user.equals(travel.getUser())) {
-            throw new ForbiddenException();
+            throw new ForbiddenException(ErrorMessages.WRONG_USER.getErrorMessage());
         }
 
         travelRepository.deleteById(id);

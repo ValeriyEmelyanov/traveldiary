@@ -1,6 +1,7 @@
 package com.example.traveldiary.service.impl;
 
 import com.example.traveldiary.dto.request.ExpenseTypeDto;
+import com.example.traveldiary.dto.response.ErrorMessages;
 import com.example.traveldiary.exception.BadRequestException;
 import com.example.traveldiary.exception.NotFoundException;
 import com.example.traveldiary.model.ExpenseType;
@@ -31,9 +32,10 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
     @Override
     public ExpenseType getById(Long id) {
         if (id == null) {
-            throw new BadRequestException();
+            throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
-        return expenseTypeRepository.findById(id).orElseThrow(NotFoundException::new);
+        return expenseTypeRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND.getErrorMessage()));
     }
 
     @Transactional
@@ -46,14 +48,14 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
     @Override
     public void update(Long id, ExpenseTypeDto expenseTypeDto) {
         if (id == null) {
-            throw new BadRequestException();
+            throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
         save(id, expenseTypeDto, true);
     }
 
     private void save(Long id, ExpenseTypeDto expenseTypeDto, boolean isUpdate) {
         if (expenseTypeDto == null) {
-            throw new BadRequestException();
+            throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
 
         ExpenseType expenseType;
@@ -71,7 +73,7 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
     @Override
     public void delete(Long id) {
         if (id == null) {
-            throw new BadRequestException();
+            throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
 
         getById(id);

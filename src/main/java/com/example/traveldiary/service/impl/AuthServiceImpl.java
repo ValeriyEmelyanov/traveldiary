@@ -1,5 +1,6 @@
 package com.example.traveldiary.service.impl;
 
+import com.example.traveldiary.dto.response.ErrorMessages;
 import com.example.traveldiary.exception.BadLoginPasswordException;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.security.JwtProvider;
@@ -30,11 +31,11 @@ public class AuthServiceImpl implements AuthService {
         try {
             user = userService.getByUsername(username);
         } catch (Exception e) {
-            throw new BadLoginPasswordException();
+            throw new BadLoginPasswordException(ErrorMessages.BAD_LOGIN_PASSWORD.getErrorMessage());
         }
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new BadLoginPasswordException();
+            throw new BadLoginPasswordException(ErrorMessages.BAD_LOGIN_PASSWORD.getErrorMessage());
         }
 
         return jwtProvider.generateToken(username);
