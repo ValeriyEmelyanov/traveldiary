@@ -1,31 +1,25 @@
 package com.example.traveldiary.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Setter
-@Getter
+@Data
 @Builder
 public class PasswordDto {
 
     @Schema(description = "old password",
             example = "AbC1*3",
             required = true)
-    private String oldPassword;
+    private final String oldPassword;
 
     @Schema(description = "new password",
             example = "dEf_5+",
             required = true)
-    private String password;
+    private final String password;
 
     @Schema(description = "matching password",
             example = "dEf_5+",
             required = true)
-    private String matchingPassword;
+    private final String matchingPassword;
 }

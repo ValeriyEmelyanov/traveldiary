@@ -2,11 +2,9 @@ package com.example.traveldiary.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Setter
-@Getter
+@Data
 @Builder
 public class UserLoginDto {
 
@@ -14,12 +12,12 @@ public class UserLoginDto {
             description = "user name",
             example = "alex",
             required = true)
-    private String username;
+    private final String username;
 
     @Schema(
             description = "user password",
             example = "dEf_5+",
             required = true)
-    private String password;
+    private final String password;
 
 }

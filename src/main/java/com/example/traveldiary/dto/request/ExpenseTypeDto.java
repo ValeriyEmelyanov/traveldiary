@@ -1,20 +1,14 @@
 package com.example.traveldiary.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Setter
-@Getter
+@Data
 public class ExpenseTypeDto {
 
     @Schema(description = "name of the expense type",
             example = "Transort",
             required = true)
-    private String name;
+    private final String name;
 
 }
