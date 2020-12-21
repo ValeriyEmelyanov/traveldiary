@@ -5,6 +5,7 @@ import com.example.traveldiary.dto.request.TravelDto;
 import com.example.traveldiary.model.Travel;
 import com.example.traveldiary.service.TravelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,10 +16,12 @@ import java.util.List;
 @RestController
 public class TravelControllerImpl implements TravelController {
     private final TravelService travelService;
+    private final ConversionService conversionService;
 
     @Autowired
-    public TravelControllerImpl(TravelService travelService) {
+    public TravelControllerImpl(TravelService travelService, ConversionService conversionService) {
         this.travelService = travelService;
+        this.conversionService = conversionService;
     }
 
     @Override
@@ -35,7 +38,9 @@ public class TravelControllerImpl implements TravelController {
     @Override
     public ResponseEntity<String> create(TravelDto travelDto,
                                          Principal principal) {
-        travelService.save(travelDto, principal.getName());
+        travelService.save(
+                conversionService.convert(travelDto, Travel.class),
+                principal.getName());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -43,7 +48,9 @@ public class TravelControllerImpl implements TravelController {
     public ResponseEntity<String> update(Long id,
                                          TravelDto travelDto,
                                          Principal principal) {
-        travelService.update(id, travelDto, principal.getName());
+        travelService.update(id,
+                conversionService.convert(travelDto, Travel.class),
+                principal.getName());
         return ResponseEntity.ok().build();
     }
 

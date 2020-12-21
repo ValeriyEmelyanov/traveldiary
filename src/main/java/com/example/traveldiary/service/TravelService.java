@@ -1,6 +1,5 @@
 package com.example.traveldiary.service;
 
-import com.example.traveldiary.dto.request.TravelDto;
 import com.example.traveldiary.model.Travel;
 
 import java.util.List;
@@ -10,9 +9,9 @@ public interface TravelService {
 
     Travel getById(Long id);
 
-    void save(TravelDto travelDto, String username);
+    void save(Travel travel, String username);
 
-    void update(Long id, TravelDto travelDto, String username);
+    void update(Long id, Travel travel, String username);
 
     void delete(Long id, String username);
 }

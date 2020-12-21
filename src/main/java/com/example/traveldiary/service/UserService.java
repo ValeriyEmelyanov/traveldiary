@@ -1,8 +1,7 @@
 package com.example.traveldiary.service;
 
 
-import com.example.traveldiary.dto.request.PasswordDto;
-import com.example.traveldiary.dto.request.UserDto;
+import com.example.traveldiary.dto.intermediate.PasswordData;
 import com.example.traveldiary.model.User;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -16,15 +15,15 @@ public interface UserService {
 
     User getByUsername(String username);
 
-    void save(UserDto userDto);
+    void save(User user);
 
-    void update(Long id, UserDto userDto);
+    void update(Long id, User user);
 
     void changePassword(
             String username,
             Collection<? extends GrantedAuthority> authorities,
             Long id,
-            PasswordDto passwordDto);
+            PasswordData passwordData);
 
     void delete(Long id);
 }

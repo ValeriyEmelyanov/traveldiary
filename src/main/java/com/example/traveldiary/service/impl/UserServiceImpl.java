@@ -1,13 +1,11 @@
 package com.example.traveldiary.service.impl;
 
-import com.example.traveldiary.dto.request.PasswordDto;
-import com.example.traveldiary.dto.request.UserDto;
+import com.example.traveldiary.dto.intermediate.PasswordData;
 import com.example.traveldiary.dto.response.ErrorMessages;
 import com.example.traveldiary.exception.BadPasswordException;
 import com.example.traveldiary.exception.BadRequestException;
 import com.example.traveldiary.exception.ForbiddenException;
 import com.example.traveldiary.exception.NotFoundException;
-import com.example.traveldiary.mapper.UserMapper;
 import com.example.traveldiary.model.Permission;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.repository.UserRepository;
@@ -26,15 +24,12 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepositiry;
     private final PasswordEncoder passwordEncoder;
-    private final UserMapper userMapper;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepositiry,
-                           PasswordEncoder passwordEncoder,
-                           UserMapper userMapper) {
+                           PasswordEncoder passwordEncoder) {
         this.userRepositiry = userRepositiry;
         this.passwordEncoder = passwordEncoder;
-        this.userMapper = userMapper;
     }
 
     @Transactional(readOnly = true)
@@ -65,34 +60,35 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void save(UserDto userDto) {
-        save(null, userDto, false);
+    public void save(User user) {
+        save(null, user, false);
     }
 
     @Transactional
     @Override
-    public void update(Long id, UserDto userDto) {
+    public void update(Long id, User user) {
         if (id == null) {
             throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
-        save(id, userDto, true);
+        save(id, user, true);
     }
 
-    private void save(Long id, UserDto userDto, boolean isUpdate) {
-        if (userDto == null) {
+    private void save(Long id, User user, boolean isUpdate) {
+        if (user == null) {
             throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
 
-        User user;
         if (isUpdate) {
-            user = getById(id);
-            userMapper.updateUser(userDto, user);
+            User userSaved = getById(id);
+            user.setId(id);
+            user.setCreated(userSaved.getCreated());
+            user.setTravels(userSaved.getTravels());
+            user.setLastActivity(userSaved.getLastActivity());
         } else {
-            user = userMapper.toUser(userDto);
             user.setCreated(LocalDateTime.now());
         }
 
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userRepositiry.save(user);
     }
@@ -103,9 +99,9 @@ public class UserServiceImpl implements UserService {
             String username,
             Collection<? extends GrantedAuthority> authorities,
             Long id,
-            PasswordDto passwordDto) {
+            PasswordData passwordData) {
 
-        if (passwordDto == null || passwordDto.getPassword() == null) {
+        if (passwordData == null || passwordData.getPassword() == null) {
             throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
 
@@ -118,16 +114,16 @@ public class UserServiceImpl implements UserService {
             if (!hasPermissionUserWrite) {
                 throw new ForbiddenException(ErrorMessages.NO_PERMISSIONS.getErrorMessage());
             }
-        } else if (passwordDto.getOldPassword() == null
-                || !passwordEncoder.matches(passwordDto.getOldPassword(), user.getPassword())) {
+        } else if (passwordData.getOldPassword() == null
+                || !passwordEncoder.matches(passwordData.getOldPassword(), user.getPassword())) {
             throw new ForbiddenException(ErrorMessages.WRONG_OLD_PASSWORD.getErrorMessage());
         }
 
-        if (!passwordDto.getPassword().equals(passwordDto.getMatchingPassword())) {
+        if (!passwordData.getPassword().equals(passwordData.getMatchingPassword())) {
             throw new BadPasswordException(ErrorMessages.BAD_PASSWORD_NOT_MATCHING.getErrorMessage());
         }
 
-        user.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
+        user.setPassword(passwordEncoder.encode(passwordData.getPassword()));
 
         userRepositiry.save(user);
     }

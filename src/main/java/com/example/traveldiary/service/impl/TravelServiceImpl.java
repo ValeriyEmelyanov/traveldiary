@@ -1,12 +1,9 @@
 package com.example.traveldiary.service.impl;
 
-import com.example.traveldiary.dto.request.TravelDto;
 import com.example.traveldiary.dto.response.ErrorMessages;
 import com.example.traveldiary.exception.BadRequestException;
 import com.example.traveldiary.exception.ForbiddenException;
 import com.example.traveldiary.exception.NotFoundException;
-import com.example.traveldiary.mapper.TravelMapper;
-import com.example.traveldiary.model.ExpenseRecord;
 import com.example.traveldiary.model.Travel;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.repository.TravelRepository;
@@ -22,15 +19,12 @@ import java.util.List;
 public class TravelServiceImpl implements TravelService {
     private final TravelRepository travelRepository;
     private final UserService userService;
-    private final TravelMapper travelMapper;
 
     @Autowired
     public TravelServiceImpl(TravelRepository travelRepository,
-                             UserService userService,
-                             TravelMapper travelMapper) {
+                             UserService userService) {
         this.travelRepository = travelRepository;
         this.userService = userService;
-        this.travelMapper = travelMapper;
     }
 
     @Transactional(readOnly = true)
@@ -51,43 +45,35 @@ public class TravelServiceImpl implements TravelService {
 
     @Transactional
     @Override
-    public void save(TravelDto travelDto, String username) {
-        save(null, travelDto, username, false);
+    public void save(Travel travel, String username) {
+        save(null, travel, username, false);
     }
 
     @Transactional
     @Override
-    public void update(Long id, TravelDto travelDto, String username) {
+    public void update(Long id, Travel travel, String username) {
         if (id == null) {
             throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
-        save(id, travelDto, username, true);
+        save(id, travel, username, true);
     }
 
-    private void save(Long id, TravelDto travelDto, String username, boolean isUpdate) {
-        if (travelDto == null) {
+    private void save(Long id, Travel travel, String username, boolean isUpdate) {
+        if (travel == null) {
             throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
 
         User user = userService.getByUsername(username);
 
-        Travel travel;
         if (isUpdate) {
-            travel = getById(id);
-            if (!user.equals(travel.getUser())) {
+            Travel travelSaved = getById(id);
+            if (!user.equals(travelSaved.getUser())) {
                 throw new ForbiddenException(ErrorMessages.WRONG_USER.getErrorMessage());
             }
-            travelMapper.updateTravel(travelDto, travel);
-        } else {
-            travel = travelMapper.toTravel(travelDto);
-            travel.setUser(user);
+            travel.setId(travelSaved.getId());
         }
 
-        if (travel.getExpenses() != null) {
-            for (ExpenseRecord expenseRecord : travel.getExpenses()) {
-                expenseRecord.setTravel(travel);
-            }
-        }
+        travel.setUser(user);
 
         travelRepository.save(travel);
     }

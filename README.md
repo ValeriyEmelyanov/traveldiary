@@ -20,7 +20,6 @@ In progress ...
 * PostgreSQL 12
 * Flyway
 * Lombok
-* MapStruct
 * SpringDoc & OpenAPI 3.0 & Swagger
 * Maven
 * JUnit 5
