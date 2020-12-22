@@ -189,9 +189,15 @@ class UserControllerImplIntegrationTest {
     @Test
     @WithMockUser
     void createForbidden() throws Exception {
+        UserDto dto = UserDto.builder()
+                .username("username")
+                .password("password")
+                .enabled(true)
+                .build();
+
         mockMvc.perform(post(Urls.Users.FULL)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .content("{}"))
+                .content(objectMapper.writeValueAsString(dto)))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -279,9 +285,14 @@ class UserControllerImplIntegrationTest {
     @Test
     @WithMockUser
     void changePasswordForbidden() throws Exception {
+        PasswordDto dto = PasswordDto.builder()
+                .password("password")
+                .matchingPassword("password")
+                .build();
+
         mockMvc.perform(patch(Urls.Users.FULL + "/1/" + Urls.Users.Password.PART)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{}"))
+                .content(objectMapper.writeValueAsString(dto)))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -292,6 +303,7 @@ class UserControllerImplIntegrationTest {
         String password = "secret";
         PasswordDto dto = PasswordDto.builder()
                 .password(password)
+                .matchingPassword(password)
                 .build();
 
         mockMvc.perform(patch(Urls.Users.FULL + "/2/" + Urls.Users.Password.PART)

@@ -1,6 +1,5 @@
 package com.example.traveldiary.service;
 
-import com.example.traveldiary.dto.request.ExpenseTypeDto;
 import com.example.traveldiary.model.ExpenseType;
 
 import java.util.List;
@@ -10,9 +9,9 @@ public interface ExpenseTypeService {
 
     ExpenseType getById(Long id);
 
-    void save(ExpenseTypeDto expenseTypeDto);
+    void save(ExpenseType expenseType);
 
-    void update(Long id, ExpenseTypeDto expenseTypeDto);
+    void update(Long id, ExpenseType expenseType);
 
     void delete(Long id);
 }

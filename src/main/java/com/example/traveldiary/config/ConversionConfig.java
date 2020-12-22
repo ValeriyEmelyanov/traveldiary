@@ -1,5 +1,6 @@
 package com.example.traveldiary.config;
 
+import com.example.traveldiary.mapper.ExpenseTypeDtoToExpenseTypeConverter;
 import com.example.traveldiary.mapper.PasswordDtoToPasswordDataConverter;
 import com.example.traveldiary.mapper.TravelDtoToTravelConverter;
 import com.example.traveldiary.mapper.UserDtoToUserConverter;
@@ -30,6 +31,7 @@ public class ConversionConfig {
         converters.add(new TravelDtoToTravelConverter(expenseTypeService));
         converters.add(new UserDtoToUserConverter());
         converters.add(new PasswordDtoToPasswordDataConverter());
+        converters.add(new ExpenseTypeDtoToExpenseTypeConverter());
         factory.setConverters(converters);
         return factory;
     }

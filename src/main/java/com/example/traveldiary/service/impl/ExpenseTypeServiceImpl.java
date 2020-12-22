@@ -1,7 +1,6 @@
 package com.example.traveldiary.service.impl;
 
-import com.example.traveldiary.dto.request.ExpenseTypeDto;
-import com.example.traveldiary.dto.response.ErrorMessages;
+import com.example.traveldiary.exception.ErrorMessages;
 import com.example.traveldiary.exception.BadRequestException;
 import com.example.traveldiary.exception.NotFoundException;
 import com.example.traveldiary.model.ExpenseType;
@@ -40,31 +39,28 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 
     @Transactional
     @Override
-    public void save(ExpenseTypeDto expenseTypeDto) {
-        save(null, expenseTypeDto, false);
+    public void save(ExpenseType expenseType) {
+        save(null, expenseType, false);
     }
 
     @Transactional
     @Override
-    public void update(Long id, ExpenseTypeDto expenseTypeDto) {
+    public void update(Long id, ExpenseType expenseType) {
         if (id == null) {
             throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
-        save(id, expenseTypeDto, true);
+        save(id, expenseType, true);
     }
 
-    private void save(Long id, ExpenseTypeDto expenseTypeDto, boolean isUpdate) {
-        if (expenseTypeDto == null) {
+    private void save(Long id, ExpenseType expenseType, boolean isUpdate) {
+        if (expenseType == null) {
             throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
 
-        ExpenseType expenseType;
         if (isUpdate) {
-            expenseType = getById(id);
-        } else {
-            expenseType = new ExpenseType();
+            ExpenseType expenseTypeSaved = getById(id);
+            expenseType.setId(expenseTypeSaved.getId());
         }
-        expenseType.setName(expenseTypeDto.getName());
 
         expenseTypeRepository.save(expenseType);
     }

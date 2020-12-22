@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
+
 @Tag(name = "auth service")
 @RequestMapping(Urls.Auth.FULL)
 public interface AuthController {
@@ -27,5 +29,5 @@ public interface AuthController {
                             array = @ArraySchema(schema = @Schema(implementation = AuthRest.class)))),
             @ApiResponse(responseCode = "400", description = "bad request", content = @Content)})
     @PostMapping
-    ResponseEntity<AuthRest> auth(@RequestBody UserLoginDto loginDto);
+    ResponseEntity<AuthRest> auth(@Valid @RequestBody UserLoginDto loginDto);
 }

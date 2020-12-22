@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Tag(name = "user service", description = "the user API")
@@ -73,7 +74,7 @@ public interface UserController {
                     description = "the user to add. Cannot be null",
                     required = true,
                     schema = @Schema(implementation = UserDto.class))
-            @RequestBody UserDto userDto);
+            @Valid @RequestBody UserDto userDto);
 
     @Operation(summary = "update an existing user")
     @ApiResponses(value = {
@@ -92,7 +93,7 @@ public interface UserController {
                     description = "the user to be updated. Cannot be null.",
                     required = true,
                     schema = @Schema(implementation = UserDto.class))
-            @RequestBody UserDto userDto);
+            @Valid @RequestBody UserDto userDto);
 
     @Operation(summary = "change a user password")
     @ApiResponses(value = {
@@ -111,7 +112,7 @@ public interface UserController {
                     description = "password data. Cannot be null.",
                     required = true,
                     schema = @Schema(implementation = PasswordDto.class))
-            @RequestBody PasswordDto passwordDto,
+            @Valid @RequestBody PasswordDto passwordDto,
             Authentication authentication);
 
     @Operation(summary = "deletes a user")

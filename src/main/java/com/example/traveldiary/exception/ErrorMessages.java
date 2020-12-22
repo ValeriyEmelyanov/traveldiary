@@ -1,4 +1,4 @@
-package com.example.traveldiary.dto.response;
+package com.example.traveldiary.exception;
 
 public enum ErrorMessages {
     BAD_REQUEST("Bad request"),

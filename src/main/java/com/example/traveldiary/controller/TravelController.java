@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -74,7 +75,7 @@ public interface TravelController {
                     description = "the travel to add. Cannot be null",
                     required = true,
                     schema = @Schema(implementation = TravelDto.class))
-            @RequestBody TravelDto travelDto,
+            @Valid @RequestBody TravelDto travelDto,
             Principal principal);
 
     @Operation(summary = "update an existing travel")
@@ -95,7 +96,7 @@ public interface TravelController {
                     description = "the travel to be updated. Cannot be null.",
                     required = true,
                     schema = @Schema(implementation = TravelDto.class))
-            @RequestBody TravelDto travelDto,
+            @Valid @RequestBody TravelDto travelDto,
             Principal principal);
 
     @Operation(summary = "deletes a travel")

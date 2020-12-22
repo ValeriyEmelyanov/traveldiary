@@ -1,7 +1,7 @@
 package com.example.traveldiary.service.impl;
 
 import com.example.traveldiary.dto.intermediate.PasswordData;
-import com.example.traveldiary.dto.response.ErrorMessages;
+import com.example.traveldiary.exception.ErrorMessages;
 import com.example.traveldiary.exception.BadPasswordException;
 import com.example.traveldiary.exception.BadRequestException;
 import com.example.traveldiary.exception.ForbiddenException;

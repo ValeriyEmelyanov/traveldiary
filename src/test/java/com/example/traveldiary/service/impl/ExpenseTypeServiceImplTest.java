@@ -1,6 +1,5 @@
 package com.example.traveldiary.service.impl;
 
-import com.example.traveldiary.dto.request.ExpenseTypeDto;
 import com.example.traveldiary.exception.NotFoundException;
 import com.example.traveldiary.model.ExpenseType;
 import com.example.traveldiary.repository.ExpenseTypeRepository;
@@ -93,8 +92,7 @@ class ExpenseTypeServiceImplTest {
     void save() {
         int testDataSizeBefore = testData.size();
 
-        ExpenseTypeDto dto = new ExpenseTypeDto();
-        dto.setName("Souvenirs");
+        ExpenseType expenseType = new ExpenseType("Souvenirs");
 
         when(expenseTypeRepository.save(any()))
                 .thenAnswer((Answer<Void>) invocation -> {
@@ -102,10 +100,10 @@ class ExpenseTypeServiceImplTest {
                     return null;
                 });
 
-        expenseTypeService.save(dto);
+        expenseTypeService.save(expenseType);
 
         assertEquals(testDataSizeBefore + 1, testData.size());
-        assertEquals(dto.getName(), testData.get(testData.size() - 1).getName());
+        assertEquals(expenseType.getName(), testData.get(testData.size() - 1).getName());
     }
 
     @Test
@@ -113,8 +111,7 @@ class ExpenseTypeServiceImplTest {
         long id = 2L;
         int index = 1;
 
-        ExpenseTypeDto dto = new ExpenseTypeDto();
-        dto.setName("Nutrition");
+        ExpenseType expenseType = new ExpenseType("Nutrition");
 
         when(expenseTypeRepository.findById(id))
                 .thenReturn(Optional.of(testData.get(index)));
@@ -124,9 +121,9 @@ class ExpenseTypeServiceImplTest {
                     return null;
                 });
 
-        expenseTypeService.update(id, dto);
+        expenseTypeService.update(id, expenseType);
 
-        assertEquals(dto.getName(), testData.get(index).getName());
+        assertEquals(expenseType.getName(), testData.get(index).getName());
     }
 
     @Test

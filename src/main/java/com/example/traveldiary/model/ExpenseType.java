@@ -1,6 +1,7 @@
 package com.example.traveldiary.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "expense_type")
 @NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
 @SuperBuilder

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Tag(name = "expense type service", description = "the Expense Type API")
@@ -69,7 +70,7 @@ public interface ExpenseTypeController {
                     description = "the expense type to add. Cannot be null",
                     required = true,
                     schema = @Schema(implementation = ExpenseTypeDto.class))
-            @RequestBody ExpenseTypeDto expenseTypeDto);
+            @Valid @RequestBody ExpenseTypeDto expenseTypeDto);
 
     @Operation(summary = "update an existing expense type")
     @ApiResponses(value = {
@@ -88,7 +89,7 @@ public interface ExpenseTypeController {
                     description = "the expense type to be updated. Cannot be null.",
                     required = true,
                     schema = @Schema(implementation = ExpenseTypeDto.class))
-            @RequestBody ExpenseTypeDto expenseTypeDto);
+            @Valid @RequestBody ExpenseTypeDto expenseTypeDto);
 
 
     @Operation(summary = "deletes an expense type")
@@ -104,4 +105,4 @@ public interface ExpenseTypeController {
                     description = "id of the expense type to be deleted. Cannot be null",
                     required = true)
             @PathVariable Long id);
-    }
+}
