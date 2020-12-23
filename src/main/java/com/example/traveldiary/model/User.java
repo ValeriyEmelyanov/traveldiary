@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -48,7 +50,14 @@ public class User extends AbstractEntity {
             example = "2020-11-27 19:41:43.623399",
             required = true)
     @Column(name = "created")
+    @CreationTimestamp
     private LocalDateTime created;
+
+    @Schema(description = "date of user modification (filled in automatically)",
+            example = "2020-11-26 20:20:42.473369")
+    @Column(name = "modified")
+    @UpdateTimestamp
+    private LocalDateTime modified;
 
     @Schema(description = "determines the user's ability to work in the service",
             example = "true",

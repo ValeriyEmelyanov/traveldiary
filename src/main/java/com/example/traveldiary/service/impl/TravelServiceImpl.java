@@ -1,7 +1,7 @@
 package com.example.traveldiary.service.impl;
 
-import com.example.traveldiary.exception.ErrorMessages;
 import com.example.traveldiary.exception.BadRequestException;
+import com.example.traveldiary.exception.ErrorMessages;
 import com.example.traveldiary.exception.ForbiddenException;
 import com.example.traveldiary.exception.NotFoundException;
 import com.example.traveldiary.model.Travel;
@@ -71,6 +71,7 @@ public class TravelServiceImpl implements TravelService {
                 throw new ForbiddenException(ErrorMessages.WRONG_USER.getErrorMessage());
             }
             travel.setId(travelSaved.getId());
+            travel.setCreated(travelSaved.getCreated());
         }
 
         travel.setUser(user);

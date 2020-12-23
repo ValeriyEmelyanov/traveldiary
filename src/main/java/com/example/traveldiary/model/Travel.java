@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,6 +22,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -82,6 +85,18 @@ public class Travel extends AbstractEntity {
             required = true)
     @Column(name = "favorite")
     private Boolean favorite;
+
+    @Schema(description = "date of creation (filled in automatically)",
+            example = "2020-11-27 19:41:43.623399")
+    @Column(name = "created")
+    @CreationTimestamp
+    private LocalDateTime created;
+
+    @Schema(description = "date of modification (filled in automatically)",
+            example = "2020-11-26 20:20:42.473369")
+    @Column(name = "modified")
+    @UpdateTimestamp
+    private LocalDateTime modified;
 
     @Schema(description = "owner of the travel",
             example = "alex",

@@ -1,9 +1,9 @@
 package com.example.traveldiary.service.impl;
 
 import com.example.traveldiary.dto.intermediate.PasswordData;
-import com.example.traveldiary.exception.ErrorMessages;
 import com.example.traveldiary.exception.BadPasswordException;
 import com.example.traveldiary.exception.BadRequestException;
+import com.example.traveldiary.exception.ErrorMessages;
 import com.example.traveldiary.exception.ForbiddenException;
 import com.example.traveldiary.exception.NotFoundException;
 import com.example.traveldiary.model.Permission;
@@ -16,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -84,8 +83,6 @@ public class UserServiceImpl implements UserService {
             user.setCreated(userSaved.getCreated());
             user.setTravels(userSaved.getTravels());
             user.setLastActivity(userSaved.getLastActivity());
-        } else {
-            user.setCreated(LocalDateTime.now());
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
