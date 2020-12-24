@@ -59,20 +59,20 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void save(User user) {
-        save(null, user, false);
+    public User save(User user) {
+        return save(null, user, false);
     }
 
     @Transactional
     @Override
-    public void update(Long id, User user) {
+    public User update(Long id, User user) {
         if (id == null) {
             throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
-        save(id, user, true);
+        return save(id, user, true);
     }
 
-    private void save(Long id, User user, boolean isUpdate) {
+    private User save(Long id, User user, boolean isUpdate) {
         if (user == null) {
             throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        userRepositiry.save(user);
+        return userRepositiry.save(user);
     }
 
     @Transactional

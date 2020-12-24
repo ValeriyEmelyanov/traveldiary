@@ -9,9 +9,9 @@ public interface ExpenseTypeService {
 
     ExpenseType getById(Long id);
 
-    void save(ExpenseType expenseType);
+    ExpenseType save(ExpenseType expenseType);
 
-    void update(Long id, ExpenseType expenseType);
+    ExpenseType update(Long id, ExpenseType expenseType);
 
     void delete(Long id);
 }

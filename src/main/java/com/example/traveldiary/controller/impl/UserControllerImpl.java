@@ -4,6 +4,7 @@ import com.example.traveldiary.controller.UserController;
 import com.example.traveldiary.dto.intermediate.PasswordData;
 import com.example.traveldiary.dto.request.PasswordDto;
 import com.example.traveldiary.dto.request.UserDto;
+import com.example.traveldiary.dto.response.UserRest;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserControllerImpl implements UserController {
@@ -29,27 +32,33 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<List<User>> getList() {
-        return ResponseEntity.ok(userService.getList());
+    public ResponseEntity<List<UserRest>> getList() {
+        return ResponseEntity.ok(userService.getList()
+                .stream()
+                .map(e -> conversionService.convert(e, UserRest.class))
+                .collect(Collectors.toList()));
     }
 
     @Override
-    public ResponseEntity<User> getById(Long id) {
+    public ResponseEntity<UserRest> getById(Long id) {
         User user = userService.getById(id);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(Objects.requireNonNull(
+                conversionService.convert(user, UserRest.class)));
     }
 
     @Override
-    public ResponseEntity<String> create(UserDto userDto) {
-        userService.save(conversionService.convert(userDto, User.class));
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<UserRest> create(UserDto userDto) {
+        User saved = userService.save(conversionService.convert(userDto, User.class));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(conversionService.convert(saved, UserRest.class));
     }
 
     @Override
-    public ResponseEntity<String> update(Long id,
+    public ResponseEntity<UserRest> update(Long id,
                                          UserDto userDto) {
-        userService.update(id, conversionService.convert(userDto, User.class));
-        return ResponseEntity.ok().build();
+        User updated = userService.update(id, conversionService.convert(userDto, User.class));
+        return ResponseEntity.ok(Objects.requireNonNull(
+                conversionService.convert(updated, UserRest.class)));
     }
 
     @Override

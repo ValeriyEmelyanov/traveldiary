@@ -2,6 +2,7 @@ package com.example.traveldiary.controller.impl;
 
 import com.example.traveldiary.controller.ExpenseTypeController;
 import com.example.traveldiary.dto.request.ExpenseTypeDto;
+import com.example.traveldiary.dto.response.ExpenseTypeRest;
 import com.example.traveldiary.model.ExpenseType;
 import com.example.traveldiary.service.ExpenseTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 public class ExpenseTypeControllerImpl implements ExpenseTypeController {
@@ -24,27 +27,35 @@ public class ExpenseTypeControllerImpl implements ExpenseTypeController {
     }
 
     @Override
-    public ResponseEntity<List<ExpenseType>> getList() {
-        return ResponseEntity.ok(expenseTypeService.getList());
+    public ResponseEntity<List<ExpenseTypeRest>> getList() {
+        return ResponseEntity.ok(expenseTypeService.getList()
+                .stream()
+                .map(e -> conversionService.convert(e, ExpenseTypeRest.class))
+                .collect(Collectors.toList()));
     }
 
     @Override
-    public ResponseEntity<ExpenseType> getById(Long id) {
+    public ResponseEntity<ExpenseTypeRest> getById(Long id) {
         ExpenseType expenseType = expenseTypeService.getById(id);
-        return ResponseEntity.ok(expenseType);
+        return ResponseEntity.ok(Objects.requireNonNull(
+                conversionService.convert(expenseType, ExpenseTypeRest.class)));
     }
 
     @Override
-    public ResponseEntity<String> create(ExpenseTypeDto expenseTypeDto) {
-        expenseTypeService.save(conversionService.convert(expenseTypeDto, ExpenseType.class));
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<ExpenseTypeRest> create(ExpenseTypeDto expenseTypeDto) {
+        ExpenseType saved = expenseTypeService.save(
+                conversionService.convert(expenseTypeDto, ExpenseType.class));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(conversionService.convert(saved, ExpenseTypeRest.class));
     }
 
     @Override
-    public ResponseEntity<String> update(Long id,
+    public ResponseEntity<ExpenseTypeRest> update(Long id,
                                          ExpenseTypeDto expenseTypeDto) {
-        expenseTypeService.update(id, conversionService.convert(expenseTypeDto, ExpenseType.class));
-        return ResponseEntity.ok().build();
+        ExpenseType updated = expenseTypeService.update(id,
+                conversionService.convert(expenseTypeDto, ExpenseType.class));
+        return ResponseEntity.ok()
+                .body(conversionService.convert(updated, ExpenseTypeRest.class));
     }
 
     @Override

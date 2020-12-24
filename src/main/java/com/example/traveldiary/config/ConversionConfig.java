@@ -1,9 +1,12 @@
 package com.example.traveldiary.config;
 
-import com.example.traveldiary.mapper.ExpenseTypeDtoToExpenseTypeConverter;
-import com.example.traveldiary.mapper.PasswordDtoToPasswordDataConverter;
-import com.example.traveldiary.mapper.TravelDtoToTravelConverter;
-import com.example.traveldiary.mapper.UserDtoToUserConverter;
+import com.example.traveldiary.mapper.dto.ToExpenseTypeConverter;
+import com.example.traveldiary.mapper.dto.ToPasswordDataConverter;
+import com.example.traveldiary.mapper.dto.ToTravelConverter;
+import com.example.traveldiary.mapper.dto.ToUserConverter;
+import com.example.traveldiary.mapper.model.ToExpenseTypeRestConverter;
+import com.example.traveldiary.mapper.model.ToTravelRestConverter;
+import com.example.traveldiary.mapper.model.ToUserRestConverter;
 import com.example.traveldiary.service.ExpenseTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,12 +30,20 @@ public class ConversionConfig {
     @Bean
     ConversionServiceFactoryBean conversionService() {
         ConversionServiceFactoryBean factory = new ConversionServiceFactoryBean();
-        Set<Converter<?,?>> converters = new HashSet<>();
-        converters.add(new TravelDtoToTravelConverter(expenseTypeService));
-        converters.add(new UserDtoToUserConverter());
-        converters.add(new PasswordDtoToPasswordDataConverter());
-        converters.add(new ExpenseTypeDtoToExpenseTypeConverter());
+        Set<Converter<?, ?>> converters = new HashSet<>();
+
+        converters.add(new ToTravelConverter(expenseTypeService));
+        converters.add(new ToUserConverter());
+        converters.add(new ToPasswordDataConverter());
+        converters.add(new ToExpenseTypeConverter());
+
+        converters.add(new ToUserRestConverter());
+        ToExpenseTypeRestConverter toExpenseTypeRestConverter = new ToExpenseTypeRestConverter();
+        converters.add(toExpenseTypeRestConverter);
+        converters.add(new ToTravelRestConverter(toExpenseTypeRestConverter));
+
         factory.setConverters(converters);
+
         return factory;
     }
 }

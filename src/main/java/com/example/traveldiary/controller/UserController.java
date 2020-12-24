@@ -3,7 +3,7 @@ package com.example.traveldiary.controller;
 import com.example.traveldiary.Urls;
 import com.example.traveldiary.dto.request.PasswordDto;
 import com.example.traveldiary.dto.request.UserDto;
-import com.example.traveldiary.model.User;
+import com.example.traveldiary.dto.response.UserRest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -39,24 +39,24 @@ public interface UserController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(
                             mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = User.class)))),
+                            array = @ArraySchema(schema = @Schema(implementation = UserRest.class)))),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content)})
     @GetMapping
     @PreAuthorize("hasAuthority('user:read')")
-    ResponseEntity<List<User>> getList();
+    ResponseEntity<List<UserRest>> getList();
 
     @Operation(summary = "get a user type by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = User.class))),
+                            schema = @Schema(implementation = UserRest.class))),
             @ApiResponse(responseCode = "401", description = "unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @GetMapping(USER_ID_PATH_VARIABLE)
     @PreAuthorize("hasAuthority('user:read')")
-    ResponseEntity<User> getById(
+    ResponseEntity<UserRest> getById(
             @Parameter(
                     name = "id",
                     description = "id  of the user to be obtained. Cannot be null",
@@ -65,11 +65,14 @@ public interface UserController {
 
     @Operation(summary = "add a new user")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "user created", content = @Content),
+            @ApiResponse(responseCode = "201", description = "user created",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = UserRest.class))),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content)})
     @PostMapping
     @PreAuthorize("hasAuthority('user:write')")
-    ResponseEntity<String> create(
+    ResponseEntity<UserRest> create(
             @Parameter(
                     description = "the user to add. Cannot be null",
                     required = true,
@@ -78,12 +81,15 @@ public interface UserController {
 
     @Operation(summary = "update an existing user")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = UserRest.class))),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @PutMapping(USER_ID_PATH_VARIABLE)
     @PreAuthorize("hasAuthority('user:write')")
-    ResponseEntity<String> update(
+    ResponseEntity<UserRest> update(
             @Parameter(
                     name = "id",
                     description = "id of the user to be updated. Cannot be null.",

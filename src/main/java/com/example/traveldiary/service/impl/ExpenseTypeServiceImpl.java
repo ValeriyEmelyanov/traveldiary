@@ -39,20 +39,20 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 
     @Transactional
     @Override
-    public void save(ExpenseType expenseType) {
-        save(null, expenseType, false);
+    public ExpenseType save(ExpenseType expenseType) {
+        return save(null, expenseType, false);
     }
 
     @Transactional
     @Override
-    public void update(Long id, ExpenseType expenseType) {
+    public ExpenseType update(Long id, ExpenseType expenseType) {
         if (id == null) {
             throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
-        save(id, expenseType, true);
+        return save(id, expenseType, true);
     }
 
-    private void save(Long id, ExpenseType expenseType, boolean isUpdate) {
+    private ExpenseType save(Long id, ExpenseType expenseType, boolean isUpdate) {
         if (expenseType == null) {
             throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
@@ -62,7 +62,7 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
             expenseType.setId(expenseTypeSaved.getId());
         }
 
-        expenseTypeRepository.save(expenseType);
+        return expenseTypeRepository.save(expenseType);
     }
 
     @Transactional

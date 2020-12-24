@@ -45,20 +45,20 @@ public class TravelServiceImpl implements TravelService {
 
     @Transactional
     @Override
-    public void save(Travel travel, String username) {
-        save(null, travel, username, false);
+    public Travel save(Travel travel, String username) {
+        return save(null, travel, username, false);
     }
 
     @Transactional
     @Override
-    public void update(Long id, Travel travel, String username) {
+    public Travel update(Long id, Travel travel, String username) {
         if (id == null) {
             throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
-        save(id, travel, username, true);
+        return save(id, travel, username, true);
     }
 
-    private void save(Long id, Travel travel, String username, boolean isUpdate) {
+    private Travel save(Long id, Travel travel, String username, boolean isUpdate) {
         if (travel == null) {
             throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
@@ -72,11 +72,14 @@ public class TravelServiceImpl implements TravelService {
             }
             travel.setId(travelSaved.getId());
             travel.setCreated(travelSaved.getCreated());
+            if (travel.getExpenses() == null && travelSaved.getExpenses() != null) {
+                travel.setExpenses(List.of());
+            }
         }
 
         travel.setUser(user);
 
-        travelRepository.save(travel);
+        return travelRepository.save(travel);
     }
 
     @Transactional

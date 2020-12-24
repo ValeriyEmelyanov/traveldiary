@@ -1,4 +1,4 @@
-package com.example.traveldiary.mapper;
+package com.example.traveldiary.mapper.dto;
 
 import com.example.traveldiary.dto.request.ExpenseRecordDto;
 import com.example.traveldiary.dto.request.TravelDto;
@@ -10,11 +10,11 @@ import org.springframework.core.convert.converter.Converter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TravelDtoToTravelConverter implements Converter<TravelDto, Travel> {
+public class ToTravelConverter implements Converter<TravelDto, Travel> {
 
     private final ExpenseTypeService expenseTypeService;
 
-    public TravelDtoToTravelConverter(ExpenseTypeService expenseTypeService) {
+    public ToTravelConverter(ExpenseTypeService expenseTypeService) {
         this.expenseTypeService = expenseTypeService;
     }
 
@@ -33,19 +33,9 @@ public class TravelDtoToTravelConverter implements Converter<TravelDto, Travel> 
         travel.setRating(travelDto.getRating());
         travel.setFavorite(travelDto.getFavorite());
 
-        if (travel.getExpenses() != null) {
-            List<ExpenseRecord> list = toExpenseRecordList(travelDto.getExpenses(), travel);
-            if (list != null) {
-                travel.getExpenses().clear();
-                travel.getExpenses().addAll(list);
-            } else {
-                travel.setExpenses(null);
-            }
-        } else {
-            List<ExpenseRecord> list = toExpenseRecordList(travelDto.getExpenses(), travel);
-            if (list != null) {
-                travel.setExpenses(list);
-            }
+        List<ExpenseRecord> list = toExpenseRecordList(travelDto.getExpenses(), travel);
+        if (list != null) {
+            travel.setExpenses(list);
         }
 
         return travel;

@@ -2,6 +2,7 @@ package com.example.traveldiary.controller.impl;
 
 import com.example.traveldiary.controller.TravelController;
 import com.example.traveldiary.dto.request.TravelDto;
+import com.example.traveldiary.dto.response.TravelRest;
 import com.example.traveldiary.model.Travel;
 import com.example.traveldiary.service.TravelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 public class TravelControllerImpl implements TravelController {
@@ -25,33 +28,39 @@ public class TravelControllerImpl implements TravelController {
     }
 
     @Override
-    public ResponseEntity<List<Travel>> getList() {
-        return ResponseEntity.ok(travelService.getList());
+    public ResponseEntity<List<TravelRest>> getList() {
+        return ResponseEntity.ok(travelService.getList()
+                .stream()
+                .map(e -> conversionService.convert(e, TravelRest.class))
+                .collect(Collectors.toList()));
     }
 
     @Override
-    public ResponseEntity<Travel> getById(Long id) {
+    public ResponseEntity<TravelRest> getById(Long id) {
         Travel travel = travelService.getById(id);
-        return ResponseEntity.ok(travel);
+        return ResponseEntity.ok(Objects.requireNonNull(
+                conversionService.convert(travel, TravelRest.class)));
     }
 
     @Override
-    public ResponseEntity<String> create(TravelDto travelDto,
-                                         Principal principal) {
-        travelService.save(
+    public ResponseEntity<TravelRest> create(TravelDto travelDto,
+                                             Principal principal) {
+        Travel saved = travelService.save(
                 conversionService.convert(travelDto, Travel.class),
                 principal.getName());
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(conversionService.convert(saved, TravelRest.class));
     }
 
     @Override
-    public ResponseEntity<String> update(Long id,
-                                         TravelDto travelDto,
-                                         Principal principal) {
-        travelService.update(id,
+    public ResponseEntity<TravelRest> update(Long id,
+                                             TravelDto travelDto,
+                                             Principal principal) {
+        Travel updated = travelService.update(id,
                 conversionService.convert(travelDto, Travel.class),
                 principal.getName());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok()
+                .body(conversionService.convert(updated, TravelRest.class));
     }
 
     @Override
