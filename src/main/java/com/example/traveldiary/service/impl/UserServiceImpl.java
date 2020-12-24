@@ -11,6 +11,7 @@ import com.example.traveldiary.model.User;
 import com.example.traveldiary.repository.UserRepository;
 import com.example.traveldiary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,13 +35,15 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
+    @NonNull
     public List<User> getList() {
         return userRepositiry.findAll();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public User getById(Long id) {
+    @NonNull
+    public User getById(@NonNull Long id) {
         Assert.notNull(id, ErrorMessages.NULL_USER_ID.getErrorMessage());
 
         return userRepositiry.findById(id)
@@ -49,7 +52,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public User getByUsername(String username) {
+    @NonNull
+    public User getByUsername(@NonNull String username) {
         Assert.notNull(username, ErrorMessages.NULL_USERNAME.getErrorMessage());
 
         return userRepositiry.findByUsername(username)
@@ -58,7 +62,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User save(User user) {
+    @NonNull
+    public User save(@NonNull User user) {
         Assert.notNull(user, ErrorMessages.NULL_USER_OBJECT.getErrorMessage());
 
         return save(null, user, false);
@@ -66,7 +71,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User update(Long id, User user) {
+    @NonNull
+    public User update(@NonNull Long id, @NonNull User user) {
         Assert.notNull(id, ErrorMessages.NULL_USER_ID.getErrorMessage());
         Assert.notNull(user, ErrorMessages.NULL_USER_OBJECT.getErrorMessage());
 
@@ -94,10 +100,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void changePassword(
-            String username,
-            Collection<? extends GrantedAuthority> authorities,
-            Long id,
-            PasswordData passwordData) {
+            @NonNull String username,
+            @NonNull Collection<? extends GrantedAuthority> authorities,
+            @NonNull Long id,
+            @NonNull PasswordData passwordData) {
         Assert.notNull(username, ErrorMessages.NULL_USERNAME.getErrorMessage());
         Assert.notNull(authorities, ErrorMessages.NULL_USER_AUTHORITIES.getErrorMessage());
         Assert.notNull(id, ErrorMessages.NULL_USER_ID.getErrorMessage());
@@ -132,7 +138,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void delete(Long id) {
+    public void delete(@NonNull Long id) {
         Assert.notNull(id, ErrorMessages.NULL_USER_ID.getErrorMessage());
 
         getById(id);

@@ -7,6 +7,7 @@ import com.example.traveldiary.repository.UserLastActivityRepository;
 import com.example.traveldiary.service.UserLastActivityService;
 import com.example.traveldiary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -28,7 +29,10 @@ public class UserLastActivityServiceImpl implements UserLastActivityService {
 
     @Transactional
     @Override
-    public void save(String username, LocalDateTime timestamp, String description) {
+    @NonNull
+    public void save(@NonNull String username,
+                     @NonNull LocalDateTime timestamp,
+                     @NonNull String description) {
         Assert.notNull(username, ErrorMessages.NULL_USERNAME.getErrorMessage());
         Assert.notNull(timestamp, ErrorMessages.NULL_TIMESTAMP.getErrorMessage());
         Assert.notNull(description, ErrorMessages.NULL_DESCRIPTION.getErrorMessage());

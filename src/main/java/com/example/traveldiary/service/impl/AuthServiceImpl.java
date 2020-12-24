@@ -7,6 +7,7 @@ import com.example.traveldiary.security.JwtProvider;
 import com.example.traveldiary.service.AuthService;
 import com.example.traveldiary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -27,7 +28,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String auth(String username, String password) {
+    @NonNull
+    public String auth(@NonNull String username, @NonNull String password) {
         Assert.notNull(username, ErrorMessages.NULL_USERNAME.getErrorMessage());
         Assert.notNull(password, ErrorMessages.NULL_PASSWORD.getErrorMessage());
 

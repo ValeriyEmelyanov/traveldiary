@@ -46,7 +46,7 @@ public class TravelControllerImpl implements TravelController {
     public ResponseEntity<TravelRest> create(TravelDto travelDto,
                                              Principal principal) {
         Travel saved = travelService.save(
-                conversionService.convert(travelDto, Travel.class),
+                Objects.requireNonNull(conversionService.convert(travelDto, Travel.class)),
                 principal.getName());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(conversionService.convert(saved, TravelRest.class));
@@ -57,7 +57,7 @@ public class TravelControllerImpl implements TravelController {
                                              TravelDto travelDto,
                                              Principal principal) {
         Travel updated = travelService.update(id,
-                conversionService.convert(travelDto, Travel.class),
+                Objects.requireNonNull(conversionService.convert(travelDto, Travel.class)),
                 principal.getName());
         return ResponseEntity.ok()
                 .body(conversionService.convert(updated, TravelRest.class));

@@ -1,6 +1,8 @@
 package com.example.traveldiary.service.impl;
 
 import com.example.traveldiary.service.DateTimeService;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -12,13 +14,15 @@ public class DateTimeServiceImpl implements DateTimeService {
     private static final LocalTime SIX_PM = LocalTime.of(18, 0);
 
     @Override
+    @NonNull
     public String getNow() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return String.format("Now is %s", formatter.format(LocalDateTime.now()));
     }
 
     @Override
-    public String getGreeting(String name) {
+    @NonNull
+    public String getGreeting(@Nullable String name) {
         return String.format("%s%s!", defineGreeting(), name == null ? "" : ", " + name);
     }
 

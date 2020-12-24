@@ -15,7 +15,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -48,15 +47,17 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<UserRest> create(UserDto userDto) {
-        User saved = userService.save(conversionService.convert(userDto, User.class));
+        User saved = userService.save(
+                Objects.requireNonNull(conversionService.convert(userDto, User.class)));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(conversionService.convert(saved, UserRest.class));
     }
 
     @Override
     public ResponseEntity<UserRest> update(Long id,
-                                         UserDto userDto) {
-        User updated = userService.update(id, conversionService.convert(userDto, User.class));
+                                           UserDto userDto) {
+        User updated = userService.update(id,
+                Objects.requireNonNull(conversionService.convert(userDto, User.class)));
         return ResponseEntity.ok(Objects.requireNonNull(
                 conversionService.convert(updated, UserRest.class)));
     }
@@ -69,7 +70,7 @@ public class UserControllerImpl implements UserController {
                 ((UserDetails) authentication.getPrincipal()).getUsername(),
                 authentication.getAuthorities(),
                 id,
-                conversionService.convert(passwordDto, PasswordData.class));
+                Objects.requireNonNull(conversionService.convert(passwordDto, PasswordData.class)));
 
         return ResponseEntity.ok().build();
     }

@@ -1,6 +1,5 @@
 package com.example.traveldiary.service.impl;
 
-import com.example.traveldiary.exception.BadRequestException;
 import com.example.traveldiary.exception.ErrorMessages;
 import com.example.traveldiary.exception.ForbiddenException;
 import com.example.traveldiary.exception.NotFoundException;
@@ -10,6 +9,7 @@ import com.example.traveldiary.repository.TravelRepository;
 import com.example.traveldiary.service.TravelService;
 import com.example.traveldiary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -30,13 +30,15 @@ public class TravelServiceImpl implements TravelService {
 
     @Transactional(readOnly = true)
     @Override
+    @NonNull
     public List<Travel> getList() {
         return travelRepository.findAll();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Travel getById(Long id) {
+    @NonNull
+    public Travel getById(@NonNull Long id) {
         Assert.notNull(id, ErrorMessages.NULL_TRAVEL_ID.getErrorMessage());
 
         return travelRepository.findById(id)
@@ -45,7 +47,8 @@ public class TravelServiceImpl implements TravelService {
 
     @Transactional
     @Override
-    public Travel save(Travel travel, String username) {
+    @NonNull
+    public Travel save(@NonNull Travel travel, @NonNull String username) {
         Assert.notNull(travel, ErrorMessages.NULL_TRAVEL_OBJECT.getErrorMessage());
         Assert.notNull(username, ErrorMessages.NULL_USERNAME.getErrorMessage());
 
@@ -54,7 +57,8 @@ public class TravelServiceImpl implements TravelService {
 
     @Transactional
     @Override
-    public Travel update(Long id, Travel travel, String username) {
+    @NonNull
+    public Travel update(@NonNull Long id, @NonNull Travel travel, @NonNull String username) {
         Assert.notNull(id, ErrorMessages.NULL_TRAVEL_ID.getErrorMessage());
         Assert.notNull(travel, ErrorMessages.NULL_TRAVEL_OBJECT.getErrorMessage());
         Assert.notNull(username, ErrorMessages.NULL_USERNAME.getErrorMessage());
@@ -84,7 +88,8 @@ public class TravelServiceImpl implements TravelService {
 
     @Transactional
     @Override
-    public void delete(Long id, String username) {
+    @NonNull
+    public void delete(@NonNull Long id, @NonNull String username) {
         Assert.notNull(id, ErrorMessages.NULL_TRAVEL_ID.getErrorMessage());
         Assert.notNull(username, ErrorMessages.NULL_USERNAME.getErrorMessage());
 

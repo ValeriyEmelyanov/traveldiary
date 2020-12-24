@@ -21,7 +21,8 @@ public class ExpenseTypeControllerImpl implements ExpenseTypeController {
     private final ConversionService conversionService;
 
     @Autowired
-    public ExpenseTypeControllerImpl(ExpenseTypeService expenseTypeService, ConversionService conversionService) {
+    public ExpenseTypeControllerImpl(ExpenseTypeService expenseTypeService,
+                                     ConversionService conversionService) {
         this.expenseTypeService = expenseTypeService;
         this.conversionService = conversionService;
     }
@@ -37,23 +38,23 @@ public class ExpenseTypeControllerImpl implements ExpenseTypeController {
     @Override
     public ResponseEntity<ExpenseTypeRest> getById(Long id) {
         ExpenseType expenseType = expenseTypeService.getById(id);
-        return ResponseEntity.ok(Objects.requireNonNull(
-                conversionService.convert(expenseType, ExpenseTypeRest.class)));
+        return ResponseEntity.ok(
+                Objects.requireNonNull(conversionService.convert(expenseType, ExpenseTypeRest.class)));
     }
 
     @Override
     public ResponseEntity<ExpenseTypeRest> create(ExpenseTypeDto expenseTypeDto) {
         ExpenseType saved = expenseTypeService.save(
-                conversionService.convert(expenseTypeDto, ExpenseType.class));
+                Objects.requireNonNull(conversionService.convert(expenseTypeDto, ExpenseType.class)));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(conversionService.convert(saved, ExpenseTypeRest.class));
     }
 
     @Override
     public ResponseEntity<ExpenseTypeRest> update(Long id,
-                                         ExpenseTypeDto expenseTypeDto) {
+                                                  ExpenseTypeDto expenseTypeDto) {
         ExpenseType updated = expenseTypeService.update(id,
-                conversionService.convert(expenseTypeDto, ExpenseType.class));
+                Objects.requireNonNull(conversionService.convert(expenseTypeDto, ExpenseType.class)));
         return ResponseEntity.ok()
                 .body(conversionService.convert(updated, ExpenseTypeRest.class));
     }

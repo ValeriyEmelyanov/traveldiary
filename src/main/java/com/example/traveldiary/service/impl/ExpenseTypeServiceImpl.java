@@ -6,6 +6,7 @@ import com.example.traveldiary.model.ExpenseType;
 import com.example.traveldiary.repository.ExpenseTypeRepository;
 import com.example.traveldiary.service.ExpenseTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -23,13 +24,15 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 
     @Transactional(readOnly = true)
     @Override
+    @NonNull
     public List<ExpenseType> getList() {
         return expenseTypeRepository.findAll();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public ExpenseType getById(Long id) {
+    @NonNull
+    public ExpenseType getById(@NonNull Long id) {
         Assert.notNull(id, ErrorMessages.NULL_EXPENSE_TYPE_ID.getErrorMessage());
 
         return expenseTypeRepository.findById(id)
@@ -38,7 +41,8 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 
     @Transactional
     @Override
-    public ExpenseType save(ExpenseType expenseType) {
+    @NonNull
+    public ExpenseType save(@NonNull ExpenseType expenseType) {
         Assert.notNull(expenseType, ErrorMessages.NULL_EXPENSE_TYPE_OBJECT.getErrorMessage());
 
         return save(null, expenseType, false);
@@ -46,7 +50,8 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 
     @Transactional
     @Override
-    public ExpenseType update(Long id, ExpenseType expenseType) {
+    @NonNull
+    public ExpenseType update(@NonNull Long id, @NonNull ExpenseType expenseType) {
         Assert.notNull(id, ErrorMessages.NULL_EXPENSE_TYPE_ID.getErrorMessage());
         Assert.notNull(expenseType, ErrorMessages.NULL_EXPENSE_TYPE_OBJECT.getErrorMessage());
 
@@ -64,7 +69,8 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 
     @Transactional
     @Override
-    public void delete(Long id) {
+    @NonNull
+    public void delete(@NonNull Long id) {
         Assert.notNull(id, ErrorMessages.NULL_EXPENSE_TYPE_ID.getErrorMessage());
 
         getById(id);
