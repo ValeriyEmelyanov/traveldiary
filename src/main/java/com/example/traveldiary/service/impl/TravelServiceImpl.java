@@ -12,6 +12,7 @@ import com.example.traveldiary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -36,9 +37,8 @@ public class TravelServiceImpl implements TravelService {
     @Transactional(readOnly = true)
     @Override
     public Travel getById(Long id) {
-        if (id == null) {
-            throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
-        }
+        Assert.notNull(id, ErrorMessages.NULL_TRAVEL_ID.getErrorMessage());
+
         return travelRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND.getErrorMessage()));
     }
@@ -46,23 +46,23 @@ public class TravelServiceImpl implements TravelService {
     @Transactional
     @Override
     public Travel save(Travel travel, String username) {
+        Assert.notNull(travel, ErrorMessages.NULL_TRAVEL_OBJECT.getErrorMessage());
+        Assert.notNull(username, ErrorMessages.NULL_USERNAME.getErrorMessage());
+
         return save(null, travel, username, false);
     }
 
     @Transactional
     @Override
     public Travel update(Long id, Travel travel, String username) {
-        if (id == null) {
-            throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
-        }
+        Assert.notNull(id, ErrorMessages.NULL_TRAVEL_ID.getErrorMessage());
+        Assert.notNull(travel, ErrorMessages.NULL_TRAVEL_OBJECT.getErrorMessage());
+        Assert.notNull(username, ErrorMessages.NULL_USERNAME.getErrorMessage());
+
         return save(id, travel, username, true);
     }
 
     private Travel save(Long id, Travel travel, String username, boolean isUpdate) {
-        if (travel == null) {
-            throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
-        }
-
         User user = userService.getByUsername(username);
 
         if (isUpdate) {
@@ -85,6 +85,9 @@ public class TravelServiceImpl implements TravelService {
     @Transactional
     @Override
     public void delete(Long id, String username) {
+        Assert.notNull(id, ErrorMessages.NULL_TRAVEL_ID.getErrorMessage());
+        Assert.notNull(username, ErrorMessages.NULL_USERNAME.getErrorMessage());
+
         Travel travel = getById(id);
         User user = userService.getByUsername(username);
         if (!user.equals(travel.getUser())) {

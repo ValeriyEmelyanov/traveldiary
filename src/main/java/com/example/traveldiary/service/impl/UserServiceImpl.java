@@ -15,6 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import java.util.Collection;
 import java.util.List;
@@ -40,9 +41,8 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public User getById(Long id) {
-        if (id == null) {
-            throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
-        }
+        Assert.notNull(id, ErrorMessages.NULL_USER_ID.getErrorMessage());
+
         return userRepositiry.findById(id)
                 .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND.getErrorMessage()));
     }
@@ -50,9 +50,8 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public User getByUsername(String username) {
-        if (username == null) {
-            throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
-        }
+        Assert.notNull(username, ErrorMessages.NULL_USERNAME.getErrorMessage());
+
         return userRepositiry.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND.getErrorMessage()));
     }
@@ -60,15 +59,17 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User save(User user) {
+        Assert.notNull(user, ErrorMessages.NULL_USER_OBJECT.getErrorMessage());
+
         return save(null, user, false);
     }
 
     @Transactional
     @Override
     public User update(Long id, User user) {
-        if (id == null) {
-            throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
-        }
+        Assert.notNull(id, ErrorMessages.NULL_USER_ID.getErrorMessage());
+        Assert.notNull(user, ErrorMessages.NULL_USER_OBJECT.getErrorMessage());
+
         return save(id, user, true);
     }
 
@@ -97,8 +98,12 @@ public class UserServiceImpl implements UserService {
             Collection<? extends GrantedAuthority> authorities,
             Long id,
             PasswordData passwordData) {
+        Assert.notNull(username, ErrorMessages.NULL_USERNAME.getErrorMessage());
+        Assert.notNull(authorities, ErrorMessages.NULL_USER_AUTHORITIES.getErrorMessage());
+        Assert.notNull(id, ErrorMessages.NULL_USER_ID.getErrorMessage());
+        Assert.notNull(passwordData, ErrorMessages.NULL_PASSWORD_DATA.getErrorMessage());
 
-        if (passwordData == null || passwordData.getPassword() == null) {
+        if (passwordData.getPassword() == null) {
             throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
 
@@ -128,6 +133,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void delete(Long id) {
+        Assert.notNull(id, ErrorMessages.NULL_USER_ID.getErrorMessage());
+
         getById(id);
         userRepositiry.deleteById(id);
     }

@@ -1,7 +1,6 @@
 package com.example.traveldiary.service.impl;
 
 import com.example.traveldiary.dto.intermediate.PasswordData;
-import com.example.traveldiary.exception.BadPasswordException;
 import com.example.traveldiary.exception.ForbiddenException;
 import com.example.traveldiary.exception.NotFoundException;
 import com.example.traveldiary.model.Role;
@@ -200,7 +199,7 @@ class UserServiceImplTest {
                     return null;
                 });
 
-        userService.changePassword(userName, null, id, data);
+        userService.changePassword(userName, Role.USER.getAuthorities(), id, data);
 
         assertTrue(realPasswordEncoder.matches(password, testData.get(index).getPassword()));
     }
@@ -286,7 +285,7 @@ class UserServiceImplTest {
                 .thenReturn(realPasswordEncoder.matches(oldPassword, testData.get(index).getPassword()));
 
         assertThrows(ForbiddenException.class,
-                () -> userService.changePassword(userName, null, id, data));
+                () -> userService.changePassword(userName, Role.USER.getAuthorities(), id, data));
     }
 
     @Test
@@ -309,7 +308,7 @@ class UserServiceImplTest {
         when(passwordEncoder.matches(oldPassword, testData.get(index).getPassword()))
                 .thenReturn(realPasswordEncoder.matches(oldPassword, testData.get(index).getPassword()));
 
-        assertThrows(BadPasswordException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> userService.changePassword(userName, null, id, data));
     }
 

@@ -7,7 +7,19 @@ public enum ErrorMessages {
     WRONG_USER("Wrong user"),
     NO_PERMISSIONS("No permissions"),
     WRONG_OLD_PASSWORD("Wrong old password"),
-    NOT_FOUND("Not found");
+    NOT_FOUND("Not found"),
+    NULL_USER_ID("User id should not be null"),
+    NULL_USERNAME("Username should not be null"),
+    NULL_USER_OBJECT("User object should not be null"),
+    NULL_USER_AUTHORITIES("User authorities should not be null"),
+    NULL_PASSWORD_DATA("Password data should not be null"),
+    NULL_TIMESTAMP("Timestamp should not be null"),
+    NULL_DESCRIPTION("Description should not be null"),
+    NULL_PASSWORD("Password should not be null"),
+    NULL_EXPENSE_TYPE_ID("Expense type id should not be null"),
+    NULL_EXPENSE_TYPE_OBJECT("Expense type object should not be null"),
+    NULL_TRAVEL_ID("Travel id should not be null"),
+    NULL_TRAVEL_OBJECT("Travel object should not be null");
 
     private final String errorMessage;
 
