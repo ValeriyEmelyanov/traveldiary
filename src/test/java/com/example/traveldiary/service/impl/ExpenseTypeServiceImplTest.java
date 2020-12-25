@@ -2,6 +2,7 @@ package com.example.traveldiary.service.impl;
 
 import com.example.traveldiary.exception.NotFoundException;
 import com.example.traveldiary.model.ExpenseType;
+import com.example.traveldiary.model.Travel;
 import com.example.traveldiary.repository.ExpenseTypeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -95,9 +96,9 @@ class ExpenseTypeServiceImplTest {
         ExpenseType expenseType = new ExpenseType("Souvenirs");
 
         when(expenseTypeRepository.save(any()))
-                .thenAnswer((Answer<Void>) invocation -> {
+                .thenAnswer((Answer<ExpenseType>) invocation -> {
                     testData.add(invocation.getArgument(0));
-                    return null;
+                    return invocation.getArgument(0);
                 });
 
         expenseTypeService.save(expenseType);
@@ -116,9 +117,9 @@ class ExpenseTypeServiceImplTest {
         when(expenseTypeRepository.findById(id))
                 .thenReturn(Optional.of(testData.get(index)));
         when(expenseTypeRepository.save(any()))
-                .thenAnswer((Answer<Void>) invocation -> {
+                .thenAnswer((Answer<ExpenseType>) invocation -> {
                     testData.get(index).setName(((ExpenseType) invocation.getArgument(0)).getName());
-                    return null;
+                    return invocation.getArgument(0);
                 });
 
         expenseTypeService.update(id, expenseType);

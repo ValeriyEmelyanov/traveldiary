@@ -135,9 +135,9 @@ class UserServiceImplTest {
         when(passwordEncoder.encode(password))
                 .thenReturn(realPasswordEncoder.encode(password));
         when(userRepositiry.save(any()))
-                .thenAnswer((Answer<Void>) invocation -> {
+                .thenAnswer((Answer<User>) invocation -> {
                     testData.add(invocation.getArgument(0));
-                    return null;
+                    return invocation.getArgument(0);
                 });
 
         userService.save(user);
@@ -162,9 +162,9 @@ class UserServiceImplTest {
         when(passwordEncoder.encode(password))
                 .thenReturn(realPasswordEncoder.encode(password));
         when(userRepositiry.save(any()))
-                .thenAnswer((Answer<Void>) invocation -> {
+                .thenAnswer((Answer<User>) invocation -> {
                     testData.set(index, invocation.getArgument(0));
-                    return null;
+                    return invocation.getArgument(0);
                 });
 
         userService.update(id, user);

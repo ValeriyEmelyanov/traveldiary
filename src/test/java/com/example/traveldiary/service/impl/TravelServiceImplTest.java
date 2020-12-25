@@ -106,9 +106,9 @@ class TravelServiceImplTest {
         when(userService.getByUsername(username))
                 .thenReturn(user);
         when(travelRepository.save(any()))
-                .thenAnswer((Answer<Void>) invocation -> {
+                .thenAnswer((Answer<Travel>) invocation -> {
                     testData.add(invocation.getArgument(0));
-                    return null;
+                    return invocation.getArgument(0);
                 });
 
         travelService.save(travel, username);
@@ -162,9 +162,9 @@ class TravelServiceImplTest {
         when(travelRepository.findById(id))
                 .thenReturn(Optional.of(travel));
         when(travelRepository.save(any()))
-                .thenAnswer((Answer<Void>) invocation -> {
+                .thenAnswer((Answer<Travel>) invocation -> {
                     testData.set(index, invocation.getArgument(0));
-                    return null;
+                    return invocation.getArgument(0);
                 });
 
         travelService.update(id, travel, username);
