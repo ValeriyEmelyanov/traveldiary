@@ -1,5 +1,6 @@
 package com.example.traveldiary.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
+@Slf4j
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     private static final String FIELD_ERROR_SEPARATOR = ": ";
+    private static final String PATH_ERROR = "{}: {}";
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
@@ -88,12 +91,14 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         body.put("timestamp", LocalDateTime.now());
         body.put("status", status.value());
         body.put("type", ex.getClass().getSimpleName());
-        body.put("path", request.getDescription(false));
+        String path = request.getDescription(false);
+        body.put("path", path);
         body.put("message", ex.getMessage());
         if (errors != null && !errors.isEmpty()) {
             body.put("errors", errors);
         }
 
+        log.error(PATH_ERROR, path, ex.getMessage());
         return ResponseEntity.status(status).body(body);
     }
 }

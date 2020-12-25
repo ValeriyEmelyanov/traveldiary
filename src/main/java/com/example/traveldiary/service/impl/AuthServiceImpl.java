@@ -6,6 +6,7 @@ import com.example.traveldiary.model.User;
 import com.example.traveldiary.security.JwtProvider;
 import com.example.traveldiary.service.AuthService;
 import com.example.traveldiary.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 @Service
+@Slf4j
 public class AuthServiceImpl implements AuthService {
     private final UserService userService;
     private final JwtProvider jwtProvider;
@@ -44,6 +46,7 @@ public class AuthServiceImpl implements AuthService {
             throw new BadLoginPasswordException(ErrorMessages.BAD_LOGIN_PASSWORD.getErrorMessage());
         }
 
+        log.info("Generated the token for {}", username);
         return jwtProvider.generateToken(username);
     }
 }

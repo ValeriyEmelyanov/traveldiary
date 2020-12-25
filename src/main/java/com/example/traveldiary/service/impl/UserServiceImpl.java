@@ -10,6 +10,7 @@ import com.example.traveldiary.model.Permission;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.repository.UserRepository;
 import com.example.traveldiary.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepositiry;
     private final PasswordEncoder passwordEncoder;
@@ -37,6 +39,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @NonNull
     public List<User> getList() {
+        log.info("Requested User list");
         return userRepositiry.findAll();
     }
 
@@ -46,6 +49,7 @@ public class UserServiceImpl implements UserService {
     public User getById(@NonNull Long id) {
         Assert.notNull(id, ErrorMessages.NULL_USER_ID.getErrorMessage());
 
+        log.info("Requested the User with id: {}", id);
         return userRepositiry.findById(id)
                 .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND.getErrorMessage()));
     }
@@ -56,6 +60,7 @@ public class UserServiceImpl implements UserService {
     public User getByUsername(@NonNull String username) {
         Assert.notNull(username, ErrorMessages.NULL_USERNAME.getErrorMessage());
 
+        log.info("Requested the User with username: {}", username);
         return userRepositiry.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND.getErrorMessage()));
     }
@@ -66,7 +71,9 @@ public class UserServiceImpl implements UserService {
     public User save(@NonNull User user) {
         Assert.notNull(user, ErrorMessages.NULL_USER_OBJECT.getErrorMessage());
 
-        return save(null, user, false);
+        User saved = save(null, user, false);
+        log.info("Saved a new User with id: {}", saved.getId());
+        return saved;
     }
 
     @Transactional
@@ -76,7 +83,9 @@ public class UserServiceImpl implements UserService {
         Assert.notNull(id, ErrorMessages.NULL_USER_ID.getErrorMessage());
         Assert.notNull(user, ErrorMessages.NULL_USER_OBJECT.getErrorMessage());
 
-        return save(id, user, true);
+        User updated = save(id, user, true);
+        log.info("Updated the User with id: {}", id);
+        return updated;
     }
 
     private User save(Long id, User user, boolean isUpdate) {
@@ -130,6 +139,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(passwordData.getPassword()));
 
         userRepositiry.save(user);
+        log.info("Changed a password for the User with id {}: ", id);
     }
 
     @Transactional
@@ -139,5 +149,6 @@ public class UserServiceImpl implements UserService {
 
         getById(id);
         userRepositiry.deleteById(id);
+        log.info("Deleted the User with id: {}", id);
     }
 }

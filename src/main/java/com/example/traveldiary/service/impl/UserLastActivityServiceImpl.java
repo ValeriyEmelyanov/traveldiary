@@ -6,6 +6,7 @@ import com.example.traveldiary.model.UserLastActivity;
 import com.example.traveldiary.repository.UserLastActivityRepository;
 import com.example.traveldiary.service.UserLastActivityService;
 import com.example.traveldiary.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class UserLastActivityServiceImpl implements UserLastActivityService {
     private final UserService userService;
     private final UserLastActivityRepository lastActivityRepository;
@@ -54,6 +56,7 @@ public class UserLastActivityServiceImpl implements UserLastActivityService {
         }
 
         lastActivityRepository.save(lastActivity);
+        log.info("Saved a last activity for the User with username: {}", username);
     }
 
 }

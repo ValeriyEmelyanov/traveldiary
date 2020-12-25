@@ -8,6 +8,7 @@ import com.example.traveldiary.model.User;
 import com.example.traveldiary.repository.TravelRepository;
 import com.example.traveldiary.service.TravelService;
 import com.example.traveldiary.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.util.Assert;
 import java.util.List;
 
 @Service
+@Slf4j
 public class TravelServiceImpl implements TravelService {
     private final TravelRepository travelRepository;
     private final UserService userService;
@@ -32,6 +34,7 @@ public class TravelServiceImpl implements TravelService {
     @Override
     @NonNull
     public List<Travel> getList() {
+        log.info("Requested Travel list");
         return travelRepository.findAll();
     }
 
@@ -41,6 +44,7 @@ public class TravelServiceImpl implements TravelService {
     public Travel getById(@NonNull Long id) {
         Assert.notNull(id, ErrorMessages.NULL_TRAVEL_ID.getErrorMessage());
 
+        log.info("Requested the Travel with id: {}", id);
         return travelRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ErrorMessages.NOT_FOUND.getErrorMessage()));
     }
@@ -52,7 +56,9 @@ public class TravelServiceImpl implements TravelService {
         Assert.notNull(travel, ErrorMessages.NULL_TRAVEL_OBJECT.getErrorMessage());
         Assert.notNull(username, ErrorMessages.NULL_USERNAME.getErrorMessage());
 
-        return save(null, travel, username, false);
+        Travel saved = save(null, travel, username, false);
+        log.info("Saved a new Travel with id: {}", saved.getId());
+        return saved;
     }
 
     @Transactional
@@ -63,7 +69,9 @@ public class TravelServiceImpl implements TravelService {
         Assert.notNull(travel, ErrorMessages.NULL_TRAVEL_OBJECT.getErrorMessage());
         Assert.notNull(username, ErrorMessages.NULL_USERNAME.getErrorMessage());
 
-        return save(id, travel, username, true);
+        Travel updated = save(id, travel, username, true);
+        log.info("Updated the Travel with id: {}", id);
+        return updated;
     }
 
     private Travel save(Long id, Travel travel, String username, boolean isUpdate) {
@@ -100,5 +108,6 @@ public class TravelServiceImpl implements TravelService {
         }
 
         travelRepository.deleteById(id);
+        log.info("Deleted the Travel with id: {}", id);
     }
 }
