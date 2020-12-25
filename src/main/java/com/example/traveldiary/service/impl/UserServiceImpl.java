@@ -80,10 +80,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private User save(Long id, User user, boolean isUpdate) {
-        if (user == null) {
-            throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
-        }
-
         if (isUpdate) {
             User userSaved = getById(id);
             user.setId(id);
