@@ -6,6 +6,7 @@ import com.example.traveldiary.exception.BadRequestException;
 import com.example.traveldiary.exception.ErrorMessages;
 import com.example.traveldiary.exception.ForbiddenException;
 import com.example.traveldiary.exception.NotFoundException;
+import com.example.traveldiary.exception.UsernameAlreadyTakenException;
 import com.example.traveldiary.model.Permission;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.repository.UserRepository;
@@ -21,6 +22,7 @@ import org.springframework.util.Assert;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -95,6 +97,12 @@ public class UserServiceImpl implements UserService {
             user.setCreated(userSaved.getCreated());
             user.setTravels(userSaved.getTravels());
             user.setLastActivity(userSaved.getLastActivity());
+        } else {
+            Optional<User> byUsername = userRepositiry.findByUsername(user.getUsername());
+            if (byUsername.isPresent()) {
+                throw new UsernameAlreadyTakenException(
+                        ErrorMessages.USERNAME_ALREADY_TAKEN.getErrorMessage());
+            }
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));

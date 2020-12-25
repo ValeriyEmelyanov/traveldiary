@@ -43,6 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerImplIntegrationTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final String username1 = "user1";
     private final String oldPassword = "password";
 
     @Autowired
@@ -62,7 +63,7 @@ class UserControllerImplIntegrationTest {
     private void prepareTestData() {
         User user1 = User.builder()
                 .id(1L)
-                .username("user1")
+                .username(username1)
                 .password(passwordEncoder.encode(oldPassword))
                 .travels(List.of())
                 .build();
@@ -175,6 +176,24 @@ class UserControllerImplIntegrationTest {
         assertTrue(passwordEncoder.matches(password, created.getPassword()));
         assertTrue(before.isBefore(created.getCreated()));
         assertTrue(LocalDateTime.now().isAfter(created.getCreated()));
+    }
+
+    @Test
+    @WithMockUser(authorities = {"user:write"})
+    void createUsernameAlreadyTaken() throws Exception {
+        Set<Role> roles = Set.of(Role.SENIOR, Role.USER);
+        UserDto dto = UserDto.builder()
+                .username(username1)
+                .password("password")
+                .enabled(true)
+                .roles(roles)
+                .build();
+
+        mockMvc.perform(post(Urls.Users.FULL)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(dto)))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 
     @Test

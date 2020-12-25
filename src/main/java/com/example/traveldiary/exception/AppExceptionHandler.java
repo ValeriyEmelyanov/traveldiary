@@ -59,6 +59,12 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         return getExceptionResponseEntity(ex, HttpStatus.BAD_REQUEST, request, List.of());
     }
 
+    @ExceptionHandler(value = UsernameAlreadyTakenException.class)
+    public ResponseEntity<Object> handleUsernameAlreadyTakenException(RuntimeException ex,
+                                                                      WebRequest request) {
+        return getExceptionResponseEntity(ex, HttpStatus.BAD_REQUEST, request, List.of());
+    }
+
     @ExceptionHandler(value = BadRequestException.class)
     public ResponseEntity<Object> handleBadRequestException(RuntimeException ex,
                                                             WebRequest request) {

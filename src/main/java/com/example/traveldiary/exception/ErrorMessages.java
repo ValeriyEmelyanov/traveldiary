@@ -8,6 +8,7 @@ public enum ErrorMessages {
     NO_PERMISSIONS("No permissions"),
     WRONG_OLD_PASSWORD("Wrong old password"),
     NOT_FOUND("Not found"),
+    USERNAME_ALREADY_TAKEN("The username is already taken"),
     NULL_USER_ID("User id should not be null"),
     NULL_USERNAME("Username should not be null"),
     NULL_USER_OBJECT("User object should not be null"),

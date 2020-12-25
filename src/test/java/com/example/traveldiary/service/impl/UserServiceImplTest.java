@@ -3,6 +3,7 @@ package com.example.traveldiary.service.impl;
 import com.example.traveldiary.dto.intermediate.PasswordData;
 import com.example.traveldiary.exception.ForbiddenException;
 import com.example.traveldiary.exception.NotFoundException;
+import com.example.traveldiary.exception.UsernameAlreadyTakenException;
 import com.example.traveldiary.model.Role;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.repository.UserRepository;
@@ -144,6 +145,19 @@ class UserServiceImplTest {
 
         assertEquals(testDataSizeBefore + 1, testData.size());
         assertTrue(realPasswordEncoder.matches(password, testData.get(testData.size() - 1).getPassword()));
+    }
+
+    @Test
+    void saveUsernameAlreadyTaken() {
+        String username = "the same";
+        User user = User.builder()
+                .username(username)
+                .build();
+
+        when(userRepositiry.findByUsername(username))
+                .thenReturn(Optional.of(user));
+
+        assertThrows(UsernameAlreadyTakenException.class, () -> userService.save(user));
     }
 
     @Test
