@@ -4,29 +4,51 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * An object for trancferring data from a controller to a response about an expense record.
+ */
 @Data
 @Builder
 public class ExpenseRecordResponse {
 
-    @Schema(description = "Unique identifier",
+    /**
+     * An unique identifier.
+     */
+    @Schema(description = "an unique identifier",
             example = "1")
     private final Long id;
 
-    @Schema(example = "1")
-    private final Integer recNo;
+    /**
+     * A record number.
+     */
+    @Schema(description = "a record number",
+            example = "1")
+    private final Integer recordNumber;
 
-    @Schema(description = "the expense type")
+    /**
+     * An expense type.
+     */
+    @Schema(description = "an expense type")
     private final ExpenseTypeResponse expenseType;
 
+    /**
+     * Some text.
+     */
     @Schema(description = "some text",
             example = "full tank refueling was enough")
     private final String comment;
 
-    @Schema(description = "planned sum of expenses for this type",
+    /**
+     * A planned sum of expenses for this type.
+     */
+    @Schema(description = "a planned sum of expenses for this type",
             example = "2000")
     private final Integer planSum;
 
-    @Schema(description = "total actual sum of expenses for this type",
+    /**
+     * An actual sum of expenses for this type.
+     */
+    @Schema(description = "an actual sum of expenses for this type",
             example = "0")
     private final Integer factSum;
 }

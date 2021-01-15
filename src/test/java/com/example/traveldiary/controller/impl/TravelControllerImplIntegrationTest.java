@@ -121,7 +121,7 @@ class TravelControllerImplIntegrationTest {
                 .build();
         ExpenseRecord record1t1 = ExpenseRecord.builder()
                 .travel(travel1)
-                .recNo(1)
+                .recordNumber(1)
                 .expenseType(type1)
                 .comment("Comment #1 of travel #1")
                 .planSum(3000)
@@ -129,7 +129,7 @@ class TravelControllerImplIntegrationTest {
                 .build();
         ExpenseRecord record2t1 = ExpenseRecord.builder()
                 .travel(travel1)
-                .recNo(2)
+                .recordNumber(2)
                 .expenseType(type2)
                 .comment("Comment #2 of travel #1")
                 .planSum(2000)
@@ -152,7 +152,7 @@ class TravelControllerImplIntegrationTest {
                 .build();
         ExpenseRecord record1t2 = ExpenseRecord.builder()
                 .travel(travel2)
-                .recNo(1)
+                .recordNumber(1)
                 .expenseType(type1)
                 .comment("Comment #1 of travel #2")
                 .planSum(7000)
@@ -175,7 +175,7 @@ class TravelControllerImplIntegrationTest {
                 .build();
         ExpenseRecord record1t3 = ExpenseRecord.builder()
                 .travel(travel3)
-                .recNo(1)
+                .recordNumber(1)
                 .expenseType(type1)
                 .comment("Comment #1 of travel #3")
                 .planSum(15000)
@@ -276,7 +276,7 @@ class TravelControllerImplIntegrationTest {
         for (int i = 0; i < recordDtos.size(); i++) {
             ExpenseRecordRequest recordDto = recordDtos.get(i);
             ExpenseRecord record = records.get(i);
-            assertEquals(recordDto.getRecNo(), record.getRecNo());
+            assertEquals(recordDto.getRecordNumber(), record.getRecordNumber());
             assertEquals(
                     recordDto.getExpenseTypeId(),
                     record.getExpenseType().getId());
@@ -288,14 +288,14 @@ class TravelControllerImplIntegrationTest {
 
     private TravelRequest getTravelDtoForCreate() {
         ExpenseRecordRequest recordDto1 = ExpenseRecordRequest.builder()
-                .recNo(1)
+                .recordNumber(1)
                 .expenseTypeId(1L)
                 .comment("Comment #1 of saved travel")
                 .planSum(1000)
                 .factSum(0)
                 .build();
         ExpenseRecordRequest recordDto2 = ExpenseRecordRequest.builder()
-                .recNo(2)
+                .recordNumber(2)
                 .expenseTypeId(2L)
                 .comment("Comment #2 of saved travel")
                 .planSum(2000)
@@ -365,7 +365,7 @@ class TravelControllerImplIntegrationTest {
         assertEquals(recordDtos.size(), records.size());
         ExpenseRecordRequest recordDto = recordDtos.get(0);
         ExpenseRecord record = records.get(0);
-        assertEquals(recordDto.getRecNo(), record.getRecNo());
+        assertEquals(recordDto.getRecordNumber(), record.getRecordNumber());
         assertEquals(
                 recordDto.getExpenseTypeId(),
                 record.getExpenseType().getId());
@@ -376,7 +376,7 @@ class TravelControllerImplIntegrationTest {
 
     private TravelRequest getTravelDtoForUpdate() {
         ExpenseRecordRequest recordDto1 = ExpenseRecordRequest.builder()
-                .recNo(1)
+                .recordNumber(1)
                 .expenseTypeId(1L)
                 .comment("Comment #1 of travel #2 - fact")
                 .planSum(7000)

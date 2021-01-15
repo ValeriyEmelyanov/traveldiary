@@ -58,7 +58,7 @@ public class ToTravelResponseConverter implements Converter<Travel, TravelRespon
 
         return ExpenseRecordResponse.builder()
                 .id(record.getId())
-                .recNo(record.getRecNo())
+                .recordNumber(record.getRecordNumber())
                 .expenseType(toExpenseTypeRestConverter.convert(record.getExpenseType()))
                 .comment(record.getComment())
                 .planSum(record.getPlanSum())

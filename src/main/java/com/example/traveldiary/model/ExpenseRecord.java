@@ -29,7 +29,7 @@ public class ExpenseRecord extends AbstractEntity {
     @Schema(example = "1",
             required = true)
     @Column(name = "rec_no")
-    private Integer recNo;
+    private Integer recordNumber;
 
     @Schema(description = "the expense type",
             required = true)

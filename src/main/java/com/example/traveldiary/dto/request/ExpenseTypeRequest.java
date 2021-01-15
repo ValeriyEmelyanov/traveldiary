@@ -9,11 +9,17 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+/**
+ * An object for trancferring data from a request to a controller about an expense type.
+ */
 @Data
 @Builder
 public class ExpenseTypeRequest {
 
-    @Schema(description = "name of the expense type",
+    /**
+     * A name of the expense type. The field is required. Max length is 100.
+     */
+    @Schema(description = "a name of the expense type",
             example = "Transort",
             required = true)
     @NotBlank(message = "The field is required")

@@ -129,7 +129,7 @@ class TravelServiceImplTest {
         List<ExpenseRecord> expenseRecords = new ArrayList<>();
         for (int i = 1; i <= 2; i++) {
             expenseRecords.add(ExpenseRecord.builder()
-                    .recNo(i)
+                    .recordNumber(i)
                     .expenseType(new ExpenseType())
                     .build());
         }

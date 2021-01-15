@@ -65,7 +65,7 @@ public class ToTravelConverter implements Converter<TravelRequest, Travel> {
 
         expenseRecord.setTravel(travel);
         expenseRecord.setExpenseType(expenseTypeService.getById(expenseRecordRequest.getExpenseTypeId()));
-        expenseRecord.setRecNo(expenseRecordRequest.getRecNo());
+        expenseRecord.setRecordNumber(expenseRecordRequest.getRecordNumber());
         expenseRecord.setComment(expenseRecordRequest.getComment());
         expenseRecord.setPlanSum(expenseRecordRequest.getPlanSum());
         expenseRecord.setFactSum(expenseRecordRequest.getFactSum());
