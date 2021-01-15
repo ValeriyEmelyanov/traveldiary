@@ -48,43 +48,43 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = BadPasswordException.class)
-    public ResponseEntity<Object> handleBadPasswordException(RuntimeException ex,
+    public ResponseEntity<Object> handleBadPasswordException(BadPasswordException ex,
                                                              WebRequest request) {
         return getExceptionResponseEntity(ex, HttpStatus.BAD_REQUEST, request, List.of());
     }
 
     @ExceptionHandler(value = BadLoginPasswordException.class)
-    public ResponseEntity<Object> handlerBadLoginPasswordException(RuntimeException ex,
+    public ResponseEntity<Object> handlerBadLoginPasswordException(BadLoginPasswordException ex,
                                                                    WebRequest request) {
         return getExceptionResponseEntity(ex, HttpStatus.BAD_REQUEST, request, List.of());
     }
 
     @ExceptionHandler(value = UsernameAlreadyTakenException.class)
-    public ResponseEntity<Object> handleUsernameAlreadyTakenException(RuntimeException ex,
+    public ResponseEntity<Object> handleUsernameAlreadyTakenException(UsernameAlreadyTakenException ex,
                                                                       WebRequest request) {
         return getExceptionResponseEntity(ex, HttpStatus.BAD_REQUEST, request, List.of());
     }
 
     @ExceptionHandler(value = BadRequestException.class)
-    public ResponseEntity<Object> handleBadRequestException(RuntimeException ex,
+    public ResponseEntity<Object> handleBadRequestException(BadRequestException ex,
                                                             WebRequest request) {
         return getExceptionResponseEntity(ex, HttpStatus.BAD_REQUEST, request, List.of());
     }
 
     @ExceptionHandler(value = NotFoundException.class)
-    public ResponseEntity<Object> handlerNotFoundException(RuntimeException ex,
+    public ResponseEntity<Object> handlerNotFoundException(NotFoundException ex,
                                                            WebRequest request) {
         return getExceptionResponseEntity(ex, HttpStatus.NOT_FOUND, request, List.of());
     }
 
     @ExceptionHandler(value = ForbiddenException.class)
-    public ResponseEntity<Object> handlerForbiddenException(RuntimeException ex,
+    public ResponseEntity<Object> handlerForbiddenException(ForbiddenException ex,
                                                             WebRequest request) {
         return getExceptionResponseEntity(ex, HttpStatus.FORBIDDEN, request, List.of());
     }
 
     @ExceptionHandler(value = UsernameNotFoundException.class)
-    public ResponseEntity<Object> handlerUsernameNotFoundException(RuntimeException ex,
+    public ResponseEntity<Object> handlerUsernameNotFoundException(UsernameNotFoundException ex,
                                                                    WebRequest request) {
         return getExceptionResponseEntity(ex, HttpStatus.NOT_FOUND, request, List.of());
     }
