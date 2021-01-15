@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Data
 @Builder
-public class UserRest {
+public class UserResponse {
 
     @Schema(description = "Unique identifier",
             example = "1")
@@ -43,5 +43,5 @@ public class UserRest {
     private final Set<Role> roles;
 
     @Schema(description = "when and what user did last time")
-    private final UserLastActivityRest lastActivity;
+    private final UserLastActivityResponse lastActivity;
 }

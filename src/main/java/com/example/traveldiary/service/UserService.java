@@ -1,7 +1,7 @@
 package com.example.traveldiary.service;
 
 
-import com.example.traveldiary.dto.intermediate.PasswordData;
+import com.example.traveldiary.dto.intermediate.PasswordDto;
 import com.example.traveldiary.exception.NotFoundException;
 import com.example.traveldiary.model.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -80,13 +80,13 @@ public interface UserService {
      * @param username     name of {@link User user} who complete the operation
      * @param authorities  authorities of {@link User user} who complete the operation
      * @param id           unique identifier of {@link User user} which change the password
-     * @param passwordData {@link PasswordData passwordData} for changing of the password
+     * @param passwordDto {@link PasswordDto passwordDto} for changing of the password
      */
     void changePassword(
             String username,
             Collection<? extends GrantedAuthority> authorities,
             Long id,
-            PasswordData passwordData);
+            PasswordDto passwordDto);
 
     /**
      * Method for deleting a {@link User user}.

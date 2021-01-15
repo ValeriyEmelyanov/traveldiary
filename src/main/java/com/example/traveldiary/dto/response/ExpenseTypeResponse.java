@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ExpenseTypeRest {
+public class ExpenseTypeResponse {
 
     @Schema(description = "Unique identifier",
             example = "1")

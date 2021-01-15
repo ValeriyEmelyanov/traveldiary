@@ -1,7 +1,7 @@
 package com.example.traveldiary.mapper.model;
 
-import com.example.traveldiary.dto.response.ExpenseRecordRest;
-import com.example.traveldiary.dto.response.TravelRest;
+import com.example.traveldiary.dto.response.ExpenseRecordResponse;
+import com.example.traveldiary.dto.response.TravelResponse;
 import com.example.traveldiary.model.ExpenseRecord;
 import com.example.traveldiary.model.Travel;
 import org.springframework.core.convert.converter.Converter;
@@ -9,18 +9,18 @@ import org.springframework.core.convert.converter.Converter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ToTravelRestConverter implements Converter<Travel, TravelRest> {
-    private final ToExpenseTypeRestConverter toExpenseTypeRestConverter;
+public class ToTravelResponseConverter implements Converter<Travel, TravelResponse> {
+    private final ToExpenseTypeResponseConverter toExpenseTypeRestConverter;
 
-    public ToTravelRestConverter(ToExpenseTypeRestConverter toExpenseTypeRestConverter) {
+    public ToTravelResponseConverter(ToExpenseTypeResponseConverter toExpenseTypeRestConverter) {
         this.toExpenseTypeRestConverter = toExpenseTypeRestConverter;
     }
 
     @Override
-    public TravelRest convert(Travel travel) {
-        List<ExpenseRecordRest> restList = toExpenseRecordRestList(travel.getExpenses());
+    public TravelResponse convert(Travel travel) {
+        List<ExpenseRecordResponse> restList = toExpenseRecordResponseList(travel.getExpenses());
 
-        return TravelRest.builder()
+        return TravelResponse.builder()
                 .id(travel.getId())
                 .status(travel.getStatus())
                 .title(travel.getTitle())
@@ -38,25 +38,25 @@ public class ToTravelRestConverter implements Converter<Travel, TravelRest> {
                 .build();
     }
 
-    private List<ExpenseRecordRest> toExpenseRecordRestList(List<ExpenseRecord> list) {
+    private List<ExpenseRecordResponse> toExpenseRecordResponseList(List<ExpenseRecord> list) {
         if (list == null) {
             return null;
         }
 
-        List<ExpenseRecordRest> restList = new ArrayList<>();
+        List<ExpenseRecordResponse> restList = new ArrayList<>();
         for (ExpenseRecord record : list) {
-            restList.add(toExpenseRecordRest(record));
+            restList.add(toExpenseRecordResponse(record));
         }
 
         return restList;
     }
 
-    private ExpenseRecordRest toExpenseRecordRest(ExpenseRecord record) {
+    private ExpenseRecordResponse toExpenseRecordResponse(ExpenseRecord record) {
         if (record == null) {
             return null;
         }
 
-        return ExpenseRecordRest.builder()
+        return ExpenseRecordResponse.builder()
                 .id(record.getId())
                 .recNo(record.getRecNo())
                 .expenseType(toExpenseTypeRestConverter.convert(record.getExpenseType()))

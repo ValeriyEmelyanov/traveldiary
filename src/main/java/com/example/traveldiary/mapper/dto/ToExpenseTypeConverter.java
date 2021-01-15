@@ -1,14 +1,14 @@
 package com.example.traveldiary.mapper.dto;
 
-import com.example.traveldiary.dto.request.ExpenseTypeDto;
+import com.example.traveldiary.dto.request.ExpenseTypeRequest;
 import com.example.traveldiary.model.ExpenseType;
 import org.springframework.core.convert.converter.Converter;
 
-public class ToExpenseTypeConverter implements Converter<ExpenseTypeDto, ExpenseType> {
+public class ToExpenseTypeConverter implements Converter<ExpenseTypeRequest, ExpenseType> {
     @Override
-    public ExpenseType convert(ExpenseTypeDto expenseTypeDto) {
+    public ExpenseType convert(ExpenseTypeRequest expenseTypeRequest) {
         return ExpenseType.builder()
-                .name(expenseTypeDto.getName())
+                .name(expenseTypeRequest.getName())
                 .build();
     }
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ExpenseRecordRest {
+public class ExpenseRecordResponse {
 
     @Schema(description = "Unique identifier",
             example = "1")
@@ -16,7 +16,7 @@ public class ExpenseRecordRest {
     private final Integer recNo;
 
     @Schema(description = "the expense type")
-    private final ExpenseTypeRest expenseType;
+    private final ExpenseTypeResponse expenseType;
 
     @Schema(description = "some text",
             example = "full tank refueling was enough")

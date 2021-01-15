@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class UserLastActivityRest {
+public class UserLastActivityResponse {
 
     @Schema(description = "date and time of activity",
             example = "2020-12-14 19:09:51.873345",

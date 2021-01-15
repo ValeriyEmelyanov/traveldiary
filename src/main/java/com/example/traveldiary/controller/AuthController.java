@@ -1,8 +1,8 @@
 package com.example.traveldiary.controller;
 
 import com.example.traveldiary.Urls;
-import com.example.traveldiary.dto.request.UserLoginDto;
-import com.example.traveldiary.dto.response.AuthRest;
+import com.example.traveldiary.dto.request.UserLoginRequest;
+import com.example.traveldiary.dto.response.AuthResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -26,8 +26,8 @@ public interface AuthController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(
                             mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = AuthRest.class)))),
+                            array = @ArraySchema(schema = @Schema(implementation = AuthResponse.class)))),
             @ApiResponse(responseCode = "400", description = "bad request", content = @Content)})
     @PostMapping
-    ResponseEntity<AuthRest> auth(@Valid @RequestBody UserLoginDto loginDto);
+    ResponseEntity<AuthResponse> auth(@Valid @RequestBody UserLoginRequest loginDto);
 }

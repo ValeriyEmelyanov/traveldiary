@@ -1,6 +1,6 @@
 package com.example.traveldiary.service.impl;
 
-import com.example.traveldiary.dto.intermediate.PasswordData;
+import com.example.traveldiary.dto.intermediate.PasswordDto;
 import com.example.traveldiary.exception.ForbiddenException;
 import com.example.traveldiary.exception.NotFoundException;
 import com.example.traveldiary.exception.UsernameAlreadyTakenException;
@@ -193,7 +193,7 @@ class UserServiceImplTest {
         String userName = "user";
         String password = "secret";
 
-        PasswordData data = PasswordData.builder()
+        PasswordDto data = PasswordDto.builder()
                 .oldPassword(oldPassword)
                 .password(password)
                 .matchingPassword(password)
@@ -228,7 +228,7 @@ class UserServiceImplTest {
 
         String password = "secret";
 
-        PasswordData data = PasswordData.builder()
+        PasswordDto data = PasswordDto.builder()
                 .oldPassword(oldPassword)
                 .password(password)
                 .matchingPassword(password)
@@ -261,7 +261,7 @@ class UserServiceImplTest {
 
         String password = "secret";
 
-        PasswordData data = PasswordData.builder()
+        PasswordDto data = PasswordDto.builder()
                 .oldPassword(oldPassword)
                 .password(password)
                 .matchingPassword(password)
@@ -285,7 +285,7 @@ class UserServiceImplTest {
         String userName = "user";
         String password = "secret";
 
-        PasswordData data = PasswordData.builder()
+        PasswordDto data = PasswordDto.builder()
                 .oldPassword(oldPassword + "more")
                 .password(password)
                 .matchingPassword(password)
@@ -309,7 +309,7 @@ class UserServiceImplTest {
         String userName = "user";
         String password = "secret";
 
-        PasswordData data = PasswordData.builder()
+        PasswordDto data = PasswordDto.builder()
                 .oldPassword(oldPassword)
                 .password(password)
                 .matchingPassword(password + "more")

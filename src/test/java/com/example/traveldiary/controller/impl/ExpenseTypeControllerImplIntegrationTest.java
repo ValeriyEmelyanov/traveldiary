@@ -1,7 +1,7 @@
 package com.example.traveldiary.controller.impl;
 
 import com.example.traveldiary.Urls;
-import com.example.traveldiary.dto.request.ExpenseTypeDto;
+import com.example.traveldiary.dto.request.ExpenseTypeRequest;
 import com.example.traveldiary.model.ExpenseType;
 import com.example.traveldiary.repository.ExpenseTypeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -127,7 +127,7 @@ class ExpenseTypeControllerImplIntegrationTest {
     void create() throws Exception {
         int size = expenseTypeRepository.findAll().size();
         String typeName = "Souvenirs";
-        ExpenseTypeDto dto = ExpenseTypeDto.builder()
+        ExpenseTypeRequest dto = ExpenseTypeRequest.builder()
                 .name(typeName)
                 .build();
 
@@ -145,7 +145,7 @@ class ExpenseTypeControllerImplIntegrationTest {
     @Test
     @WithMockUser(authorities = {"expense_type:write"})
     void createInvalidExpenseType() throws Exception {
-        ExpenseTypeDto dto = ExpenseTypeDto.builder()
+        ExpenseTypeRequest dto = ExpenseTypeRequest.builder()
                 .name("")
                 .build();
 
@@ -180,7 +180,7 @@ class ExpenseTypeControllerImplIntegrationTest {
     void update() throws Exception {
         long id = 2L;
         String typeName = "Food and delicious";
-        ExpenseTypeDto dto = ExpenseTypeDto.builder()
+        ExpenseTypeRequest dto = ExpenseTypeRequest.builder()
                 .name(typeName)
                 .build();
 

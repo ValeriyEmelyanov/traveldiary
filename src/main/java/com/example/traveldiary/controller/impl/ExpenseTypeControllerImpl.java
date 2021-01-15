@@ -1,8 +1,8 @@
 package com.example.traveldiary.controller.impl;
 
 import com.example.traveldiary.controller.ExpenseTypeController;
-import com.example.traveldiary.dto.request.ExpenseTypeDto;
-import com.example.traveldiary.dto.response.ExpenseTypeRest;
+import com.example.traveldiary.dto.request.ExpenseTypeRequest;
+import com.example.traveldiary.dto.response.ExpenseTypeResponse;
 import com.example.traveldiary.model.ExpenseType;
 import com.example.traveldiary.service.ExpenseTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,35 +28,35 @@ public class ExpenseTypeControllerImpl implements ExpenseTypeController {
     }
 
     @Override
-    public ResponseEntity<List<ExpenseTypeRest>> getList() {
+    public ResponseEntity<List<ExpenseTypeResponse>> getList() {
         return ResponseEntity.ok(expenseTypeService.getList()
                 .stream()
-                .map(e -> conversionService.convert(e, ExpenseTypeRest.class))
+                .map(e -> conversionService.convert(e, ExpenseTypeResponse.class))
                 .collect(Collectors.toList()));
     }
 
     @Override
-    public ResponseEntity<ExpenseTypeRest> getById(Long id) {
+    public ResponseEntity<ExpenseTypeResponse> getById(Long id) {
         ExpenseType expenseType = expenseTypeService.getById(id);
         return ResponseEntity.ok(
-                Objects.requireNonNull(conversionService.convert(expenseType, ExpenseTypeRest.class)));
+                Objects.requireNonNull(conversionService.convert(expenseType, ExpenseTypeResponse.class)));
     }
 
     @Override
-    public ResponseEntity<ExpenseTypeRest> create(ExpenseTypeDto expenseTypeDto) {
+    public ResponseEntity<ExpenseTypeResponse> create(ExpenseTypeRequest expenseTypeRequest) {
         ExpenseType saved = expenseTypeService.save(
-                Objects.requireNonNull(conversionService.convert(expenseTypeDto, ExpenseType.class)));
+                Objects.requireNonNull(conversionService.convert(expenseTypeRequest, ExpenseType.class)));
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(conversionService.convert(saved, ExpenseTypeRest.class));
+                .body(conversionService.convert(saved, ExpenseTypeResponse.class));
     }
 
     @Override
-    public ResponseEntity<ExpenseTypeRest> update(Long id,
-                                                  ExpenseTypeDto expenseTypeDto) {
+    public ResponseEntity<ExpenseTypeResponse> update(Long id,
+                                                      ExpenseTypeRequest expenseTypeRequest) {
         ExpenseType updated = expenseTypeService.update(id,
-                Objects.requireNonNull(conversionService.convert(expenseTypeDto, ExpenseType.class)));
+                Objects.requireNonNull(conversionService.convert(expenseTypeRequest, ExpenseType.class)));
         return ResponseEntity.ok()
-                .body(conversionService.convert(updated, ExpenseTypeRest.class));
+                .body(conversionService.convert(updated, ExpenseTypeResponse.class));
     }
 
     @Override

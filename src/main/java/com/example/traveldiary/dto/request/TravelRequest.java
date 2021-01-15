@@ -8,7 +8,6 @@ import lombok.Data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
@@ -16,7 +15,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class TravelDto {
+public class TravelRequest {
 
     @Schema(example = "PLAN",
             required = true)
@@ -72,5 +71,5 @@ public class TravelDto {
     private final Boolean favorite;
 
     @Schema(description = "list of expenses")
-    private final List<ExpenseRecordDto> expenses;
+    private final List<ExpenseRecordRequest> expenses;
 }

@@ -1,8 +1,8 @@
 package com.example.traveldiary.controller;
 
 import com.example.traveldiary.Urls;
-import com.example.traveldiary.dto.request.ExpenseTypeDto;
-import com.example.traveldiary.dto.response.ExpenseTypeRest;
+import com.example.traveldiary.dto.request.ExpenseTypeRequest;
+import com.example.traveldiary.dto.response.ExpenseTypeResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -36,23 +36,23 @@ public interface ExpenseTypeController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(
                             mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = ExpenseTypeRest.class)))),
+                            array = @ArraySchema(schema = @Schema(implementation = ExpenseTypeResponse.class)))),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content)})
     @GetMapping
     @PreAuthorize("hasAuthority('expense_type:read')")
-    ResponseEntity<List<ExpenseTypeRest>> getList();
+    ResponseEntity<List<ExpenseTypeResponse>> getList();
 
     @Operation(summary = "get an expense type by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ExpenseTypeRest.class))),
+                            schema = @Schema(implementation = ExpenseTypeResponse.class))),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @GetMapping(EXPENSE_TYPE_ID_PATH_VARIABLE)
     @PreAuthorize("hasAuthority('expense_type:read')")
-    ResponseEntity<ExpenseTypeRest> getById(
+    ResponseEntity<ExpenseTypeResponse> getById(
             @Parameter(
                     name = "id",
                     description = "id  of the expense type to be obtained. Cannot be null",
@@ -64,28 +64,28 @@ public interface ExpenseTypeController {
             @ApiResponse(responseCode = "201", description = "expense type created",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ExpenseTypeRest.class))),
+                            schema = @Schema(implementation = ExpenseTypeResponse.class))),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content)})
     @PostMapping
     @PreAuthorize("hasAuthority('expense_type:write')")
-    ResponseEntity<ExpenseTypeRest> create(
+    ResponseEntity<ExpenseTypeResponse> create(
             @Parameter(
                     description = "the expense type to add. Cannot be null",
                     required = true,
-                    schema = @Schema(implementation = ExpenseTypeDto.class))
-            @Valid @RequestBody ExpenseTypeDto expenseTypeDto);
+                    schema = @Schema(implementation = ExpenseTypeRequest.class))
+            @Valid @RequestBody ExpenseTypeRequest expenseTypeRequest);
 
     @Operation(summary = "update an existing expense type")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ExpenseTypeRest.class))),
+                            schema = @Schema(implementation = ExpenseTypeResponse.class))),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @PutMapping(EXPENSE_TYPE_ID_PATH_VARIABLE)
     @PreAuthorize("hasAuthority('expense_type:write')")
-    ResponseEntity<ExpenseTypeRest> update(
+    ResponseEntity<ExpenseTypeResponse> update(
             @Parameter(
                     name = "id",
                     description = "id of the expense type to be updated. Cannot be null.",
@@ -94,8 +94,8 @@ public interface ExpenseTypeController {
             @Parameter(
                     description = "the expense type to be updated. Cannot be null.",
                     required = true,
-                    schema = @Schema(implementation = ExpenseTypeDto.class))
-            @Valid @RequestBody ExpenseTypeDto expenseTypeDto);
+                    schema = @Schema(implementation = ExpenseTypeRequest.class))
+            @Valid @RequestBody ExpenseTypeRequest expenseTypeRequest);
 
 
     @Operation(summary = "deletes an expense type")

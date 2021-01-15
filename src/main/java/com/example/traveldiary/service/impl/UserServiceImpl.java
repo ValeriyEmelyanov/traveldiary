@@ -1,6 +1,6 @@
 package com.example.traveldiary.service.impl;
 
-import com.example.traveldiary.dto.intermediate.PasswordData;
+import com.example.traveldiary.dto.intermediate.PasswordDto;
 import com.example.traveldiary.exception.BadPasswordException;
 import com.example.traveldiary.exception.BadRequestException;
 import com.example.traveldiary.exception.ErrorMessages;
@@ -116,13 +116,13 @@ public class UserServiceImpl implements UserService {
             @NonNull String username,
             @NonNull Collection<? extends GrantedAuthority> authorities,
             @NonNull Long id,
-            @NonNull PasswordData passwordData) {
+            @NonNull PasswordDto passwordDto) {
         Assert.notNull(username, ErrorMessages.NULL_USERNAME.getErrorMessage());
         Assert.notNull(authorities, ErrorMessages.NULL_USER_AUTHORITIES.getErrorMessage());
         Assert.notNull(id, ErrorMessages.NULL_USER_ID.getErrorMessage());
-        Assert.notNull(passwordData, ErrorMessages.NULL_PASSWORD_DATA.getErrorMessage());
+        Assert.notNull(passwordDto, ErrorMessages.NULL_PASSWORD_DATA.getErrorMessage());
 
-        if (passwordData.getPassword() == null) {
+        if (passwordDto.getPassword() == null) {
             throw new BadRequestException(ErrorMessages.BAD_REQUEST.getErrorMessage());
         }
 
@@ -135,16 +135,16 @@ public class UserServiceImpl implements UserService {
             if (!hasPermissionUserWrite) {
                 throw new ForbiddenException(ErrorMessages.NO_PERMISSIONS.getErrorMessage());
             }
-        } else if (passwordData.getOldPassword() == null
-                || !passwordEncoder.matches(passwordData.getOldPassword(), user.getPassword())) {
+        } else if (passwordDto.getOldPassword() == null
+                || !passwordEncoder.matches(passwordDto.getOldPassword(), user.getPassword())) {
             throw new ForbiddenException(ErrorMessages.WRONG_OLD_PASSWORD.getErrorMessage());
         }
 
-        if (!passwordData.getPassword().equals(passwordData.getMatchingPassword())) {
+        if (!passwordDto.getPassword().equals(passwordDto.getMatchingPassword())) {
             throw new BadPasswordException(ErrorMessages.BAD_PASSWORD_NOT_MATCHING.getErrorMessage());
         }
 
-        user.setPassword(passwordEncoder.encode(passwordData.getPassword()));
+        user.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
 
         userRepositiry.save(user);
         log.info("Changed a password for the User with id {}: ", id);

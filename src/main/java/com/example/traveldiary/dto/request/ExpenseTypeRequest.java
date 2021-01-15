@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 
 @Data
 @Builder
-public class ExpenseTypeDto {
+public class ExpenseTypeRequest {
 
     @Schema(description = "name of the expense type",
             example = "Transort",
@@ -21,7 +21,7 @@ public class ExpenseTypeDto {
     private final String name;
 
     @JsonCreator
-    public ExpenseTypeDto(
+    public ExpenseTypeRequest(
             @NotBlank(message = "The field is required")
             @Size(max = 100, message = "Max length is 100")
             @JsonProperty("name")

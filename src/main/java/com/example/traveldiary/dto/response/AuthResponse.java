@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class AuthRest {
+public class AuthResponse {
 
     @Schema(description = "access token",
             example = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjA5NDQ4NDAwfQ."

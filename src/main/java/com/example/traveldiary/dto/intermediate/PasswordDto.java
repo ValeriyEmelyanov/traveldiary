@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 @Builder
-public class PasswordData {
+public class PasswordDto {
     private final String oldPassword;
     private final String password;
     private final String matchingPassword;

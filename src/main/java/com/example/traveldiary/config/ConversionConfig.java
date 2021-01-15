@@ -1,12 +1,12 @@
 package com.example.traveldiary.config;
 
 import com.example.traveldiary.mapper.dto.ToExpenseTypeConverter;
-import com.example.traveldiary.mapper.dto.ToPasswordDataConverter;
+import com.example.traveldiary.mapper.dto.ToPasswordDtoConverter;
 import com.example.traveldiary.mapper.dto.ToTravelConverter;
 import com.example.traveldiary.mapper.dto.ToUserConverter;
-import com.example.traveldiary.mapper.model.ToExpenseTypeRestConverter;
-import com.example.traveldiary.mapper.model.ToTravelRestConverter;
-import com.example.traveldiary.mapper.model.ToUserRestConverter;
+import com.example.traveldiary.mapper.model.ToExpenseTypeResponseConverter;
+import com.example.traveldiary.mapper.model.ToTravelResponseConverter;
+import com.example.traveldiary.mapper.model.ToUserResponseConverter;
 import com.example.traveldiary.service.ExpenseTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -34,13 +34,13 @@ public class ConversionConfig {
 
         converters.add(new ToTravelConverter(expenseTypeService));
         converters.add(new ToUserConverter());
-        converters.add(new ToPasswordDataConverter());
+        converters.add(new ToPasswordDtoConverter());
         converters.add(new ToExpenseTypeConverter());
 
-        converters.add(new ToUserRestConverter());
-        ToExpenseTypeRestConverter toExpenseTypeRestConverter = new ToExpenseTypeRestConverter();
-        converters.add(toExpenseTypeRestConverter);
-        converters.add(new ToTravelRestConverter(toExpenseTypeRestConverter));
+        converters.add(new ToUserResponseConverter());
+        ToExpenseTypeResponseConverter toExpenseTypeResponseConverter = new ToExpenseTypeResponseConverter();
+        converters.add(toExpenseTypeResponseConverter);
+        converters.add(new ToTravelResponseConverter(toExpenseTypeResponseConverter));
 
         factory.setConverters(converters);
 

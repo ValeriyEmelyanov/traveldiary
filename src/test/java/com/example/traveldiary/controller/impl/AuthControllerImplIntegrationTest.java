@@ -1,7 +1,7 @@
 package com.example.traveldiary.controller.impl;
 
 import com.example.traveldiary.Urls;
-import com.example.traveldiary.dto.request.UserLoginDto;
+import com.example.traveldiary.dto.request.UserLoginRequest;
 import com.example.traveldiary.model.Role;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.repository.UserRepository;
@@ -64,7 +64,7 @@ class AuthControllerImplIntegrationTest {
 
     @Test
     void auth() throws Exception {
-        UserLoginDto dto = UserLoginDto.builder()
+        UserLoginRequest dto = UserLoginRequest.builder()
                 .username(username)
                 .password(password)
                 .build();
@@ -80,7 +80,7 @@ class AuthControllerImplIntegrationTest {
 
     @Test
     void authUsernameFailure() throws Exception {
-        UserLoginDto dto = UserLoginDto.builder()
+        UserLoginRequest dto = UserLoginRequest.builder()
                 .username(username + "999")
                 .password(password)
                 .build();
@@ -94,7 +94,7 @@ class AuthControllerImplIntegrationTest {
 
     @Test
     void authPasswordFailure() throws Exception {
-        UserLoginDto dto = UserLoginDto.builder()
+        UserLoginRequest dto = UserLoginRequest.builder()
                 .username(username)
                 .password(password + "wrong")
                 .build();

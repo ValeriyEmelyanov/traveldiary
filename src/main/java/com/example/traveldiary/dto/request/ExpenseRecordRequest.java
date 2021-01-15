@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 
 @Data
 @Builder
-public class ExpenseRecordDto {
+public class ExpenseRecordRequest {
 
     @Schema(example = "1",
             required = true)

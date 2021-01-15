@@ -1,8 +1,8 @@
 package com.example.traveldiary.controller.impl;
 
 import com.example.traveldiary.Urls;
-import com.example.traveldiary.dto.request.PasswordDto;
-import com.example.traveldiary.dto.request.UserDto;
+import com.example.traveldiary.dto.request.PasswordRequest;
+import com.example.traveldiary.dto.request.UserRequest;
 import com.example.traveldiary.model.Role;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.repository.UserRepository;
@@ -151,7 +151,7 @@ class UserControllerImplIntegrationTest {
         String username = "new user";
         String password = "secret";
         Set<Role> roles = Set.of(Role.SENIOR, Role.USER);
-        UserDto dto = UserDto.builder()
+        UserRequest dto = UserRequest.builder()
                 .username(username)
                 .password(password)
                 .enabled(true)
@@ -182,7 +182,7 @@ class UserControllerImplIntegrationTest {
     @WithMockUser(authorities = {"user:write"})
     void createUsernameAlreadyTaken() throws Exception {
         Set<Role> roles = Set.of(Role.SENIOR, Role.USER);
-        UserDto dto = UserDto.builder()
+        UserRequest dto = UserRequest.builder()
                 .username(username1)
                 .password("password")
                 .enabled(true)
@@ -208,7 +208,7 @@ class UserControllerImplIntegrationTest {
     @Test
     @WithMockUser
     void createForbidden() throws Exception {
-        UserDto dto = UserDto.builder()
+        UserRequest dto = UserRequest.builder()
                 .username("username")
                 .password("password")
                 .enabled(true)
@@ -228,7 +228,7 @@ class UserControllerImplIntegrationTest {
         String username = "updated user";
         String password = "secret";
         Set<Role> roles = Set.of(Role.USER);
-        UserDto dto = UserDto.builder()
+        UserRequest dto = UserRequest.builder()
                 .username(username)
                 .password(password)
                 .enabled(true)
@@ -254,7 +254,7 @@ class UserControllerImplIntegrationTest {
     void changePassword() throws Exception {
         long id = 1L;
         String password = "secret";
-        PasswordDto dto = PasswordDto.builder()
+        PasswordRequest dto = PasswordRequest.builder()
                 .password(password)
                 .matchingPassword(password)
                 .build();
@@ -275,7 +275,7 @@ class UserControllerImplIntegrationTest {
     void changePasswordProfile() throws Exception {
         long id = 1L;
         String password = "secret";
-        PasswordDto dto = PasswordDto.builder()
+        PasswordRequest dto = PasswordRequest.builder()
                 .oldPassword(oldPassword)
                 .password(password)
                 .matchingPassword(password)
@@ -304,7 +304,7 @@ class UserControllerImplIntegrationTest {
     @Test
     @WithMockUser
     void changePasswordForbidden() throws Exception {
-        PasswordDto dto = PasswordDto.builder()
+        PasswordRequest dto = PasswordRequest.builder()
                 .password("password")
                 .matchingPassword("password")
                 .build();
@@ -320,7 +320,7 @@ class UserControllerImplIntegrationTest {
     @WithMockUser(username = "user1", authorities = {"user:profile"})
     void changePasswordOtherUser() throws Exception {
         String password = "secret";
-        PasswordDto dto = PasswordDto.builder()
+        PasswordRequest dto = PasswordRequest.builder()
                 .password(password)
                 .matchingPassword(password)
                 .build();
@@ -336,7 +336,7 @@ class UserControllerImplIntegrationTest {
     @WithMockUser(username = "user1", authorities = {"user:profile"})
     void changePasswordMismatch() throws Exception {
         String password = "secret";
-        PasswordDto dto = PasswordDto.builder()
+        PasswordRequest dto = PasswordRequest.builder()
                 .oldPassword(oldPassword)
                 .password(password)
                 .matchingPassword(password + "more")

@@ -14,7 +14,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class TravelRest {
+public class TravelResponse {
 
     @Schema(description = "Unique identifier",
             example = "1")
@@ -69,5 +69,5 @@ public class TravelRest {
     private String user;
 
     @Schema(description = "list of expenses")
-    private List<ExpenseRecordRest> expenses;
+    private List<ExpenseRecordResponse> expenses;
 }

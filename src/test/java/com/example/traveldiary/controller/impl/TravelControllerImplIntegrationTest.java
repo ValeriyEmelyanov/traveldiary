@@ -1,8 +1,8 @@
 package com.example.traveldiary.controller.impl;
 
 import com.example.traveldiary.Urls;
-import com.example.traveldiary.dto.request.ExpenseRecordDto;
-import com.example.traveldiary.dto.request.TravelDto;
+import com.example.traveldiary.dto.request.ExpenseRecordRequest;
+import com.example.traveldiary.dto.request.TravelRequest;
 import com.example.traveldiary.model.ExpenseRecord;
 import com.example.traveldiary.model.ExpenseType;
 import com.example.traveldiary.model.Rating;
@@ -245,7 +245,7 @@ class TravelControllerImplIntegrationTest {
     @WithMockUser(username = "user1", authorities = {"travel:write"})
     void create() throws Exception {
         int size = travelRepository.findAll().size();
-        TravelDto dto = getTravelDtoForCreate();
+        TravelRequest dto = getTravelDtoForCreate();
 
         mockMvc.perform(post(Urls.Travels.FULL)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -270,11 +270,11 @@ class TravelControllerImplIntegrationTest {
         assertEquals(dto.getRating(), saved.getRating());
         assertEquals(dto.getFavorite(), saved.getFavorite());
         assertEquals("user1", saved.getUser().getUsername());
-        List<ExpenseRecordDto> recordDtos = dto.getExpenses();
+        List<ExpenseRecordRequest> recordDtos = dto.getExpenses();
         List<ExpenseRecord> records = saved.getExpenses();
         assertEquals(recordDtos.size(), records.size());
         for (int i = 0; i < recordDtos.size(); i++) {
-            ExpenseRecordDto recordDto = recordDtos.get(i);
+            ExpenseRecordRequest recordDto = recordDtos.get(i);
             ExpenseRecord record = records.get(i);
             assertEquals(recordDto.getRecNo(), record.getRecNo());
             assertEquals(
@@ -286,15 +286,15 @@ class TravelControllerImplIntegrationTest {
         }
     }
 
-    private TravelDto getTravelDtoForCreate() {
-        ExpenseRecordDto recordDto1 = ExpenseRecordDto.builder()
+    private TravelRequest getTravelDtoForCreate() {
+        ExpenseRecordRequest recordDto1 = ExpenseRecordRequest.builder()
                 .recNo(1)
                 .expenseTypeId(1L)
                 .comment("Comment #1 of saved travel")
                 .planSum(1000)
                 .factSum(0)
                 .build();
-        ExpenseRecordDto recordDto2 = ExpenseRecordDto.builder()
+        ExpenseRecordRequest recordDto2 = ExpenseRecordRequest.builder()
                 .recNo(2)
                 .expenseTypeId(2L)
                 .comment("Comment #2 of saved travel")
@@ -302,7 +302,7 @@ class TravelControllerImplIntegrationTest {
                 .factSum(0)
                 .build();
 
-        return TravelDto.builder()
+        return TravelRequest.builder()
                 .status(TravelStatus.DONE)
                 .title("Travel #4")
                 .startDate(LocalDate.of(2021, 2, 23))
@@ -339,7 +339,7 @@ class TravelControllerImplIntegrationTest {
     @WithMockUser(username = "user1", authorities = {"travel:write"})
     void update() throws Exception {
         long id = 2L;
-        TravelDto dto = getTravelDtoForUpdate();
+        TravelRequest dto = getTravelDtoForUpdate();
 
         mockMvc.perform(put(Urls.Travels.FULL + "/" + id)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -360,10 +360,10 @@ class TravelControllerImplIntegrationTest {
         assertEquals(dto.getRating(), updated.getRating());
         assertEquals(dto.getFavorite(), updated.getFavorite());
         assertEquals("user1", updated.getUser().getUsername());
-        List<ExpenseRecordDto> recordDtos = dto.getExpenses();
+        List<ExpenseRecordRequest> recordDtos = dto.getExpenses();
         List<ExpenseRecord> records = updated.getExpenses();
         assertEquals(recordDtos.size(), records.size());
-        ExpenseRecordDto recordDto = recordDtos.get(0);
+        ExpenseRecordRequest recordDto = recordDtos.get(0);
         ExpenseRecord record = records.get(0);
         assertEquals(recordDto.getRecNo(), record.getRecNo());
         assertEquals(
@@ -374,8 +374,8 @@ class TravelControllerImplIntegrationTest {
         assertEquals(recordDto.getFactSum(), record.getFactSum());
     }
 
-    private TravelDto getTravelDtoForUpdate() {
-        ExpenseRecordDto recordDto1 = ExpenseRecordDto.builder()
+    private TravelRequest getTravelDtoForUpdate() {
+        ExpenseRecordRequest recordDto1 = ExpenseRecordRequest.builder()
                 .recNo(1)
                 .expenseTypeId(1L)
                 .comment("Comment #1 of travel #2 - fact")
@@ -383,7 +383,7 @@ class TravelControllerImplIntegrationTest {
                 .factSum(7010)
                 .build();
 
-        return TravelDto.builder()
+        return TravelRequest.builder()
                 .status(TravelStatus.DONE)
                 .title("Travel #2")
                 .startDate(LocalDate.of(2021, 1, 7))

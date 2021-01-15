@@ -2,8 +2,8 @@ package com.example.traveldiary.controller;
 
 import com.example.traveldiary.Urls;
 import com.example.traveldiary.aop.LastActivity;
-import com.example.traveldiary.dto.request.TravelDto;
-import com.example.traveldiary.dto.response.TravelRest;
+import com.example.traveldiary.dto.request.TravelRequest;
+import com.example.traveldiary.dto.response.TravelResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -38,25 +38,25 @@ public interface TravelController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(
                             mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = TravelRest.class)))),
+                            array = @ArraySchema(schema = @Schema(implementation = TravelResponse.class)))),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content)})
     @LastActivity
     @GetMapping
     @PreAuthorize("hasAuthority('travel:read')")
-    ResponseEntity<List<TravelRest>> getList();
+    ResponseEntity<List<TravelResponse>> getList();
 
     @Operation(summary = "get a travel by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = TravelRest.class))),
+                            schema = @Schema(implementation = TravelResponse.class))),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @LastActivity
     @GetMapping(TRAVEL_ID_PATH_VARIABLE)
     @PreAuthorize("hasAuthority('travel:read')")
-    ResponseEntity<TravelRest> getById(
+    ResponseEntity<TravelResponse> getById(
             @Parameter(
                     name = "id",
                     description = "id  of the travel to be obtained. Cannot be null",
@@ -68,17 +68,17 @@ public interface TravelController {
             @ApiResponse(responseCode = "201", description = "expense type created",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = TravelRest.class))),
+                            schema = @Schema(implementation = TravelResponse.class))),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content)})
     @LastActivity
     @PostMapping
     @PreAuthorize("hasAuthority('travel:write')")
-    ResponseEntity<TravelRest> create(
+    ResponseEntity<TravelResponse> create(
             @Parameter(
                     description = "the travel to add. Cannot be null",
                     required = true,
-                    schema = @Schema(implementation = TravelDto.class))
-            @Valid @RequestBody TravelDto travelDto,
+                    schema = @Schema(implementation = TravelRequest.class))
+            @Valid @RequestBody TravelRequest travelRequest,
             Principal principal);
 
     @Operation(summary = "update an existing travel")
@@ -86,13 +86,13 @@ public interface TravelController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = TravelRest.class))),
+                            schema = @Schema(implementation = TravelResponse.class))),
             @ApiResponse(responseCode = "403", description = "forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "not found", content = @Content)})
     @LastActivity
     @PutMapping(TRAVEL_ID_PATH_VARIABLE)
     @PreAuthorize("hasAuthority('travel:write')")
-    ResponseEntity<TravelRest> update(
+    ResponseEntity<TravelResponse> update(
             @Parameter(
                     name = "id",
                     description = "id of the travel to be updated. Cannot be null.",
@@ -101,8 +101,8 @@ public interface TravelController {
             @Parameter(
                     description = "the travel to be updated. Cannot be null.",
                     required = true,
-                    schema = @Schema(implementation = TravelDto.class))
-            @Valid @RequestBody TravelDto travelDto,
+                    schema = @Schema(implementation = TravelRequest.class))
+            @Valid @RequestBody TravelRequest travelRequest,
             Principal principal);
 
     @Operation(summary = "deletes a travel")
