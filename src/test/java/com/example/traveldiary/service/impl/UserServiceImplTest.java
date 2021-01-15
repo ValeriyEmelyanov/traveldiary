@@ -1,11 +1,9 @@
 package com.example.traveldiary.service.impl;
 
-import com.example.traveldiary.dto.request.PasswordDto;
-import com.example.traveldiary.dto.request.UserDto;
-import com.example.traveldiary.exception.BadPasswordException;
+import com.example.traveldiary.dto.intermediate.PasswordDto;
 import com.example.traveldiary.exception.ForbiddenException;
 import com.example.traveldiary.exception.NotFoundException;
-import com.example.traveldiary.mapper.UserMapper;
+import com.example.traveldiary.exception.UsernameAlreadyTakenException;
 import com.example.traveldiary.model.Role;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.repository.UserRepository;
@@ -40,9 +38,6 @@ class UserServiceImplTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
-
-    @Mock
-    private UserMapper userMapper;
 
     private List<User> testData;
     private PasswordEncoder realPasswordEncoder;
@@ -133,28 +128,36 @@ class UserServiceImplTest {
         int testDataSizeBefore = testData.size();
         String password = "secret";
 
-        UserDto dto = UserDto.builder()
+        User user = User.builder()
                 .username("newUser")
                 .password(password)
                 .build();
 
-        when(userMapper.toUser(dto))
-                .thenReturn(User.builder()
-                        .id(4L)
-                        .username(dto.getUsername())
-                        .build());
         when(passwordEncoder.encode(password))
                 .thenReturn(realPasswordEncoder.encode(password));
         when(userRepositiry.save(any()))
-                .thenAnswer((Answer<Void>) invocation -> {
+                .thenAnswer((Answer<User>) invocation -> {
                     testData.add(invocation.getArgument(0));
-                    return null;
+                    return invocation.getArgument(0);
                 });
 
-        userService.save(dto);
+        userService.save(user);
 
         assertEquals(testDataSizeBefore + 1, testData.size());
         assertTrue(realPasswordEncoder.matches(password, testData.get(testData.size() - 1).getPassword()));
+    }
+
+    @Test
+    void saveUsernameAlreadyTaken() {
+        String username = "the same";
+        User user = User.builder()
+                .username(username)
+                .build();
+
+        when(userRepositiry.findByUsername(username))
+                .thenReturn(Optional.of(user));
+
+        assertThrows(UsernameAlreadyTakenException.class, () -> userService.save(user));
     }
 
     @Test
@@ -163,26 +166,22 @@ class UserServiceImplTest {
         int index = 1;
         String password = "secret";
 
-        UserDto dto = UserDto.builder()
+        User user = User.builder()
                 .username("updatedUser")
                 .password(password)
                 .build();
 
         when(userRepositiry.findById(id))
                 .thenReturn(Optional.of(testData.get(index)));
-        doAnswer((Answer<Void>) invocation -> {
-            testData.get(index).setUsername(((UserDto) invocation.getArgument(0)).getUsername());
-            return null;
-        }).when(userMapper).updateUser(dto, testData.get(index));
         when(passwordEncoder.encode(password))
                 .thenReturn(realPasswordEncoder.encode(password));
         when(userRepositiry.save(any()))
-                .thenAnswer((Answer<Void>) invocation -> {
+                .thenAnswer((Answer<User>) invocation -> {
                     testData.set(index, invocation.getArgument(0));
-                    return null;
+                    return invocation.getArgument(0);
                 });
 
-        userService.update(id, dto);
+        userService.update(id, user);
 
         assertTrue(realPasswordEncoder.matches(password, testData.get(index).getPassword()));
     }
@@ -194,7 +193,7 @@ class UserServiceImplTest {
         String userName = "user";
         String password = "secret";
 
-        PasswordDto dto = PasswordDto.builder()
+        PasswordDto data = PasswordDto.builder()
                 .oldPassword(oldPassword)
                 .password(password)
                 .matchingPassword(password)
@@ -214,7 +213,7 @@ class UserServiceImplTest {
                     return null;
                 });
 
-        userService.changePassword(userName, null, id, dto);
+        userService.changePassword(userName, Role.USER.getAuthorities(), id, data);
 
         assertTrue(realPasswordEncoder.matches(password, testData.get(index).getPassword()));
     }
@@ -229,7 +228,7 @@ class UserServiceImplTest {
 
         String password = "secret";
 
-        PasswordDto dto = PasswordDto.builder()
+        PasswordDto data = PasswordDto.builder()
                 .oldPassword(oldPassword)
                 .password(password)
                 .matchingPassword(password)
@@ -247,7 +246,7 @@ class UserServiceImplTest {
                     return null;
                 });
 
-        userService.changePassword(adminName, Role.ADMIN.getAuthorities(), id, dto);
+        userService.changePassword(adminName, Role.ADMIN.getAuthorities(), id, data);
 
         assertTrue(realPasswordEncoder.matches(password, testData.get(index).getPassword()));
     }
@@ -262,7 +261,7 @@ class UserServiceImplTest {
 
         String password = "secret";
 
-        PasswordDto dto = PasswordDto.builder()
+        PasswordDto data = PasswordDto.builder()
                 .oldPassword(oldPassword)
                 .password(password)
                 .matchingPassword(password)
@@ -274,9 +273,9 @@ class UserServiceImplTest {
                 .thenReturn(Optional.of(testData.get(index)));
 
         assertThrows(ForbiddenException.class,
-                () -> userService.changePassword(otherName, Role.USER.getAuthorities(), id, dto));
+                () -> userService.changePassword(otherName, Role.USER.getAuthorities(), id, data));
         assertThrows(ForbiddenException.class,
-                () -> userService.changePassword(otherName, Role.SENIOR.getAuthorities(), id, dto));
+                () -> userService.changePassword(otherName, Role.SENIOR.getAuthorities(), id, data));
     }
 
     @Test
@@ -286,7 +285,7 @@ class UserServiceImplTest {
         String userName = "user";
         String password = "secret";
 
-        PasswordDto dto = PasswordDto.builder()
+        PasswordDto data = PasswordDto.builder()
                 .oldPassword(oldPassword + "more")
                 .password(password)
                 .matchingPassword(password)
@@ -300,7 +299,7 @@ class UserServiceImplTest {
                 .thenReturn(realPasswordEncoder.matches(oldPassword, testData.get(index).getPassword()));
 
         assertThrows(ForbiddenException.class,
-                () -> userService.changePassword(userName, null, id, dto));
+                () -> userService.changePassword(userName, Role.USER.getAuthorities(), id, data));
     }
 
     @Test
@@ -310,7 +309,7 @@ class UserServiceImplTest {
         String userName = "user";
         String password = "secret";
 
-        PasswordDto dto = PasswordDto.builder()
+        PasswordDto data = PasswordDto.builder()
                 .oldPassword(oldPassword)
                 .password(password)
                 .matchingPassword(password + "more")
@@ -323,8 +322,8 @@ class UserServiceImplTest {
         when(passwordEncoder.matches(oldPassword, testData.get(index).getPassword()))
                 .thenReturn(realPasswordEncoder.matches(oldPassword, testData.get(index).getPassword()));
 
-        assertThrows(BadPasswordException.class,
-                () -> userService.changePassword(userName, null, id, dto));
+        assertThrows(IllegalArgumentException.class,
+                () -> userService.changePassword(userName, null, id, data));
     }
 
     @Test

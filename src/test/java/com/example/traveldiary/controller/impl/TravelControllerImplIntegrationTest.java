@@ -1,7 +1,8 @@
-package com.example.traveldiary.controller;
+package com.example.traveldiary.controller.impl;
 
-import com.example.traveldiary.dto.request.ExpenseRecordDto;
-import com.example.traveldiary.dto.request.TravelDto;
+import com.example.traveldiary.Urls;
+import com.example.traveldiary.dto.request.ExpenseRecordRequest;
+import com.example.traveldiary.dto.request.TravelRequest;
 import com.example.traveldiary.model.ExpenseRecord;
 import com.example.traveldiary.model.ExpenseType;
 import com.example.traveldiary.model.Rating;
@@ -46,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class TravelControllerIntegrationTest {
+class TravelControllerImplIntegrationTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -69,7 +70,7 @@ class TravelControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        if (travelRepository.findAll().size() == 0) {
+        if (travelRepository.findAll().isEmpty()) {
             prepareTestData();
         }
     }
@@ -120,7 +121,7 @@ class TravelControllerIntegrationTest {
                 .build();
         ExpenseRecord record1t1 = ExpenseRecord.builder()
                 .travel(travel1)
-                .recNo(1)
+                .recordNumber(1)
                 .expenseType(type1)
                 .comment("Comment #1 of travel #1")
                 .planSum(3000)
@@ -128,7 +129,7 @@ class TravelControllerIntegrationTest {
                 .build();
         ExpenseRecord record2t1 = ExpenseRecord.builder()
                 .travel(travel1)
-                .recNo(2)
+                .recordNumber(2)
                 .expenseType(type2)
                 .comment("Comment #2 of travel #1")
                 .planSum(2000)
@@ -151,7 +152,7 @@ class TravelControllerIntegrationTest {
                 .build();
         ExpenseRecord record1t2 = ExpenseRecord.builder()
                 .travel(travel2)
-                .recNo(1)
+                .recordNumber(1)
                 .expenseType(type1)
                 .comment("Comment #1 of travel #2")
                 .planSum(7000)
@@ -174,7 +175,7 @@ class TravelControllerIntegrationTest {
                 .build();
         ExpenseRecord record1t3 = ExpenseRecord.builder()
                 .travel(travel3)
-                .recNo(1)
+                .recordNumber(1)
                 .expenseType(type1)
                 .comment("Comment #1 of travel #3")
                 .planSum(15000)
@@ -192,7 +193,7 @@ class TravelControllerIntegrationTest {
     void getList() throws Exception {
         int size = travelRepository.findAll().size();
 
-        mockMvc.perform(get("/api/v1/travels"))
+        mockMvc.perform(get(Urls.Travels.FULL))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -201,7 +202,7 @@ class TravelControllerIntegrationTest {
 
     @Test
     void getListUnauthorized() throws Exception {
-        mockMvc.perform(get("/api/v1/travels"))
+        mockMvc.perform(get(Urls.Travels.FULL))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -209,7 +210,7 @@ class TravelControllerIntegrationTest {
     @Test
     @WithMockUser
     void getListForbidden() throws Exception {
-        mockMvc.perform(get("/api/v1/travels"))
+        mockMvc.perform(get(Urls.Travels.FULL))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -217,7 +218,7 @@ class TravelControllerIntegrationTest {
     @Test
     @WithMockUser(username = "user1", authorities = {"travel:read"})
     void getById() throws Exception {
-        mockMvc.perform(get("/api/v1/travels/1"))
+        mockMvc.perform(get(Urls.Travels.FULL + "/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -227,7 +228,7 @@ class TravelControllerIntegrationTest {
 
     @Test
     void getByIdUnauthorized() throws Exception {
-        mockMvc.perform(get("/api/v1/travels/1"))
+        mockMvc.perform(get(Urls.Travels.FULL + "/1"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -235,7 +236,7 @@ class TravelControllerIntegrationTest {
     @Test
     @WithMockUser
     void getByIdForbidden() throws Exception {
-        mockMvc.perform(get("/api/v1/travels/1"))
+        mockMvc.perform(get(Urls.Travels.FULL + "/1"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -244,34 +245,9 @@ class TravelControllerIntegrationTest {
     @WithMockUser(username = "user1", authorities = {"travel:write"})
     void create() throws Exception {
         int size = travelRepository.findAll().size();
-        TravelDto dto = TravelDto.builder()
-                .status(TravelStatus.DONE)
-                .title("Travel #4")
-                .startDate(LocalDate.of(2021, 2, 23))
-                .endDate(LocalDate.of(2021, 2, 23))
-                .description("Description #4")
-                .planTotalSum(3000)
-                .factTotalSum(0)
-                .rating(Rating.NONE)
-                .favorite(true)
-                .build();
-        ExpenseRecordDto recordDto1 = ExpenseRecordDto.builder()
-                .recNo(1)
-                .expenseTypeId(1L)
-                .comment("Comment #1 of saved travel")
-                .planSum(1000)
-                .factSum(0)
-                .build();
-        ExpenseRecordDto recordDto2 = ExpenseRecordDto.builder()
-                .recNo(2)
-                .expenseTypeId(2L)
-                .comment("Comment #2 of saved travel")
-                .planSum(2000)
-                .factSum(0)
-                .build();
-        dto.setExpenses(List.of(recordDto1, recordDto2));
+        TravelRequest dto = getTravelDtoForCreate();
 
-        mockMvc.perform(post("/api/v1/travels")
+        mockMvc.perform(post(Urls.Travels.FULL)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andDo(print())
@@ -294,13 +270,13 @@ class TravelControllerIntegrationTest {
         assertEquals(dto.getRating(), saved.getRating());
         assertEquals(dto.getFavorite(), saved.getFavorite());
         assertEquals("user1", saved.getUser().getUsername());
-        List<ExpenseRecordDto> recordDtos = dto.getExpenses();
+        List<ExpenseRecordRequest> recordDtos = dto.getExpenses();
         List<ExpenseRecord> records = saved.getExpenses();
         assertEquals(recordDtos.size(), records.size());
         for (int i = 0; i < recordDtos.size(); i++) {
-            ExpenseRecordDto recordDto = recordDtos.get(i);
+            ExpenseRecordRequest recordDto = recordDtos.get(i);
             ExpenseRecord record = records.get(i);
-            assertEquals(recordDto.getRecNo(), record.getRecNo());
+            assertEquals(recordDto.getRecordNumber(), record.getRecordNumber());
             assertEquals(
                     recordDto.getExpenseTypeId(),
                     record.getExpenseType().getId());
@@ -310,9 +286,39 @@ class TravelControllerIntegrationTest {
         }
     }
 
+    private TravelRequest getTravelDtoForCreate() {
+        ExpenseRecordRequest recordDto1 = ExpenseRecordRequest.builder()
+                .recordNumber(1)
+                .expenseTypeId(1L)
+                .comment("Comment #1 of saved travel")
+                .planSum(1000)
+                .factSum(0)
+                .build();
+        ExpenseRecordRequest recordDto2 = ExpenseRecordRequest.builder()
+                .recordNumber(2)
+                .expenseTypeId(2L)
+                .comment("Comment #2 of saved travel")
+                .planSum(2000)
+                .factSum(0)
+                .build();
+
+        return TravelRequest.builder()
+                .status(TravelStatus.DONE)
+                .title("Travel #4")
+                .startDate(LocalDate.of(2021, 2, 23))
+                .endDate(LocalDate.of(2021, 2, 23))
+                .description("Description #4")
+                .planTotalSum(3000)
+                .factTotalSum(0)
+                .rating(Rating.NONE)
+                .favorite(true)
+                .expenses(List.of(recordDto1, recordDto2))
+                .build();
+    }
+
     @Test
     void createUnauthorized() throws Exception {
-        mockMvc.perform(post("/api/v1/travels")
+        mockMvc.perform(post(Urls.Travels.FULL)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content("{}"))
                 .andDo(print())
@@ -322,9 +328,9 @@ class TravelControllerIntegrationTest {
     @Test
     @WithMockUser
     void createForbidden() throws Exception {
-        mockMvc.perform(post("/api/v1/travels")
+        mockMvc.perform(post(Urls.Travels.FULL)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .content("{}"))
+                .content(objectMapper.writeValueAsString(getTravelDtoForCreate())))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -333,27 +339,9 @@ class TravelControllerIntegrationTest {
     @WithMockUser(username = "user1", authorities = {"travel:write"})
     void update() throws Exception {
         long id = 2L;
-        TravelDto dto = TravelDto.builder()
-                .status(TravelStatus.DONE)
-                .title("Travel #2")
-                .startDate(LocalDate.of(2021, 1, 7))
-                .endDate(LocalDate.of(2021, 1, 7))
-                .description("Description #2 - done!")
-                .planTotalSum(7000)
-                .factTotalSum(7010)
-                .rating(Rating.EXCELLENT)
-                .favorite(false)
-                .build();
-        ExpenseRecordDto recordDto1 = ExpenseRecordDto.builder()
-                .recNo(1)
-                .expenseTypeId(1L)
-                .comment("Comment #1 of travel #2 - fact")
-                .planSum(7000)
-                .factSum(7010)
-                .build();
-        dto.setExpenses(List.of(recordDto1));
+        TravelRequest dto = getTravelDtoForUpdate();
 
-        mockMvc.perform(put("/api/v1/travels/" + id)
+        mockMvc.perform(put(Urls.Travels.FULL + "/" + id)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andDo(print())
@@ -372,12 +360,12 @@ class TravelControllerIntegrationTest {
         assertEquals(dto.getRating(), updated.getRating());
         assertEquals(dto.getFavorite(), updated.getFavorite());
         assertEquals("user1", updated.getUser().getUsername());
-        List<ExpenseRecordDto> recordDtos = dto.getExpenses();
+        List<ExpenseRecordRequest> recordDtos = dto.getExpenses();
         List<ExpenseRecord> records = updated.getExpenses();
         assertEquals(recordDtos.size(), records.size());
-        ExpenseRecordDto recordDto = recordDtos.get(0);
+        ExpenseRecordRequest recordDto = recordDtos.get(0);
         ExpenseRecord record = records.get(0);
-        assertEquals(recordDto.getRecNo(), record.getRecNo());
+        assertEquals(recordDto.getRecordNumber(), record.getRecordNumber());
         assertEquals(
                 recordDto.getExpenseTypeId(),
                 record.getExpenseType().getId());
@@ -386,19 +374,42 @@ class TravelControllerIntegrationTest {
         assertEquals(recordDto.getFactSum(), record.getFactSum());
     }
 
+    private TravelRequest getTravelDtoForUpdate() {
+        ExpenseRecordRequest recordDto1 = ExpenseRecordRequest.builder()
+                .recordNumber(1)
+                .expenseTypeId(1L)
+                .comment("Comment #1 of travel #2 - fact")
+                .planSum(7000)
+                .factSum(7010)
+                .build();
+
+        return TravelRequest.builder()
+                .status(TravelStatus.DONE)
+                .title("Travel #2")
+                .startDate(LocalDate.of(2021, 1, 7))
+                .endDate(LocalDate.of(2021, 1, 7))
+                .description("Description #2 - done!")
+                .planTotalSum(7000)
+                .factTotalSum(7010)
+                .rating(Rating.EXCELLENT)
+                .favorite(false)
+                .expenses(List.of(recordDto1))
+                .build();
+    }
+
     @Test
     @WithMockUser(username = "user1", authorities = {"travel:write"})
     void updateNotFound() throws Exception {
-        mockMvc.perform(put("/api/v1/travels/999")
+        mockMvc.perform(put(Urls.Travels.FULL + "/999")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .content("{}"))
+                .content(objectMapper.writeValueAsString(getTravelDtoForUpdate())))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void updateUnauthorized() throws Exception {
-        mockMvc.perform(put("/api/v1/travels/2")
+        mockMvc.perform(put(Urls.Travels.FULL + "/2")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content("{}"))
                 .andDo(print())
@@ -408,9 +419,9 @@ class TravelControllerIntegrationTest {
     @Test
     @WithMockUser
     void updateForbidden() throws Exception {
-        mockMvc.perform(put("/api/v1/travels/2")
+        mockMvc.perform(put(Urls.Travels.FULL + "/2")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .content("{}"))
+                .content(objectMapper.writeValueAsString(getTravelDtoForUpdate())))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -418,12 +429,9 @@ class TravelControllerIntegrationTest {
     @Test
     @WithMockUser(username = "user2", authorities = {"travel:write"})
     void updateOtherUser() throws Exception {
-        TravelDto dto = TravelDto.builder()
-                .build();
-
-        mockMvc.perform(put("/api/v1/travels/2")
+        mockMvc.perform(put(Urls.Travels.FULL + "/2")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(dto)))
+                .content(objectMapper.writeValueAsString(getTravelDtoForUpdate())))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -434,7 +442,7 @@ class TravelControllerIntegrationTest {
         int size = travelRepository.findAll().size();
         long id = 3L;
 
-        mockMvc.perform(delete("/api/v1/travels/" + id))
+        mockMvc.perform(delete(Urls.Travels.FULL + "/" + id))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -445,14 +453,14 @@ class TravelControllerIntegrationTest {
     @Test
     @WithMockUser(username = "user1", authorities = {"travel:write"})
     void deleteNotFound() throws Exception {
-        mockMvc.perform(delete("/api/v1/travels/999"))
+        mockMvc.perform(delete(Urls.Travels.FULL + "/999"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void deleteUnauthorized() throws Exception {
-        mockMvc.perform(delete("/api/v1/travels/2"))
+        mockMvc.perform(delete(Urls.Travels.FULL + "/2"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -460,7 +468,7 @@ class TravelControllerIntegrationTest {
     @Test
     @WithMockUser
     void deleteForbidden() throws Exception {
-        mockMvc.perform(delete("/api/v1/travels/2"))
+        mockMvc.perform(delete(Urls.Travels.FULL + "/2"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -468,7 +476,7 @@ class TravelControllerIntegrationTest {
     @Test
     @WithMockUser(username = "user2", authorities = {"travel:write"})
     void deleteOtherUser() throws Exception {
-        mockMvc.perform(delete("/api/v1/travels/2"))
+        mockMvc.perform(delete(Urls.Travels.FULL + "/2"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }

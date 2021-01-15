@@ -16,3 +16,16 @@ springdoc:
 jwt:
   secret: 2dfe2sd45xqe34z9je4
   duration: 15
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when_authorized
+info:
+  application:
+    name: traveldiary
+    description: Travel diary, spring boot application
+    version: 0.0.1-SNAPSHOT

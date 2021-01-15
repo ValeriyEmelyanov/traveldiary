@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -29,12 +30,15 @@ class UserRepositoryIntegrationTest {
                 .username(username)
                 .enabled(true)
                 .roles(Set.of(Role.USER))
+                .travels(List.of())
                 .build();
         User user2 = User.builder()
                 .username("user2")
+                .travels(List.of())
                 .build();
         User user3 = User.builder()
                 .username("user3")
+                .travels(List.of())
                 .build();
 
         userRepository.save(user);

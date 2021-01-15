@@ -23,26 +23,22 @@ import java.time.LocalDateTime;
 @SuperBuilder
 public class UserLastActivity extends AbstractEntity {
 
-    @Schema(
-            description = "user",
+    @Schema(description = "user",
             example = "user",
             required = true)
     @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JsonIgnore
     private User user;
 
-    @Schema(
-            description = "date and time of activity",
+    @Schema(description = "date and time of activity",
             example = "2020-12-14 19:09:51.873345",
             required = true)
     @Column(name = "last_activity")
     private LocalDateTime lastActivity;
 
-    @Schema(
-            description = "the method name with arguments (value or type name)",
+    @Schema(description = "the method name with arguments (value or type name)",
             example = "create(TravelDto, user)",
             required = true)
     @Column(name = "description")
     private String description;
-
 }

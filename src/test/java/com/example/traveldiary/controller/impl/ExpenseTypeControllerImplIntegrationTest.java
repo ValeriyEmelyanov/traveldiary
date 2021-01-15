@@ -1,6 +1,7 @@
-package com.example.traveldiary.controller;
+package com.example.traveldiary.controller.impl;
 
-import com.example.traveldiary.dto.request.ExpenseTypeDto;
+import com.example.traveldiary.Urls;
+import com.example.traveldiary.dto.request.ExpenseTypeRequest;
 import com.example.traveldiary.model.ExpenseType;
 import com.example.traveldiary.repository.ExpenseTypeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class ExpenseTypeControllerIntegrationTest {
+class ExpenseTypeControllerImplIntegrationTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -44,7 +45,7 @@ class ExpenseTypeControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        if (expenseTypeRepository.findAll().size() == 0) {
+        if (expenseTypeRepository.findAll().isEmpty()) {
             prepareTestData();
         }
     }
@@ -73,7 +74,7 @@ class ExpenseTypeControllerIntegrationTest {
     void getList() throws Exception {
         int size = expenseTypeRepository.findAll().size();
 
-        mockMvc.perform(get("/api/v1/expensetypes"))
+        mockMvc.perform(get(Urls.ExpenseTypes.FULL))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -82,7 +83,7 @@ class ExpenseTypeControllerIntegrationTest {
 
     @Test
     void getListUnauthorized() throws Exception {
-        mockMvc.perform(get("/api/v1/expensetypes"))
+        mockMvc.perform(get(Urls.ExpenseTypes.FULL))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -90,7 +91,7 @@ class ExpenseTypeControllerIntegrationTest {
     @Test
     @WithMockUser
     void getListForbidden() throws Exception {
-        mockMvc.perform(get("/api/v1/expensetypes"))
+        mockMvc.perform(get(Urls.ExpenseTypes.FULL))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -98,7 +99,7 @@ class ExpenseTypeControllerIntegrationTest {
     @Test
     @WithMockUser(authorities = {"expense_type:read"})
     void getById() throws Exception {
-        mockMvc.perform(get("/api/v1/expensetypes/1"))
+        mockMvc.perform(get(Urls.ExpenseTypes.FULL + "/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -108,7 +109,7 @@ class ExpenseTypeControllerIntegrationTest {
 
     @Test
     void getByIdUnauthorized() throws Exception {
-        mockMvc.perform(get("/api/v1/expensetypes/1"))
+        mockMvc.perform(get(Urls.ExpenseTypes.FULL + "/1"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -116,7 +117,7 @@ class ExpenseTypeControllerIntegrationTest {
     @Test
     @WithMockUser
     void getByIdForbidden() throws Exception {
-        mockMvc.perform(get("/api/v1/expensetypes/1"))
+        mockMvc.perform(get(Urls.ExpenseTypes.FULL + "/1"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -126,9 +127,11 @@ class ExpenseTypeControllerIntegrationTest {
     void create() throws Exception {
         int size = expenseTypeRepository.findAll().size();
         String typeName = "Souvenirs";
-        ExpenseTypeDto dto = new ExpenseTypeDto(typeName);
+        ExpenseTypeRequest dto = ExpenseTypeRequest.builder()
+                .name(typeName)
+                .build();
 
-        mockMvc.perform(post("/api/v1/expensetypes")
+        mockMvc.perform(post(Urls.ExpenseTypes.FULL)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andDo(print())
@@ -140,8 +143,22 @@ class ExpenseTypeControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(authorities = {"expense_type:write"})
+    void createInvalidExpenseType() throws Exception {
+        ExpenseTypeRequest dto = ExpenseTypeRequest.builder()
+                .name("")
+                .build();
+
+        mockMvc.perform(post(Urls.ExpenseTypes.FULL)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(dto)))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     void createUnauthorized() throws Exception {
-        mockMvc.perform(post("/api/v1/expensetypes")
+        mockMvc.perform(post(Urls.ExpenseTypes.FULL)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content("{}"))
                 .andDo(print())
@@ -151,9 +168,9 @@ class ExpenseTypeControllerIntegrationTest {
     @Test
     @WithMockUser
     void createForbidden() throws Exception {
-        mockMvc.perform(post("/api/v1/expensetypes")
+        mockMvc.perform(post(Urls.ExpenseTypes.FULL)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .content("{}"))
+                .content("{\"name\":\"anything\"}"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -163,9 +180,11 @@ class ExpenseTypeControllerIntegrationTest {
     void update() throws Exception {
         long id = 2L;
         String typeName = "Food and delicious";
-        ExpenseTypeDto dto = new ExpenseTypeDto(typeName);
+        ExpenseTypeRequest dto = ExpenseTypeRequest.builder()
+                .name(typeName)
+                .build();
 
-        mockMvc.perform(put("/api/v1/expensetypes/" + id)
+        mockMvc.perform(put(Urls.ExpenseTypes.FULL + "/" + id)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andDo(print())
@@ -179,18 +198,18 @@ class ExpenseTypeControllerIntegrationTest {
     @Test
     @WithMockUser(authorities = {"expense_type:write"})
     void updateNotFound() throws Exception {
-        mockMvc.perform(put("/api/v1/expensetypes/999")
+        mockMvc.perform(put(Urls.ExpenseTypes.FULL + "/999")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .content("{}"))
+                .content("{\"name\":\"anything\"}"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void updateUnauthorized() throws Exception {
-        mockMvc.perform(put("/api/v1/expensetypes/2")
+        mockMvc.perform(put(Urls.ExpenseTypes.FULL + "/2")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .content("{}"))
+                .content("{\"name\":\"anything\"}"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -198,9 +217,9 @@ class ExpenseTypeControllerIntegrationTest {
     @Test
     @WithMockUser
     void updateForbidden() throws Exception {
-        mockMvc.perform(put("/api/v1/expensetypes/2")
+        mockMvc.perform(put(Urls.ExpenseTypes.FULL + "/2")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .content("{}"))
+                .content("{\"name\":\"anything\"}"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -211,7 +230,7 @@ class ExpenseTypeControllerIntegrationTest {
         int size = expenseTypeRepository.findAll().size();
         long id = 3L;
 
-        mockMvc.perform(delete("/api/v1/expensetypes/" + id))
+        mockMvc.perform(delete(Urls.ExpenseTypes.FULL + "/" + id))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -222,14 +241,14 @@ class ExpenseTypeControllerIntegrationTest {
     @Test
     @WithMockUser(authorities = {"expense_type:write"})
     void deleteNotFound() throws Exception {
-        mockMvc.perform(delete("/api/v1/expensetypes/999"))
+        mockMvc.perform(delete(Urls.ExpenseTypes.FULL + "/999"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void deleteUnauthorized() throws Exception {
-        mockMvc.perform(delete("/api/v1/expensetypes/2"))
+        mockMvc.perform(delete(Urls.ExpenseTypes.FULL + "/2"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -237,7 +256,7 @@ class ExpenseTypeControllerIntegrationTest {
     @Test
     @WithMockUser
     void deleteForbidden() throws Exception {
-        mockMvc.perform(delete("/api/v1/expensetypes/2"))
+        mockMvc.perform(delete(Urls.ExpenseTypes.FULL + "/2"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }

@@ -20,8 +20,7 @@ import javax.persistence.MappedSuperclass;
 @SuperBuilder
 public class AbstractEntity {
 
-    @Schema(
-            description = "Unique identifier",
+    @Schema(description = "Unique identifier",
             example = "1",
             required = true)
     @Id

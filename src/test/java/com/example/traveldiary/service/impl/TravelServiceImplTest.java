@@ -1,11 +1,9 @@
 package com.example.traveldiary.service.impl;
 
-import com.example.traveldiary.dto.request.ExpenseRecordDto;
-import com.example.traveldiary.dto.request.TravelDto;
 import com.example.traveldiary.exception.ForbiddenException;
 import com.example.traveldiary.exception.NotFoundException;
-import com.example.traveldiary.mapper.TravelMapper;
 import com.example.traveldiary.model.ExpenseRecord;
+import com.example.traveldiary.model.ExpenseType;
 import com.example.traveldiary.model.Travel;
 import com.example.traveldiary.model.User;
 import com.example.traveldiary.repository.TravelRepository;
@@ -39,9 +37,6 @@ class TravelServiceImplTest {
 
     @Mock
     private UserService userService;
-
-    @Mock
-    private TravelMapper travelMapper;
 
     private List<Travel> testData;
 
@@ -106,19 +101,17 @@ class TravelServiceImplTest {
         String username = "user";
         User user = getUser1L(username);
 
-        TravelDto dto = getTravelDto();
+        Travel travel = getTravel();
 
         when(userService.getByUsername(username))
                 .thenReturn(user);
-        when(travelMapper.toTravel(dto))
-                .thenReturn(getTravelFromDto(dto));
         when(travelRepository.save(any()))
-                .thenAnswer((Answer<Void>) invocation -> {
+                .thenAnswer((Answer<Travel>) invocation -> {
                     testData.add(invocation.getArgument(0));
-                    return null;
+                    return invocation.getArgument(0);
                 });
 
-        travelService.save(dto, username);
+        travelService.save(travel, username);
 
         assertEquals(testDataSizeBefore + 1, testData.size());
         Travel savedTravel = testData.get(testData.size() - 1);
@@ -126,43 +119,23 @@ class TravelServiceImplTest {
         assertEquals(user, savedTravel.getUser());
         assertNotNull(savedTravel.getExpenses());
         assertTrue(savedTravel.getExpenses().size() > 0);
-        assertEquals(savedTravel, savedTravel.getExpenses().get(0).getTravel());
     }
 
-    private Travel getTravelFromDto(TravelDto dto) {
+    private Travel getTravel() {
         Travel travel = Travel.builder()
-                .id(4L)
-                .description(dto.getDescription())
+                .description("The best journey")
                 .build();
 
-        List<ExpenseRecordDto> recordDtos = dto.getExpenses();
         List<ExpenseRecord> expenseRecords = new ArrayList<>();
-        for (int i = 0; i < recordDtos.size(); i++) {
+        for (int i = 1; i <= 2; i++) {
             expenseRecords.add(ExpenseRecord.builder()
-                    .id((long) (i + 1))
-                    .recNo(recordDtos.get(i).getRecNo())
+                    .recordNumber(i)
+                    .expenseType(new ExpenseType())
                     .build());
         }
         travel.setExpenses(expenseRecords);
 
         return travel;
-    }
-
-    private TravelDto getTravelDto() {
-        TravelDto dto = TravelDto.builder()
-                .description("The best journey")
-                .build();
-
-        List<ExpenseRecordDto> expenseRecordDtos = new ArrayList<>();
-        for (int i = 1; i <= 2; i++) {
-            expenseRecordDtos.add(ExpenseRecordDto.builder()
-                    .recNo(i)
-                    .expenseTypeId((long) i)
-                    .build());
-        }
-        dto.setExpenses(expenseRecordDtos);
-
-        return dto;
     }
 
     private User getUser1L(String username) {
@@ -180,9 +153,7 @@ class TravelServiceImplTest {
         String username = "user";
         User user = getUser1L(username);
 
-        TravelDto dto = getTravelDto();
-
-        Travel travel = getTravelFromDto(dto);
+        Travel travel = getTravel();
         travel.setUser(user);
         travel.setId(id);
 
@@ -190,24 +161,19 @@ class TravelServiceImplTest {
                 .thenReturn(user);
         when(travelRepository.findById(id))
                 .thenReturn(Optional.of(travel));
-        doAnswer((Answer<Void>) invocation -> {
-            testData.set(index, travel);
-            return null;
-        }).when(travelMapper).updateTravel(dto, travel);
         when(travelRepository.save(any()))
-                .thenAnswer((Answer<Void>) invocation -> {
+                .thenAnswer((Answer<Travel>) invocation -> {
                     testData.set(index, invocation.getArgument(0));
-                    return null;
+                    return invocation.getArgument(0);
                 });
 
-        travelService.update(id, dto, username);
+        travelService.update(id, travel, username);
 
         Travel updatedTravel = testData.get(index);
         assertNotNull(updatedTravel);
         assertEquals(user, updatedTravel.getUser());
         assertNotNull(updatedTravel.getExpenses());
         assertTrue(updatedTravel.getExpenses().size() > 0);
-        assertEquals(updatedTravel, updatedTravel.getExpenses().get(0).getTravel());
     }
 
     @Test
@@ -217,9 +183,7 @@ class TravelServiceImplTest {
         String username = "user";
         User user = getUser1L(username);
 
-        TravelDto dto = getTravelDto();
-
-        Travel travel = getTravelFromDto(dto);
+        Travel travel = getTravel();
         travel.setUser(user);
         travel.setId(id);
 
@@ -228,7 +192,7 @@ class TravelServiceImplTest {
         when(travelRepository.findById(id))
                 .thenReturn(Optional.of(travel));
 
-        assertThrows(ForbiddenException.class, () -> travelService.update(id, dto, username));
+        assertThrows(ForbiddenException.class, () -> travelService.update(id, travel, username));
     }
 
     @Test
