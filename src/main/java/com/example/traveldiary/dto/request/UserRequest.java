@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 import java.util.Set;
 
 /**
- * An object for trancferring data from a request to a controller about a user.
+ * An object for transferring data from a request to a controller about a user.
  */
 @Data
 @Builder

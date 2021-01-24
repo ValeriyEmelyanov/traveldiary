@@ -63,7 +63,7 @@ public interface TravelController {
                     required = true)
             @PathVariable Long id);
 
-    @Operation(summary = "add a new travel type")
+    @Operation(summary = "add a new travel")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "expense type created",
                     content = @Content(

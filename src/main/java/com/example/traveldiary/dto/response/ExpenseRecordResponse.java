@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * An object for trancferring data from a controller to a response about an expense record.
+ * An object for transferring data from a controller to a response about an expense record.
  */
 @Data
 @Builder

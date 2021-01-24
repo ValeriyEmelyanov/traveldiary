@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * An object for trancferring data from a controller to a response about a user last activity.
+ * An object for transferring data from a controller to a response about a user last activity.
  */
 @Data
 @Builder

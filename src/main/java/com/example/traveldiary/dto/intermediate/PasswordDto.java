@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
- * An object for trancferring a password data between apllication layers.
+ * An object for transferring a password data between apllication layers.
  */
 @AllArgsConstructor
 @Getter

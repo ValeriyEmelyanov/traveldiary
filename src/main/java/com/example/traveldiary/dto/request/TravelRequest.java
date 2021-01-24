@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * An object for trancferring data from a request to a controller about a travel.
+ * An object for transferring data from a request to a controller about a travel.
  */
 @Data
 @Builder

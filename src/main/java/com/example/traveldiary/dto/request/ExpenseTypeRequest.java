@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * An object for trancferring data from a request to a controller about an expense type.
+ * An object for transferring data from a request to a controller about an expense type.
  */
 @Data
 @Builder

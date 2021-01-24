@@ -7,7 +7,7 @@ import lombok.Getter;
 import javax.validation.constraints.NotNull;
 
 /**
- * An object for trancferring data from a controller to a response about an authentication.
+ * An object for transferring data from a controller to a response about an authentication.
  */
 @AllArgsConstructor
 @Getter

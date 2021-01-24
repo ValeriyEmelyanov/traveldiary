@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
- * An object for trancferring data from a controller to a response about a user.
+ * An object for transferring data from a controller to a response about a user.
  */
 @Data
 @Builder

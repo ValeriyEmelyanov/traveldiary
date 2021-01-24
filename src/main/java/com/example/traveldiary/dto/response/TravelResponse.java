@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * An object for trancferring data from a controller to a response about a travel.
+ * An object for transferring data from a controller to a response about a travel.
  */
 @Data
 @Builder
